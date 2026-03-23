@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Video files (too large for git)
+*.mp4
+*.mov
+
+# Claude Code
+.claude/
+
+# Node
+node_modules/

@@ -1,0 +1,3397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paioneers - AI-Powered Revenue Systems for Sales Teams</title>
+    <meta name="description" content="We build AI-powered revenue systems that automate prospect research, personalise outreach at scale, and keep every deal moving — so your team focuses on selling.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & RESET
+           ============================================ */
+        :root {
+            --color-cream: #FAFFEF;
+            --color-dark-teal: #032C2D;
+            --color-teal: #0F7A99;
+            --color-periwinkle: #A9B8FF;
+            --color-orange: #F37C38;
+            --color-light-blue: #5B8DEF;
+            --color-gray: #8fa097;
+
+            --color-salmon-1: #d3866c;
+            --color-salmon-2: #cf8b7d;
+            --color-mauve-1: #c89495;
+            --color-mauve-2: #c29baa;
+            --color-purple-1: #bba2c0;
+            --color-purple-2: #b5aad7;
+            --color-blue-1: #aeb2ec;
+
+            --font-sans: 'IBM Plex Sans', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-cream);
+            color: var(--color-dark-teal);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ============================================
+           HEADER - Smart hide/show on scroll
+           ============================================ */
+        .op-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 28px 60px;
+            transition:
+                transform 0.45s var(--ease-smooth),
+                background 0.35s ease,
+                padding 0.35s ease,
+                box-shadow 0.35s ease;
+        }
+
+        .op-header.is-scrolled {
+            background: rgba(250, 255, 239, 0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 16px 60px;
+            box-shadow: 0 1px 0 rgba(3, 44, 45, 0.06);
+        }
+
+        .op-header.is-hidden {
+            transform: translateY(-100%);
+        }
+
+        .op-header__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .op-header__logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--color-dark-teal);
+            letter-spacing: -0.01em;
+        }
+
+        .op-header__logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .op-header__nav {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        .op-header__link {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-dark-teal);
+            padding: 8px 0;
+            position: relative;
+            transition: opacity 0.2s ease;
+        }
+
+        .op-header__link::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-dark-teal);
+            transition: width 0.3s var(--ease-smooth);
+        }
+
+        .op-header__link:hover {
+            opacity: 0.7;
+        }
+
+        .op-header__link:hover::after {
+            width: 100%;
+        }
+
+        .op-header__cta {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-dark-teal);
+            border: 1px solid var(--color-dark-teal);
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .op-header__cta::after {
+            display: none;
+        }
+
+        .op-header__cta:hover {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+        }
+
+        /* Hamburger for mobile */
+        .op-header__hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .op-header__hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-dark-teal);
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .op-hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--color-cream);
+            overflow: hidden;
+        }
+
+        .op-hero__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .op-hero__headline {
+            font-size: clamp(42px, 5vw, 72px);
+            font-weight: 300;
+            line-height: 1.08;
+            margin-bottom: 28px;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 1s var(--ease-smooth) 0.3s forwards;
+        }
+
+        .op-hero__text {
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 90%;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 1s var(--ease-smooth) 0.5s forwards;
+        }
+
+        .op-hero__button {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            border: 1px solid var(--color-dark-teal);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-dark-teal);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUp 1s var(--ease-smooth) 0.7s forwards;
+            transition: all 0.3s ease;
+        }
+
+        .op-hero__button:hover {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+        }
+
+        /* Hero Visual - Arrow Shapes with sunset background */
+        .op-hero__visual {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .op-hero__video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           STATS SECTION - By The Numbers
+           ============================================ */
+        .op-stats {
+            background-color: var(--color-dark-teal);
+            color: var(--color-cream);
+            padding: 120px 0;
+            overflow: hidden;
+        }
+
+        .op-stats__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: 0.8fr 1px 1.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .op-stats__graphic-col { position: relative; }
+
+        .op-stats__label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .op-stats__bars {
+            position: relative;
+            height: 320px;
+            width: 100%;
+        }
+
+        .op-stats__bars-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .op-stats__divider {
+            width: 1px;
+            background: rgba(15, 122, 153, 0.25);
+            min-height: 460px;
+            align-self: stretch;
+        }
+
+        .op-stats__content-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .op-stats__list-item {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(250, 255, 239, 0.08);
+            cursor: pointer;
+            opacity: 0.45;
+            transition: all 0.4s var(--ease-smooth);
+            font-size: 22px;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .op-stats__list-item::before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-left: 8px solid var(--color-cream);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .op-stats__list-item:hover,
+        .op-stats__list-item.is-active {
+            opacity: 1;
+            padding-left: 16px;
+        }
+
+        .op-stats__list-item:hover::before,
+        .op-stats__list-item.is-active::before {
+            border-left-color: var(--color-orange);
+            transform: translateX(4px);
+        }
+
+        .op-stats__display {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            align-items: flex-start;
+        }
+
+        .op-stats__number-wrap {
+            overflow: hidden;
+            display: inline-block;
+            min-width: 200px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--color-teal);
+            padding-bottom: 20px;
+        }
+
+        .op-stats__number {
+            font-size: clamp(72px, 8vw, 120px);
+            font-weight: 200;
+            line-height: 1;
+            background: linear-gradient(to bottom, var(--color-cream), rgba(250, 255, 239, 0.75));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            transform: translateY(0);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+            opacity: 1;
+        }
+
+        .op-stats__number.is-exiting {
+            transform: translateY(-60%);
+            opacity: 0;
+        }
+
+        .op-stats__number.is-entering {
+            transform: translateY(60%);
+            opacity: 0;
+            transition: none;
+        }
+
+        .op-stats__button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-cream);
+            background: transparent;
+            margin-top: 60px;
+            text-decoration: none;
+            cursor: pointer;
+            overflow: hidden;
+            /* Gradient border via background-clip trick */
+            border: none;
+            isolation: isolate;
+        }
+
+        /* Gradient outline (resting state) */
+        .op-stats__button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 0;
+            padding: 1.5px;
+            background: linear-gradient(90deg, var(--color-orange), var(--color-periwinkle), var(--color-teal));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: opacity 0.45s ease;
+            z-index: 1;
+        }
+
+        /* Arrow fill — clipped to chevron shape, hidden at rest */
+        .op-stats__button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle), var(--color-orange));
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%, 20px 50%);
+            opacity: 0;
+            transform: scaleX(0.92);
+            transform-origin: left center;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .op-stats__button span {
+            position: relative;
+            z-index: 2;
+            transition: letter-spacing 0.4s ease, color 0.4s ease;
+        }
+
+        .op-stats__button:hover::before {
+            opacity: 0;
+        }
+
+        .op-stats__button:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .op-stats__button:hover span {
+            letter-spacing: 0.2em;
+            color: #000;
+        }
+
+        /* ============================================
+           GRADIENT CTA BUTTON (reusable)
+           ============================================ */
+        .op-gradient-cta {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-cream);
+            background: transparent;
+            text-decoration: none;
+            cursor: pointer;
+            overflow: hidden;
+            border: none;
+            isolation: isolate;
+        }
+
+        .op-gradient-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1.5px;
+            background: linear-gradient(90deg, var(--color-orange), var(--color-periwinkle), var(--color-teal));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: opacity 0.45s ease;
+            z-index: 1;
+        }
+
+        .op-gradient-cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle), var(--color-orange));
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%, 20px 50%);
+            opacity: 0;
+            transform: scaleX(0.92);
+            transform-origin: left center;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .op-gradient-cta span {
+            position: relative;
+            z-index: 2;
+            transition: letter-spacing 0.4s ease, color 0.4s ease;
+        }
+
+        .op-gradient-cta:hover::before {
+            opacity: 0;
+        }
+
+        .op-gradient-cta:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .op-gradient-cta:hover span {
+            letter-spacing: 0.2em;
+            color: #000;
+        }
+
+        /* Dark text variant for light backgrounds */
+        .op-gradient-cta--dark {
+            color: var(--color-dark-teal);
+        }
+
+        .op-gradient-cta--dark:hover span {
+            color: #000;
+        }
+
+        /* ============================================
+           VAAS SECTION - More than a multiple
+           ============================================ */
+        .op-vaas {
+            background-color: var(--color-dark-teal);
+            color: var(--color-cream);
+            padding: 100px 0 120px;
+            overflow: hidden;
+        }
+
+        .op-vaas__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+        }
+
+        .op-vaas__headline {
+            font-size: clamp(48px, 5vw, 72px);
+            font-weight: 300;
+            line-height: 1.08;
+            margin-bottom: 36px;
+            letter-spacing: -0.02em;
+        }
+
+        .op-vaas__text {
+            font-size: 19px;
+            line-height: 1.65;
+            font-weight: 300;
+            margin-bottom: 20px;
+            opacity: 0.85;
+            max-width: 92%;
+        }
+
+        .op-vaas__button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-cream);
+            background: transparent;
+            margin-top: 36px;
+            text-decoration: none;
+            cursor: pointer;
+            overflow: hidden;
+            border: none;
+            isolation: isolate;
+        }
+
+        .op-vaas__button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1.5px;
+            background: linear-gradient(90deg, var(--color-orange), var(--color-periwinkle), var(--color-teal));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            transition: opacity 0.45s ease;
+            z-index: 1;
+        }
+
+        .op-vaas__button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle), var(--color-orange));
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%, 20px 50%);
+            opacity: 0;
+            transform: scaleX(0.92);
+            transform-origin: left center;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .op-vaas__button span {
+            position: relative;
+            z-index: 2;
+            transition: letter-spacing 0.4s ease, color 0.4s ease;
+        }
+
+        .op-vaas__button:hover::before {
+            opacity: 0;
+        }
+
+        .op-vaas__button:hover::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .op-vaas__button:hover span {
+            letter-spacing: 0.2em;
+            color: #000;
+        }
+
+        /* Dashboard panel */
+        .op-vaas__dashboard {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(15, 122, 153, 0.4);
+            padding: 36px;
+        }
+
+        .op-vaas__chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .op-vaas__chart-value {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .op-vaas__chart-value h3 {
+            font-size: 44px;
+            font-weight: 300;
+        }
+
+        .op-vaas__chart-value span {
+            font-family: var(--font-mono);
+            font-size: 15px;
+            opacity: 0.6;
+        }
+
+        .op-vaas__chart-btn {
+            border: 1px solid var(--color-periwinkle);
+            color: var(--color-periwinkle);
+            padding: 8px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            border-radius: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .op-vaas__chart-btn:hover {
+            background: rgba(169, 184, 255, 0.1);
+        }
+
+        .op-vaas__area-chart {
+            width: 100%;
+            height: 180px;
+            display: block;
+        }
+
+        .op-vaas__lower-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            border-top: 1px solid rgba(15, 122, 153, 0.35);
+        }
+
+        .op-vaas__gauge-col {
+            padding: 28px;
+            border-right: 1px solid rgba(15, 122, 153, 0.35);
+        }
+
+        .op-vaas__gauge-title {
+            font-size: 17px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        .op-vaas__metrics-col {
+            padding: 28px;
+        }
+
+        .op-vaas__metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .op-vaas__metric-value {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .op-vaas__metric-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-periwinkle);
+            line-height: 1.4;
+        }
+
+        /* Comparison table */
+        .op-vaas__comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .op-vaas__col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .op-vaas__col--them {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(169, 184, 255, 0.1);
+        }
+
+        .op-vaas__col--us {
+            background: rgba(15, 122, 153, 0.12);
+            border: 1px solid rgba(15, 122, 153, 0.45);
+            border-left: none;
+            position: relative;
+        }
+
+        .op-vaas__col--us::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
+        }
+
+        .op-vaas__col-header {
+            padding: 20px 24px 18px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(169, 184, 255, 0.1);
+        }
+
+        .op-vaas__col--them .op-vaas__col-header {
+            color: rgba(169, 184, 255, 0.45);
+        }
+
+        .op-vaas__col--us .op-vaas__col-header {
+            color: var(--color-periwinkle);
+            border-bottom-color: rgba(15, 122, 153, 0.35);
+        }
+
+        .op-vaas__col-header-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .op-vaas__col--them .op-vaas__col-header-dot {
+            background: rgba(169, 184, 255, 0.3);
+        }
+
+        .op-vaas__col--us .op-vaas__col-header-dot {
+            background: var(--color-teal);
+            box-shadow: 0 0 6px rgba(15, 122, 153, 0.8);
+        }
+
+        .op-vaas__col-items {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .op-vaas__col-item {
+            padding: 16px 24px;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.55;
+            border-bottom: 1px solid rgba(169, 184, 255, 0.07);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            min-height: 64px;
+            transition: transform 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth);
+            transform-origin: left center;
+            will-change: transform;
+        }
+
+        .op-vaas__col-item:last-child {
+            border-bottom: none;
+        }
+
+        .op-vaas__col--them .op-vaas__col-item {
+            color: rgba(250, 255, 239, 0.4);
+        }
+
+        .op-vaas__col--them .op-vaas__col-item:hover {
+            color: rgba(250, 255, 239, 0.62);
+            transform: scaleY(1.04) translateX(2px);
+        }
+
+        .op-vaas__col--us .op-vaas__col-item {
+            color: rgba(250, 255, 239, 0.9);
+            border-bottom-color: rgba(15, 122, 153, 0.18);
+        }
+
+        .op-vaas__col--us .op-vaas__col-item:hover {
+            color: rgba(250, 255, 239, 1);
+            background: rgba(15, 122, 153, 0.1);
+            transform: scaleY(1.04) translateX(2px);
+        }
+
+        .op-vaas__col-item-icon {
+            flex-shrink: 0;
+            margin-top: 2px;
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        .op-vaas__col--us .op-vaas__col-item-icon {
+            opacity: 1;
+            color: var(--color-teal);
+        }
+
+        @media (max-width: 968px) {
+            .op-vaas__comparison { grid-template-columns: 1fr 1fr; }
+            .op-vaas__col-item { font-size: 13px; padding: 14px 16px; min-height: 56px; }
+            .op-vaas__col-header { padding: 16px 16px 14px; font-size: 10px; }
+        }
+
+        @media (max-width: 600px) {
+            .op-vaas__comparison { grid-template-columns: 1fr; }
+            .op-vaas__col--us { border-left: 1px solid rgba(15, 122, 153, 0.45); border-top: none; }
+            .op-vaas__col--us::before { display: none; }
+        }
+
+        /* ============================================
+           SERVICES SECTION
+           ============================================ */
+        .op-services {
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg,
+                var(--color-salmon-1) 0%,
+                var(--color-salmon-2) 14%,
+                var(--color-mauve-1) 28%,
+                var(--color-mauve-2) 42%,
+                var(--color-purple-1) 56%,
+                var(--color-purple-2) 70%,
+                var(--color-blue-1) 100%);
+            background-size: 300% 300%;
+            background-position: 100% 100%;
+            transition: background-position 0.8s var(--ease-smooth);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Giant ghost number — editorial typographic anchor */
+        .op-services__ghost-number {
+            position: absolute;
+            bottom: -0.15em;
+            left: 52px;
+            font-family: var(--font-mono);
+            font-size: clamp(220px, 28vw, 380px);
+            font-weight: 600;
+            line-height: 1;
+            color: var(--color-dark-teal);
+            opacity: 0.06;
+            pointer-events: none;
+            user-select: none;
+            transition: opacity 0.25s ease;
+            letter-spacing: -0.04em;
+            z-index: 0;
+        }
+
+        .op-services__inner {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Top bar: label + nav ── */
+        .op-services__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 44px 0 0;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(3, 44, 45, 0.12);
+            padding-bottom: 24px;
+        }
+
+        .op-services__label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--color-dark-teal);
+            opacity: 0.6;
+        }
+
+        .op-services__nav {
+            display: flex;
+            gap: 0;
+            align-items: center;
+        }
+
+        .op-services__nav li {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.25s ease;
+            color: var(--color-dark-teal);
+            padding: 6px 0 6px 32px;
+            position: relative;
+        }
+
+        .op-services__nav li::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--color-dark-teal);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .op-services__nav li:first-child {
+            padding-left: 0;
+        }
+
+        .op-services__nav li:first-child::before {
+            display: none;
+        }
+
+        .op-services__nav li:hover { opacity: 0.7; }
+        .op-services__nav li.is-active {
+            opacity: 1;
+        }
+        .op-services__nav li.is-active::before {
+            opacity: 1;
+        }
+
+        /* ── Main stage ── */
+        .op-services__display {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 600px;
+            gap: 0 80px;
+            align-items: center;
+            min-height: 0;
+            padding: 0;
+        }
+
+        /* ── Left: text content ── */
+        .op-services__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 640px;
+        }
+
+        .op-services__index {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-dark-teal);
+            opacity: 0.45;
+            margin-bottom: 28px;
+            transition: opacity 0.4s ease;
+        }
+
+        .op-services__content h2 {
+            font-size: clamp(44px, 5.5vw, 72px);
+            font-weight: 200;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+            color: var(--color-dark-teal);
+            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
+        }
+
+        .op-services__divider {
+            width: 48px;
+            height: 1px;
+            background: var(--color-dark-teal);
+            opacity: 0.3;
+            margin-bottom: 28px;
+            transition: opacity 0.35s ease;
+        }
+
+        .op-services__content p {
+            font-size: 16px;
+            line-height: 1.75;
+            margin-bottom: 40px;
+            color: rgba(3, 44, 45, 0.7);
+            max-width: 520px;
+            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
+        }
+
+        /* ── Right: floating icon ── */
+        .op-services__icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .op-services__video-wrap {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 2;
+        }
+
+        .op-services__video-wrap.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Screen bezel frame */
+        .op-services__video-frame {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+            transform: translateX(-40px);
+            border-radius: 10px;
+            background: #010f10;
+            border: 1px solid rgba(15, 122, 153, 0.25);
+            overflow: hidden;
+        }
+
+        /* Chrome bar */
+        .op-services__video-frame::before {
+            content: '';
+            display: block;
+            height: 28px;
+            background: #021a1b;
+            border-bottom: 1px solid rgba(15, 122, 153, 0.18);
+            flex-shrink: 0;
+        }
+
+        /* Three dots */
+        .op-services__video-frame::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(243, 124, 56, 0.55);
+            box-shadow: 14px 0 0 rgba(169, 184, 255, 0.4), 28px 0 0 rgba(15, 122, 153, 0.5);
+        }
+
+        .op-services__video {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Vignette overlay */
+        .op-services__video-glow {
+            position: absolute;
+            inset: 28px 0 0 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to right, rgba(1, 15, 16, 0.4) 0%, transparent 15%, transparent 85%, rgba(1, 15, 16, 0.4) 100%),
+                linear-gradient(to bottom, transparent 65%, rgba(1, 15, 16, 0.55) 100%);
+        }
+
+        .op-services__icon-ring {
+            transition: opacity 0.5s ease;
+        }
+
+        .op-services__icon-wrap.show-video .op-services__icon-ring {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .op-services__icon-ring {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 1px solid rgba(3, 44, 45, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.6s var(--ease-smooth);
+        }
+
+        .op-services__icon-ring::before {
+            content: '';
+            position: absolute;
+            inset: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(3, 44, 45, 0.08);
+        }
+
+        .op-services__icon {
+            width: 88px;
+            height: 88px;
+            color: var(--color-dark-teal);
+            opacity: 0.7;
+            transition: transform 0.5s var(--ease-smooth), opacity 0.4s ease;
+        }
+
+        /* ── Bottom bar ── */
+        .op-services__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 0 36px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(3, 44, 45, 0.12);
+            padding-top: 20px;
+        }
+
+        .op-services__loop {
+            font-size: 13px;
+            opacity: 0.5;
+            max-width: 400px;
+            color: var(--color-dark-teal);
+            line-height: 1.6;
+        }
+
+        .op-services__counter {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            color: var(--color-dark-teal);
+            opacity: 0.45;
+        }
+
+        /* ── Transition states ── */
+        .op-services__display.is-transitioning .op-services__icon {
+            transform: scale(0.8) rotate(-8deg);
+            opacity: 0;
+        }
+
+        .op-services__display.is-transitioning .op-services__icon-ring {
+            transform: scale(0.92);
+        }
+
+        .op-services__display.is-transitioning .op-services__index,
+        .op-services__display.is-transitioning .op-services__content h2,
+        .op-services__display.is-transitioning .op-services__content p,
+        .op-services__display.is-transitioning .op-services__cta {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .op-services__index,
+        .op-services__content h2,
+        .op-services__content p,
+        .op-services__cta {
+            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
+        }
+
+        .op-services__cta {
+            margin-top: 24px;
+            padding: 10px 22px;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+        }
+
+        /* ============================================
+           APPROACH SECTION
+           ============================================ */
+        .op-approach {
+            padding: 140px 0;
+            background: var(--color-cream);
+        }
+
+        .op-approach__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .op-approach__headline {
+            font-size: clamp(42px, 5vw, 72px);
+            font-weight: 300;
+            line-height: 1.08;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .op-approach__subheadline {
+            font-size: 26px;
+            font-weight: 300;
+            line-height: 1.35;
+            margin-bottom: 28px;
+            color: var(--color-dark-teal);
+            opacity: 0.85;
+        }
+
+        .op-approach__text {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 560px;
+            opacity: 0.8;
+        }
+
+        .op-approach__buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .op-approach__button {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            border: 1px solid var(--color-dark-teal);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-dark-teal);
+            transition: all 0.3s ease;
+        }
+
+        .op-approach__button:hover {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+        }
+
+        .op-approach__image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .op-approach__image-wrapper img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .op-cta {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+            padding: 140px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .op-cta__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .op-cta__sep {
+            width: 1px;
+            height: 80px;
+            background: var(--color-teal);
+            margin-bottom: 40px;
+        }
+
+        .op-cta__headline {
+            font-size: clamp(42px, 5vw, 64px);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .op-cta__text {
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.85;
+            max-width: 90%;
+        }
+
+        .op-cta__button {
+            display: inline-flex;
+            align-items: center;
+            padding: 16px 32px;
+            border: 1px solid var(--color-cream);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-cream);
+            transition: all 0.3s ease;
+        }
+
+        .op-cta__button:hover {
+            background: var(--color-cream);
+            color: var(--color-dark-teal);
+        }
+
+        .op-cta__graphics {
+            position: relative;
+            height: 400px;
+        }
+
+        .op-cta__graphics svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .op-footer {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(15, 122, 153, 0.2);
+        }
+
+        .op-footer__inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        .op-footer__top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid rgba(15, 122, 153, 0.15);
+        }
+
+        .op-footer__brand-name {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .op-footer__address {
+            font-style: normal;
+            font-size: 15px;
+            line-height: 1.7;
+            opacity: 0.7;
+            margin-bottom: 16px;
+        }
+
+        .op-footer__contact-link {
+            display: block;
+            font-size: 15px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .op-footer__contact-link:hover { opacity: 1; }
+
+        .op-footer__cta-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .op-footer__cta-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-periwinkle);
+            margin-bottom: 8px;
+        }
+
+        .op-footer__cta-text {
+            font-size: 15px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .op-footer__cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            border: 1px solid var(--color-teal);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-cream);
+            transition: all 0.3s ease;
+            margin-top: 24px;
+        }
+
+        .op-footer__cta-button:hover {
+            background: var(--color-teal);
+        }
+
+        .op-footer__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 32px;
+            font-size: 13px;
+            opacity: 0.5;
+        }
+
+        .op-footer__social {
+            display: flex;
+            gap: 24px;
+        }
+
+        .op-footer__social a {
+            transition: opacity 0.2s ease;
+        }
+
+        .op-footer__social a:hover { opacity: 0.7; }
+
+        /* ============================================
+           SCROLL PROGRESS NAV (right side)
+           ============================================ */
+        .op-scroll-nav {
+            position: fixed;
+            right: 36px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Default: dark lines for light backgrounds */
+        .op-scroll-nav__item {
+            width: 36px;
+            height: 2px;
+            background: rgba(3, 44, 45, 0.18);
+            cursor: pointer;
+            transition: all 0.4s var(--ease-smooth);
+            position: relative;
+        }
+
+        .op-scroll-nav__item::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(3, 44, 45, 0.2);
+            transition: all 0.4s var(--ease-smooth);
+        }
+
+        .op-scroll-nav__item.is-active {
+            width: 52px;
+            background: rgba(3, 44, 45, 0.6);
+        }
+
+        .op-scroll-nav__item.is-active::after {
+            background: var(--color-dark-teal);
+            transform: translateY(-50%) scale(1.4);
+        }
+
+        /* Light variant for dark backgrounds (stats, vaas, cta, footer) */
+        .op-scroll-nav.is-light .op-scroll-nav__item {
+            background: rgba(250, 255, 239, 0.2);
+        }
+
+        .op-scroll-nav.is-light .op-scroll-nav__item::after {
+            background: rgba(250, 255, 239, 0.25);
+        }
+
+        .op-scroll-nav.is-light .op-scroll-nav__item.is-active {
+            background: rgba(250, 255, 239, 0.7);
+        }
+
+        .op-scroll-nav.is-light .op-scroll-nav__item.is-active::after {
+            background: var(--color-cream);
+        }
+
+        /* ============================================
+           PAGE LOADER
+           ============================================ */
+        .op-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--color-dark-teal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .op-loader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Logo mark wrapper */
+        .op-loader__mark {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .op-loader__img {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            animation: loaderPulse 2.4s ease-in-out infinite;
+        }
+
+        /* Rotating tech ring */
+        .op-loader__ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(250, 255, 239, 0.12);
+            animation: loaderRingSpin 3s linear infinite;
+        }
+
+        .op-loader__ring::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            border-top-color: rgba(250, 255, 239, 0.6);
+            border-right-color: rgba(250, 255, 239, 0.2);
+        }
+
+        /* Second ring — counter-rotating, slightly larger */
+        .op-loader__ring2 {
+            position: absolute;
+            inset: -14px;
+            border-radius: 50%;
+            border: 1px solid rgba(250, 255, 239, 0.06);
+            animation: loaderRingSpin2 5s linear infinite;
+        }
+
+        .op-loader__ring2::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            border-bottom-color: rgba(169, 184, 255, 0.5);
+            border-left-color: rgba(169, 184, 255, 0.15);
+        }
+
+        /* Scan line that sweeps across the logo */
+        .op-loader__scan {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(250, 255, 239, 0.0) 20%,
+                rgba(250, 255, 239, 0.7) 50%,
+                rgba(250, 255, 239, 0.0) 80%,
+                transparent 100%);
+            animation: loaderScan 2s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        /* Corner tick marks */
+        .op-loader__corner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.35;
+        }
+        .op-loader__corner--tl { top: 0; left: 0; border-top: 1px solid var(--color-cream); border-left: 1px solid var(--color-cream); }
+        .op-loader__corner--tr { top: 0; right: 0; border-top: 1px solid var(--color-cream); border-right: 1px solid var(--color-cream); }
+        .op-loader__corner--bl { bottom: 0; left: 0; border-bottom: 1px solid var(--color-cream); border-left: 1px solid var(--color-cream); }
+        .op-loader__corner--br { bottom: 0; right: 0; border-bottom: 1px solid var(--color-cream); border-right: 1px solid var(--color-cream); }
+
+        /* Wordmark below */
+        .op-loader__wordmark {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            font-weight: 300;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.4);
+            margin-top: 28px;
+            animation: loaderFadeText 2.4s ease-in-out infinite;
+        }
+
+        /* Progress bar */
+        .op-loader__bar-wrap {
+            position: absolute;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 1px;
+            background: rgba(250, 255, 239, 0.1);
+        }
+
+        .op-loader__bar {
+            height: 100%;
+            background: rgba(250, 255, 239, 0.5);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Status text */
+        .op-loader__status {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.25);
+            white-space: nowrap;
+        }
+
+        /* Animations */
+        @keyframes loaderRingSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        @keyframes loaderRingSpin2 {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(-360deg); }
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.8; transform: scale(0.97); }
+        }
+
+        @keyframes loaderScan {
+            0%   { top: 0%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        @keyframes loaderFadeText {
+            0%, 100% { opacity: 0.4; }
+            50%       { opacity: 0.7; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .op-loader__ring,
+            .op-loader__ring2,
+            .op-loader__img,
+            .op-loader__scan,
+            .op-loader__wordmark {
+                animation: none;
+            }
+        }
+
+        /* ============================================
+           FADE-IN ON SCROLL
+           ============================================ */
+        .op-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth);
+        }
+
+        .op-fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           SVG DEFS (hidden)
+           ============================================ */
+        .op-svg-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .op-stats__inner {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .op-stats__divider { display: none; }
+            .op-stats__content-col { grid-template-columns: 1fr 1fr; }
+            .op-vaas__inner { grid-template-columns: 1fr; }
+            .op-services__display { grid-template-columns: 1fr 280px; gap: 0 48px; }
+            .op-services__icon-ring { width: 200px; height: 200px; }
+            .op-services__icon { width: 72px; height: 72px; }
+        }
+
+        @media (max-width: 968px) {
+            .op-header { padding: 16px 24px; }
+            .op-header.is-scrolled { padding: 12px 24px; }
+            .op-header__nav { display: none; }
+            .op-header__hamburger { display: flex; }
+
+            .op-hero__inner { grid-template-columns: 1fr; padding: 0 24px; }
+            .op-hero__visual {
+                position: relative;
+                right: 0;
+                width: 100%;
+                height: 340px;
+                transform: none;
+                margin-top: 40px;
+                top: 0;
+            }
+
+            .op-stats__inner { padding: 0 24px; }
+            .op-stats__content-col { grid-template-columns: 1fr; }
+
+            .op-vaas__inner { padding: 0 24px; gap: 40px; }
+            .op-vaas__lower-grid { grid-template-columns: 1fr; }
+            .op-vaas__gauge-col { border-right: none; border-bottom: 1px solid rgba(15, 122, 153, 0.35); }
+            .op-vaas__metrics-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .op-services__inner { padding: 0 24px; }
+            .op-services__display { grid-template-columns: 1fr !important; gap: 0; }
+            .op-services__icon-wrap { display: none; }
+            .op-services__ghost-number { font-size: 140px; left: 20px; }
+            .op-services__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+            .op-approach__inner { grid-template-columns: 1fr; padding: 0 24px; }
+            .op-approach__image-wrapper { order: -1; }
+            .op-approach__image-wrapper img { height: 360px; }
+
+            .op-cta__inner { grid-template-columns: 1fr; padding: 0 24px; }
+            .op-cta__graphics { display: none; }
+
+            .op-footer__inner { padding: 0 24px; }
+            .op-footer__top { grid-template-columns: 1fr; gap: 40px; }
+            .op-footer__cta-box { grid-template-columns: 1fr; }
+
+            .op-scroll-nav { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .op-hero__headline { font-size: 36px; }
+            .op-hero__text { font-size: 17px; }
+            .op-stats__number { font-size: 64px; }
+            .op-vaas__chart-value h3 { font-size: 32px; }
+            .op-vaas__metric-value { font-size: 22px; }
+            .op-vaas__metrics-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ============================================
+           CONTACT MODAL
+           ============================================ */
+        .op-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s var(--ease-smooth), visibility 0.4s;
+        }
+
+        .op-modal-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .op-modal-overlay__bg {
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 44, 45, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .op-modal {
+            position: relative;
+            width: 94%;
+            max-width: 920px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: linear-gradient(145deg,
+                var(--color-blue-1) 0%,
+                var(--color-purple-2) 20%,
+                var(--color-purple-1) 40%,
+                var(--color-mauve-2) 60%,
+                var(--color-mauve-1) 80%,
+                var(--color-salmon-2) 100%);
+            background-size: 200% 200%;
+            animation: modalGradientShift 12s ease infinite;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.5s var(--ease-out);
+            box-shadow: 0 40px 80px rgba(3, 44, 45, 0.35), 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .op-modal-overlay.is-open .op-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        @keyframes modalGradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .op-modal__close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-dark-teal);
+            z-index: 10;
+            transition: transform 0.3s ease, opacity 0.2s ease;
+        }
+
+        .op-modal__close:hover {
+            transform: rotate(90deg);
+            opacity: 0.7;
+        }
+
+        .op-modal__close svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .op-modal__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 560px;
+        }
+
+        .op-modal__left {
+            padding: 56px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(3, 44, 45, 0.06);
+        }
+
+        .op-modal__label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--color-dark-teal);
+            opacity: 0.7;
+            margin-bottom: 16px;
+        }
+
+        .op-modal__headline {
+            font-size: clamp(28px, 3.5vw, 42px);
+            font-weight: 300;
+            line-height: 1.15;
+            color: var(--color-dark-teal);
+            margin-bottom: 20px;
+        }
+
+        .op-modal__divider {
+            width: 60px;
+            height: 1px;
+            background: rgba(3, 44, 45, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .op-modal__desc {
+            font-size: 16px;
+            line-height: 1.65;
+            color: rgba(3, 44, 45, 0.75);
+            margin-bottom: 32px;
+        }
+
+        .op-modal__calendar-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+
+        .op-modal__calendar-link:hover {
+            background: rgba(3, 44, 45, 0.85);
+            transform: translateY(-1px);
+        }
+
+        .op-modal__calendar-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .op-modal__or {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(3, 44, 45, 0.4);
+        }
+
+        .op-modal__or::before,
+        .op-modal__or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(3, 44, 45, 0.15);
+        }
+
+        .op-modal__right {
+            padding: 56px 48px;
+        }
+
+        .op-modal__form-title {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--color-dark-teal);
+            margin-bottom: 28px;
+        }
+
+        .op-modal__field {
+            margin-bottom: 18px;
+        }
+
+        .op-modal__field label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(3, 44, 45, 0.6);
+            margin-bottom: 6px;
+        }
+
+        .op-modal__field input,
+        .op-modal__field select,
+        .op-modal__field textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(3, 44, 45, 0.18);
+            background: rgba(255, 255, 255, 0.45);
+            font-family: var(--font-sans);
+            font-size: 15px;
+            color: var(--color-dark-teal);
+            transition: border-color 0.3s ease, background 0.3s ease;
+            outline: none;
+        }
+
+        .op-modal__field input:focus,
+        .op-modal__field select:focus,
+        .op-modal__field textarea:focus {
+            border-color: var(--color-dark-teal);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .op-modal__field input::placeholder,
+        .op-modal__field textarea::placeholder {
+            color: rgba(3, 44, 45, 0.35);
+        }
+
+        .op-modal__field textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .op-modal__row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .op-modal__submit {
+            width: 100%;
+            padding: 16px 32px;
+            border: 1px solid var(--color-dark-teal);
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .op-modal__submit:hover {
+            background: transparent;
+            color: var(--color-dark-teal);
+        }
+
+        .op-modal__submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .op-modal__submit:disabled:hover {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+        }
+
+        .op-modal__success {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .op-modal__success.is-visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .op-modal__success-icon {
+            width: 64px;
+            height: 64px;
+            border: 2px solid var(--color-dark-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            animation: successPop 0.5s var(--ease-out);
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .op-modal__success-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--color-dark-teal);
+        }
+
+        .op-modal__success h3 {
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--color-dark-teal);
+            margin-bottom: 12px;
+        }
+
+        .op-modal__success p {
+            font-size: 16px;
+            color: rgba(3, 44, 45, 0.7);
+            max-width: 380px;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           MOBILE MENU
+           ============================================ */
+        .op-mobile-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            background: var(--color-cream);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s var(--ease-smooth), visibility 0.4s;
+        }
+
+        .op-mobile-menu.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .op-mobile-menu__close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-dark-teal);
+        }
+
+        .op-mobile-menu__close svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .op-mobile-menu__link {
+            font-size: 32px;
+            font-weight: 300;
+            color: var(--color-dark-teal);
+            padding: 16px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .op-mobile-menu.is-open .op-mobile-menu__link {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .op-mobile-menu.is-open .op-mobile-menu__link:nth-child(2) { transition-delay: 0.05s; }
+        .op-mobile-menu.is-open .op-mobile-menu__link:nth-child(3) { transition-delay: 0.1s; }
+        .op-mobile-menu.is-open .op-mobile-menu__link:nth-child(4) { transition-delay: 0.15s; }
+        .op-mobile-menu.is-open .op-mobile-menu__link:nth-child(5) { transition-delay: 0.2s; }
+        .op-mobile-menu.is-open .op-mobile-menu__link:nth-child(6) { transition-delay: 0.25s; }
+
+        .op-mobile-menu__cta {
+            margin-top: 32px;
+            padding: 16px 40px;
+            border: 1px solid var(--color-dark-teal);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-dark-teal);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            transition-delay: 0.3s;
+        }
+
+        .op-mobile-menu.is-open .op-mobile-menu__cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .op-mobile-menu__cta:hover {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+        }
+
+        /* Modal responsive */
+        @media (max-width: 768px) {
+            .op-modal__inner {
+                grid-template-columns: 1fr;
+            }
+            .op-modal__left {
+                padding: 40px 28px 28px;
+            }
+            .op-modal__right {
+                padding: 28px 28px 40px;
+            }
+            .op-modal__row {
+                grid-template-columns: 1fr;
+            }
+            .op-modal {
+                max-height: 96vh;
+                width: 96%;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .op-hero__headline, .op-hero__text, .op-hero__button { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Loader -->
+    <div class="op-loader" id="pageLoader" role="status" aria-label="Loading Paioneers">
+        <div class="op-loader__mark">
+            <div class="op-loader__ring2"></div>
+            <div class="op-loader__ring"></div>
+            <div class="op-loader__scan"></div>
+            <div class="op-loader__corner op-loader__corner--tl"></div>
+            <div class="op-loader__corner op-loader__corner--tr"></div>
+            <div class="op-loader__corner op-loader__corner--bl"></div>
+            <div class="op-loader__corner op-loader__corner--br"></div>
+            <img src="logoforge-result (2).png" alt="" class="op-loader__img" aria-hidden="true">
+        </div>
+        <div class="op-loader__wordmark">Paioneers</div>
+        <div class="op-loader__status" id="loaderStatus">Initialising</div>
+        <div class="op-loader__bar-wrap">
+            <div class="op-loader__bar" id="loaderBar"></div>
+        </div>
+    </div>
+
+
+    <!-- Hidden SVG Gradient Definitions -->
+    <svg class="op-svg-defs" aria-hidden="true">
+        <defs>
+            <!-- Stats bar gradients -->
+            <linearGradient id="statsGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0F7A99" stop-opacity="0.9"/>
+                <stop offset="50%" stop-color="#A9B8FF" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#F37C38" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="statsGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#1a5f75" stop-opacity="0.85"/>
+                <stop offset="40%" stop-color="#8fa8ff" stop-opacity="0.75"/>
+                <stop offset="100%" stop-color="#e06b2a" stop-opacity="0.85"/>
+            </linearGradient>
+            <linearGradient id="statsGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0F7A99" stop-opacity="0.8"/>
+                <stop offset="60%" stop-color="#7B91FF" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#F37C38" stop-opacity="0.8"/>
+            </linearGradient>
+            <!-- Comparison section gradient (kept for potential reuse) -->
+            <linearGradient id="vaasAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0F7A99" stop-opacity="0.8"/>
+                <stop offset="50%" stop-color="#A9B8FF" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#F37C38" stop-opacity="0.9"/>
+            </linearGradient>
+            <!-- CTA arrow gradients -->
+            <linearGradient id="ctaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0F7A99"/>
+                <stop offset="50%" stop-color="#A9B8FF"/>
+                <stop offset="100%" stop-color="#F37C38"/>
+            </linearGradient>
+            <linearGradient id="ctaGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0F7A99"/>
+                <stop offset="60%" stop-color="#A9B8FF"/>
+                <stop offset="100%" stop-color="#F37C38"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Scroll Progress Nav -->
+    <nav class="op-scroll-nav" aria-label="Page sections">
+        <div class="op-scroll-nav__item is-active" data-section="hero"></div>
+        <div class="op-scroll-nav__item" data-section="stats"></div>
+        <div class="op-scroll-nav__item" data-section="vaas"></div>
+        <div class="op-scroll-nav__item" data-section="services"></div>
+        <div class="op-scroll-nav__item" data-section="approach"></div>
+        <div class="op-scroll-nav__item" data-section="cta"></div>
+    </nav>
+
+    <!-- Header -->
+    <header class="op-header" id="header">
+        <div class="op-header__inner">
+            <a href="#hero" class="op-header__logo">
+                <img src="logoforge-result.png" alt="" class="op-header__logo-img" aria-hidden="true">
+                Paioneers
+            </a>
+            <nav class="op-header__nav">
+                <a href="#approach" class="op-header__link">About</a>
+                <a href="#services" class="op-header__link">Services</a>
+                <a href="#stats" class="op-header__link">Results</a>
+                <a href="#cta" class="op-header__link">Contact</a>
+                <a href="#" class="op-header__cta" data-open-modal>Book a Workshop</a>
+            </nav>
+            <button class="op-header__hamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="op-hero" id="hero">
+        <div class="op-hero__inner">
+            <div class="op-hero__text-col">
+                <h1 class="op-hero__headline">Your Sales Team Spends More Time Researching Than Selling</h1>
+                <p class="op-hero__text">We build AI-powered revenue systems that automate prospect research, personalise outreach at scale, and keep every deal moving — so your team focuses on selling.</p>
+                <a href="#" class="op-hero__button" data-open-modal>Book a Bottleneck Workshop</a>
+            </div>
+        </div>
+        <div class="op-hero__visual" aria-hidden="true">
+            <video class="op-hero__video" autoplay loop muted playsinline>
+                <source src="animation_header_slow.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <!-- By The Numbers -->
+    <section class="op-stats" id="stats">
+        <div class="op-stats__inner">
+            <div class="op-stats__graphic-col op-fade-in">
+                <div class="op-stats__label">By The Numbers</div>
+                <div class="op-stats__bars">
+                    <svg class="op-stats__bars-svg" viewBox="0 0 351 330" aria-hidden="true">
+                        <!-- 3D bars matching the original site's exact geometry -->
+                        <!-- Bar 1 (left, shortest) -->
+                        <path d="M102,126v162.4l-41.6,41.6H0V167.6L41.6,126H102Z" fill="url(#statsGrad1)"/>
+                        <rect x="0" y="167.6" width="60.4" height="162.4" fill="url(#statsGrad1)" opacity="0.7"/>
+                        <!-- Bar 2 (center, medium) -->
+                        <path d="M226.5,65.3v223.1l-41.6,41.6H124.5V106.9L166.1,65.3H226.5Z" fill="url(#statsGrad2)"/>
+                        <rect x="124.5" y="106.9" width="60.4" height="223.1" fill="url(#statsGrad2)" opacity="0.7"/>
+                        <!-- Bar 3 (right, tallest) -->
+                        <path d="M351,0v288.4l-41.6,41.6H249V41.6L290.6,0H351Z" fill="url(#statsGrad3)"/>
+                        <rect x="249" y="41.6" width="60.4" height="288.4" fill="url(#statsGrad3)" opacity="0.7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="op-stats__divider"></div>
+
+            <div class="op-stats__content-col op-fade-in">
+                <div>
+                    <ul class="op-stats__list">
+                        <li class="op-stats__list-item is-active" data-value="8 hrs" data-index="0">Saved Per Rep, Per Week</li>
+                        <li class="op-stats__list-item" data-value="1000+" data-index="1">Company Enrichment Data Points</li>
+                        <li class="op-stats__list-item" data-value="50+" data-index="2">Data Points Per Prospect</li>
+                        <li class="op-stats__list-item" data-value="4 wks" data-index="3">From Kickoff to System Live</li>
+                    </ul>
+                </div>
+                <div class="op-stats__display">
+                    <div class="op-stats__number-wrap">
+                        <div class="op-stats__number" id="statsNumber">8 hrs</div>
+                    </div>
+                    <a href="#" class="op-stats__button" data-open-modal><span>Let's Talk</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="op-vaas" id="vaas">
+        <div class="op-vaas__inner">
+            <div class="op-fade-in">
+                <h2 class="op-vaas__headline">What Most Sales Teams Look Like vs. What's Possible</h2>
+                <p class="op-vaas__text">The left column isn't a bad company. It's a normal company. The right column is what happens when you treat sales like infrastructure.</p>
+                <a href="#" class="op-vaas__button" data-open-modal><span>Workshop</span></a>
+            </div>
+
+            <div class="op-vaas__comparison op-fade-in">
+
+                <!-- Left column: status quo -->
+                <div class="op-vaas__col op-vaas__col--them">
+                    <div class="op-vaas__col-header">
+                        <span class="op-vaas__col-header-dot"></span>
+                        What most companies have
+                    </div>
+                    <div class="op-vaas__col-items">
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Reps manually researching prospects
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Generic email templates sent to thousands
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            CRM data that's 3 weeks old
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Stalled deals that nobody notices
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Follow-ups written from scratch
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            Forecasts based on gut feeling
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            New reps take 3 months to ramp
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right column: Paioneers -->
+                <div class="op-vaas__col op-vaas__col--us">
+                    <div class="op-vaas__col-header">
+                        <span class="op-vaas__col-header-dot"></span>
+                        What Paioneers builds
+                    </div>
+                    <div class="op-vaas__col-items">
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            AI-enriched dossiers before every touchpoint
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Hyper-personalised outreach, 50+ data points per prospect
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            CRM that updates itself after every interaction
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Daily AI pipeline scan with next-action recommendations
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            AI-drafted follow-ups based on actual call transcripts
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Forecasts based on live, structured, complete data
+                        </div>
+                        <div class="op-vaas__col-item">
+                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Day-one reps perform like veterans with AI prep
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="op-services" id="services">
+        <!-- Ghost number behind everything -->
+        <div class="op-services__ghost-number" id="servicesGhost" aria-hidden="true">01</div>
+
+        <div class="op-services__inner">
+            <!-- Top bar -->
+            <div class="op-services__header">
+                <div class="op-services__label">Services</div>
+                <ul class="op-services__nav" id="servicesNav">
+                    <li class="is-active" data-index="0">Bottleneck Workshop</li>
+                    <li data-index="1">Pipeline Accelerator</li>
+                    <li data-index="2">Revenue Conversion Engine</li>
+                </ul>
+            </div>
+
+            <!-- Main stage -->
+            <div class="op-services__display" id="servicesDisplay">
+                <!-- Left: text -->
+                <div class="op-services__content">
+                    <div class="op-services__index" id="serviceIndex">01 / 03</div>
+                    <h2 id="serviceTitle">Bottleneck Workshop</h2>
+                    <div class="op-services__divider"></div>
+                    <p id="serviceText">A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don't walk out with at least 3 actionable insights, it's free.</p>
+                    <a href="#" class="op-gradient-cta op-services__cta" id="serviceCta" data-open-modal data-service="Bottleneck Workshop"><span>Let's Talk</span></a>
+                </div>
+
+                <!-- Right: floating icon in ring -->
+                <div class="op-services__icon-wrap">
+                    <!-- Bottleneck video — visible only on Bottleneck Workshop slide (index 0) -->
+                    <div class="op-services__video-wrap" id="serviceVideoWrap0">
+                        <div class="op-services__video-frame">
+                            <video class="op-services__video" autoplay loop muted playsinline>
+                                <source src="bottleneck_workshp.mp4" type="video/mp4">
+                            </video>
+                            <div class="op-services__video-glow"></div>
+                        </div>
+                    </div>
+                    <!-- Clay video — visible only on Pipeline Accelerator slide (index 1) -->
+                    <div class="op-services__video-wrap" id="serviceVideoWrap">
+                        <div class="op-services__video-frame">
+                            <video class="op-services__video" autoplay loop muted playsinline>
+                                <source src="Clay - Clay Web - Simple animation 3 - R1.mp4" type="video/mp4">
+                            </video>
+                            <div class="op-services__video-glow"></div>
+                        </div>
+                    </div>
+                    <!-- Revenue Engine video — visible only on Revenue Conversion Engine slide (index 2) -->
+                    <div class="op-services__video-wrap" id="serviceVideoWrap2">
+                        <div class="op-services__video-frame">
+                            <video class="op-services__video" autoplay loop muted playsinline>
+                                <source src="revenue_engine.mp4" type="video/mp4">
+                            </video>
+                            <div class="op-services__video-glow"></div>
+                        </div>
+                    </div>
+                    <div class="op-services__icon-ring">
+                        <svg class="op-services__icon" id="serviceIcon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                            <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="40" cy="40" r="12" fill="currentColor" opacity="0.2"/>
+                            <path d="M40 12v16M40 52v16M12 40h16M52 40h16" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="40" cy="40" r="6" fill="currentColor"/>
+                            <path d="M26 26l8 8M46 46l8 8M54 26l-8 8M34 46l-8 8" stroke="currentColor" stroke-width="1"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="op-services__bottom">
+                <div class="op-services__loop">Both engines connect through <strong>The Loop</strong> — insights from every closed and lost deal feed back into targeting and messaging. The system gets smarter every cycle.</div>
+                <div class="op-services__counter" id="servicesCounter">01 / 03</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Approach -->
+    <section class="op-approach" id="approach">
+        <div class="op-approach__inner">
+            <div class="op-fade-in">
+                <h2 class="op-approach__headline">Technical Background. Commercial Execution.</h2>
+                <p class="op-approach__subheadline">Paioneers was built by sales reps and GTM engineers who lived the problem before solving it.</p>
+                <p class="op-approach__text">We've carried quota at Salesforce and LinkedIn, built commercial engines at agencies and SMBs, and felt the pain of manual research, inconsistent data, and tools that don't talk to each other. We stopped solving the same problems manually and started building systems.</p>
+                <div class="op-approach__buttons">
+                    <a href="#" class="op-gradient-cta op-gradient-cta--dark" data-open-modal><span>Workshop</span></a>
+                    <a href="#services" class="op-approach__button">Our Services</a>
+                </div>
+            </div>
+            <div class="op-approach__image-wrapper op-fade-in">
+                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=1000&fit=crop" alt="Paioneers team collaborating on sales automation" loading="lazy" width="800" height="1000">
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="op-cta" id="cta">
+        <div class="op-cta__inner">
+            <div class="op-fade-in">
+                <div class="op-cta__sep"></div>
+                <h2 class="op-cta__headline">Let's Find Where Your Pipeline Leaks</h2>
+                <p class="op-cta__text">The Bottleneck Workshop maps your sales process in half a day and gives you a prioritised roadmap within a week. If you don't walk away with at least 3 actionable insights, it's free.</p>
+                <a href="#" class="op-gradient-cta" data-open-modal><span>Workshop</span></a>
+            </div>
+            <div class="op-cta__graphics op-fade-in" aria-hidden="true">
+                <svg viewBox="0 0 888 624">
+                    <!-- Large arrow shape -->
+                    <path d="M758.6,0H624.1L506.4,117.7H641v134.6l117.6-117.7V0Z" fill="#032C2D"/>
+                    <path d="M641,252.3L269,624H0L506.4,117.7H641v134.6Z" fill="url(#ctaGrad1)"/>
+                    <!-- Medium arrow shape -->
+                    <path d="M848.2,277.1H763.4l-74.2,74.2h84.8v84.8l74.2-74.2V277.1Z" fill="#032C2D"/>
+                    <path d="M416.6,623.8l272.6-272.6h84.8v84.8L586.3,623.8H416.6Z" fill="url(#ctaGrad2)"/>
+                    <!-- Small arrow shape -->
+                    <path d="M887.8,482.6H851.3l-31.9,32h36.5v36.5l31.9-31.9V482.6Z" fill="#032C2D"/>
+                    <path d="M710,623.9l109.3-109.3h36.5v36.5L783,623.9H710Z" fill="url(#ctaGrad1)"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Menu -->
+    <div class="op-mobile-menu" id="mobileMenu">
+        <button class="op-mobile-menu__close" id="mobileMenuClose" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <a href="#approach" class="op-mobile-menu__link" data-mobile-link>About</a>
+        <a href="#services" class="op-mobile-menu__link" data-mobile-link>Services</a>
+        <a href="#stats" class="op-mobile-menu__link" data-mobile-link>Results</a>
+        <a href="#cta" class="op-mobile-menu__link" data-mobile-link>Contact</a>
+        <button class="op-mobile-menu__cta" data-open-modal>Book a Workshop</button>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="op-modal-overlay" id="contactModal">
+        <div class="op-modal-overlay__bg" data-close-modal></div>
+        <div class="op-modal">
+            <button class="op-modal__close" data-close-modal aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+
+            <div class="op-modal__inner" id="modalFormView">
+                <div class="op-modal__left">
+                    <div class="op-modal__label">Let's Connect</div>
+                    <h2 class="op-modal__headline">Find Out Where Your Pipeline Leaks</h2>
+                    <div class="op-modal__divider"></div>
+                    <p class="op-modal__desc">Book a Bottleneck Workshop directly, or fill out the form and we'll get back to you within 24 hours.</p>
+
+                    <a href="https://calendar.app.google/PPh6G6zMRPaQTRVW9" target="_blank" rel="noopener" class="op-modal__calendar-link" id="calendarLink">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                            <path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+                        </svg>
+                        Book on Calendar
+                    </a>
+
+                    <div class="op-modal__or">or fill out the form</div>
+                </div>
+
+                <div class="op-modal__right">
+                    <div class="op-modal__form-title">Send us your details</div>
+                    <form id="contactForm" novalidate>
+                        <div class="op-modal__row">
+                            <div class="op-modal__field">
+                                <label for="cf-first">First Name</label>
+                                <input type="text" id="cf-first" name="first_name" placeholder="John" required>
+                            </div>
+                            <div class="op-modal__field">
+                                <label for="cf-last">Last Name</label>
+                                <input type="text" id="cf-last" name="last_name" placeholder="Doe" required>
+                            </div>
+                        </div>
+                        <div class="op-modal__field">
+                            <label for="cf-email">Email</label>
+                            <input type="email" id="cf-email" name="email" placeholder="john@company.com" required>
+                        </div>
+                        <div class="op-modal__row">
+                            <div class="op-modal__field">
+                                <label for="cf-phone">Phone</label>
+                                <input type="tel" id="cf-phone" name="phone" placeholder="+1 (555) 000-0000">
+                            </div>
+                            <div class="op-modal__field">
+                                <label for="cf-company">Company</label>
+                                <input type="text" id="cf-company" name="company" placeholder="Your Company">
+                            </div>
+                        </div>
+                        <div class="op-modal__field">
+                            <label for="cf-service">Service Interest</label>
+                            <select id="cf-service" name="service">
+                                <option value="">Select a service...</option>
+                                <option value="Bottleneck Workshop">Bottleneck Workshop</option>
+                                <option value="Pipeline Accelerator">Pipeline Accelerator</option>
+                                <option value="Revenue Conversion Engine">Revenue Conversion Engine</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="op-modal__field">
+                            <label for="cf-message">Tell us about your project</label>
+                            <textarea id="cf-message" name="message" placeholder="Tell us about your current sales process..." rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="op-modal__submit" id="contactSubmit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="op-modal__success" id="modalSuccess">
+                <div class="op-modal__success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3>Message Sent</h3>
+                <p>Thank you for reaching out. We'll review your details and get back to you within 24 hours.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="op-footer">
+        <div class="op-footer__inner">
+            <div class="op-footer__top">
+                <div>
+                    <div class="op-footer__brand-name">
+                        <img src="logoforge-result (2).png" alt="" class="op-header__logo-img" aria-hidden="true">
+                        Paioneers
+                    </div>
+                    <address class="op-footer__address">
+                        Meander 877<br>
+                        1181WN Amstelveen, Netherlands
+                    </address>
+                    <a href="tel:+31646492246" class="op-footer__contact-link">+31 (0) 646492246</a>
+                    <a href="mailto:info@paioneers.nl" class="op-footer__contact-link">info@paioneers.nl</a>
+                </div>
+                <div>
+                    <div class="op-footer__cta-box">
+                        <div>
+                            <div class="op-footer__cta-label">Certified</div>
+                            <p class="op-footer__cta-text">Clay Certified Expert</p>
+                        </div>
+                        <div>
+                            <div class="op-footer__cta-label">Experience</div>
+                            <p class="op-footer__cta-text">Salesforce · LinkedIn · Juniper</p>
+                        </div>
+                    </div>
+                    <a href="#" class="op-footer__cta-button" data-open-modal>Book a Workshop</a>
+                </div>
+            </div>
+            <div class="op-footer__bottom">
+                <span>&copy; 2026 Paioneers BV. All Rights Reserved</span>
+                <div class="op-footer__social">
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:info@paioneers.nl">Email</a>
+                    <a href="#">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ============================================
+           PAGE LOADER
+           ============================================ */
+        (function() {
+            var loader   = document.getElementById('pageLoader');
+            var bar      = document.getElementById('loaderBar');
+            var status   = document.getElementById('loaderStatus');
+            var progress = 0;
+
+            var phases = [
+                { label: 'Initialising',       target: 18 },
+                { label: 'Loading assets',     target: 45 },
+                { label: 'Building systems',   target: 72 },
+                { label: 'Calibrating',        target: 91 },
+                { label: 'Ready',              target: 100 }
+            ];
+            var phaseIdx = 0;
+
+            function tick() {
+                if (phaseIdx >= phases.length) return;
+                var phase = phases[phaseIdx];
+
+                if (progress < phase.target) {
+                    progress += Math.random() * 3.5 + 0.8;
+                    if (progress > phase.target) progress = phase.target;
+                    bar.style.width = progress + '%';
+                    if (status) status.textContent = phase.label;
+                } else {
+                    phaseIdx++;
+                }
+
+                if (progress < 100) {
+                    setTimeout(tick, 28 + Math.random() * 40);
+                }
+            }
+
+            tick();
+
+            function dismiss() {
+                // Ensure bar is full before hiding
+                bar.style.width = '100%';
+                if (status) status.textContent = 'Ready';
+                setTimeout(function() {
+                    loader.classList.add('is-hidden');
+                }, 300);
+            }
+
+            if (document.readyState === 'complete') {
+                // Already loaded (cached)
+                setTimeout(dismiss, 600);
+            } else {
+                window.addEventListener('load', function() {
+                    setTimeout(dismiss, 400);
+                });
+                // Safety net: dismiss after 4s regardless
+                setTimeout(dismiss, 4000);
+            }
+        })();
+
+        /* ============================================
+           SMART HEADER - hide on scroll down, show on scroll up
+           ============================================ */
+        (function() {
+            const header = document.getElementById('header');
+            let lastY = 0;
+            let ticking = false;
+
+            function onScroll() {
+                const y = window.pageYOffset;
+
+                // Scrolled state
+                header.classList.toggle('is-scrolled', y > 60);
+
+                // Hide/show logic
+                if (y <= 0) {
+                    header.classList.remove('is-hidden');
+                } else if (y > lastY && y > 120) {
+                    header.classList.add('is-hidden');
+                } else if (y < lastY) {
+                    header.classList.remove('is-hidden');
+                }
+
+                lastY = y;
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(onScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+
+        /* ============================================
+           STATS - Interactive list
+           ============================================ */
+        (function() {
+            const items = document.querySelectorAll('.op-stats__list-item');
+            const numberEl = document.getElementById('statsNumber');
+            let animating = false;
+
+            function animateTo(newValue) {
+                if (animating || numberEl.textContent === newValue) return;
+                animating = true;
+
+                // Slide current number up and out
+                numberEl.classList.add('is-exiting');
+
+                setTimeout(function() {
+                    // Snap to bottom (entering from below), update text
+                    numberEl.classList.remove('is-exiting');
+                    numberEl.classList.add('is-entering');
+                    numberEl.textContent = newValue;
+
+                    // Force reflow so transition fires
+                    numberEl.getBoundingClientRect();
+
+                    // Slide up into place
+                    numberEl.classList.remove('is-entering');
+                    animating = false;
+                }, 300);
+            }
+
+            items.forEach(function(item) {
+                item.addEventListener('mouseenter', function() {
+                    items.forEach(function(i) { i.classList.remove('is-active'); });
+                    item.classList.add('is-active');
+                    animateTo(item.getAttribute('data-value'));
+                });
+            });
+        })();
+
+        /* ============================================
+           SERVICES - Horizontal scroll with smooth transitions
+           ============================================ */
+        (function() {
+            var serviceData = [
+                { title: 'Bottleneck Workshop', text: 'A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don\'t walk out with at least 3 actionable insights, it\'s free.', linkText: 'Let\'s Talk',
+                  icon: '<circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="40" r="12" fill="currentColor" opacity="0.3"/><path d="M40 12v16M40 52v16M12 40h16M52 40h16" stroke="currentColor" stroke-width="1.5"/><circle cx="40" cy="40" r="6" fill="currentColor"/><path d="M26 26l8 8M46 46l8 8M54 26l-8 8M34 46l-8 8" stroke="currentColor" stroke-width="1"/>' },
+                { title: 'Pipeline Accelerator', text: 'A fully automated outbound engine. AI-powered prospect research, hyper-personalised outreach across email and LinkedIn, and multi-channel sequencing — generating qualified meetings without your team writing a single email. 6 meetings guaranteed in 90 days.', linkText: 'Workshop',
+                  icon: '<path d="M12 60V20l56 20-56 20z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M20 52V28l36 12-36 12z" fill="currentColor" opacity="0.3"/><path d="M28 44V36l20 4-20 4z" fill="currentColor"/>' },
+                { title: 'Revenue Conversion Engine', text: 'AI infrastructure that prepares reps before every call, automates CRM updates and follow-ups after every interaction, and monitors your pipeline daily. No deal stalls without someone knowing about it. System live in 4 weeks.', linkText: 'Workshop',
+                  icon: '<circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" fill="none"/><path d="M28 28l24 0 0 24-24 0z" fill="currentColor" opacity="0.3" transform="rotate(45 40 40)"/><circle cx="40" cy="40" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="40" cy="40" r="4" fill="currentColor"/><path d="M40 16v8M40 56v8M16 40h8M56 40h8" stroke="currentColor" stroke-width="1.5"/>' }
+            ];
+
+            var navItems = document.querySelectorAll('#servicesNav li');
+            var counter = document.getElementById('servicesCounter');
+            var titleEl = document.getElementById('serviceTitle');
+            var indexEl = document.getElementById('serviceIndex');
+            var textEl = document.getElementById('serviceText');
+            var iconEl = document.getElementById('serviceIcon');
+            var ghostEl = document.getElementById('servicesGhost');
+            var servicesSection = document.querySelector('.op-services');
+            var display = document.getElementById('servicesDisplay');
+            var videoWrap0 = document.getElementById('serviceVideoWrap0');
+            var videoWrap = document.getElementById('serviceVideoWrap');
+            var videoWrap2 = document.getElementById('serviceVideoWrap2');
+            var iconWrap = document.querySelector('.op-services__icon-wrap');
+            var bottleneckVideo = videoWrap0 ? videoWrap0.querySelector('video') : null;
+            var clayVideo = videoWrap ? videoWrap.querySelector('video') : null;
+            var revenueVideo = videoWrap2 ? videoWrap2.querySelector('video') : null;
+            var currentIdx = 0;
+            var isTransitioning = false;
+            var total = serviceData.length;
+
+            // Initialise: show bottleneck video on load (index 0)
+            if (videoWrap0) videoWrap0.classList.add('is-visible');
+            if (iconWrap) iconWrap.classList.add('show-video');
+
+            // Background positions: tab 0 (blue end) → tab 2 (salmon end)
+            var bgPositions = [
+                '100% 100%',   // Bottleneck Workshop    — blue (#aeb2ec)
+                '50% 50%',     // Pipeline Accelerator   — purple (#bba2c0)
+                '0% 0%'        // Revenue Conversion     — salmon (#d3866c)
+            ];
+
+            function padded(n) { return (n < 10 ? '0' : '') + n; }
+
+            function goToSlide(idx) {
+                if (idx === currentIdx || isTransitioning || idx < 0 || idx >= total) return;
+                isTransitioning = true;
+
+                // Start transition out
+                display.classList.add('is-transitioning');
+                servicesSection.style.backgroundPosition = bgPositions[idx];
+
+                // Update nav
+                navItems.forEach(function(n) { n.classList.remove('is-active'); });
+                navItems[idx].classList.add('is-active');
+
+                // Fade ghost number
+                if (ghostEl) ghostEl.style.opacity = '0';
+
+                setTimeout(function() {
+                    var num = padded(idx + 1);
+                    var label = num + ' / ' + padded(total);
+
+                    // Swap content
+                    if (counter) counter.textContent = label;
+                    if (indexEl) indexEl.textContent = label;
+                    if (ghostEl) { ghostEl.textContent = num; ghostEl.style.opacity = ''; }
+                    titleEl.textContent = serviceData[idx].title;
+                    textEl.textContent = serviceData[idx].text;
+                    iconEl.innerHTML = serviceData[idx].icon;
+
+                    // Show correct video per slide, hide otherwise
+                    if (videoWrap0) videoWrap0.classList.toggle('is-visible', idx === 0);
+                    if (videoWrap) videoWrap.classList.toggle('is-visible', idx === 1);
+                    if (videoWrap2) videoWrap2.classList.toggle('is-visible', idx === 2);
+                    if (iconWrap) iconWrap.classList.toggle('show-video', true);
+
+                    if (idx === 0) {
+                        if (bottleneckVideo) bottleneckVideo.play();
+                        if (clayVideo) clayVideo.pause();
+                        if (revenueVideo) revenueVideo.pause();
+                    } else if (idx === 1) {
+                        if (clayVideo) clayVideo.play();
+                        if (bottleneckVideo) bottleneckVideo.pause();
+                        if (revenueVideo) revenueVideo.pause();
+                    } else if (idx === 2) {
+                        if (revenueVideo) revenueVideo.play();
+                        if (bottleneckVideo) bottleneckVideo.pause();
+                        if (clayVideo) clayVideo.pause();
+                    }
+
+                    // Update CTA button
+                    var serviceCta = document.getElementById('serviceCta');
+                    if (serviceCta) {
+                        serviceCta.setAttribute('data-service', serviceData[idx].title);
+                        serviceCta.querySelector('span').textContent = serviceData[idx].linkText;
+                    }
+
+                    // Transition in
+                    display.classList.remove('is-transitioning');
+                    currentIdx = idx;
+
+                    setTimeout(function() {
+                        isTransitioning = false;
+                    }, 400);
+                }, 300);
+            }
+
+            // Nav click
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    goToSlide(parseInt(item.getAttribute('data-index')));
+                });
+            });
+
+            // Horizontal scroll / swipe detection on services section
+            var touchStartX = 0;
+            var touchStartY = 0;
+            var wheelAccum = 0;
+            var wheelTimeout;
+
+            var isLocked = false;
+            var lockTimeout;
+
+            servicesSection.addEventListener('wheel', function(e) {
+                var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+
+                // If we're locked mid-navigation, just prevent and wait
+                if (isLocked) {
+                    e.preventDefault();
+                    return;
+                }
+
+                wheelAccum += delta;
+                clearTimeout(wheelTimeout);
+                wheelTimeout = setTimeout(function() { wheelAccum = 0; }, 200);
+
+                var threshold = 80;
+
+                if (wheelAccum > threshold && currentIdx < serviceData.length - 1) {
+                    // Navigate forward — lock briefly so page doesn't also scroll
+                    e.preventDefault();
+                    goToSlide(currentIdx + 1);
+                    wheelAccum = 0;
+                    isLocked = true;
+                    clearTimeout(lockTimeout);
+                    lockTimeout = setTimeout(function() { isLocked = false; }, 700);
+                } else if (wheelAccum < -threshold && currentIdx > 0) {
+                    // Navigate backward
+                    e.preventDefault();
+                    goToSlide(currentIdx - 1);
+                    wheelAccum = 0;
+                    isLocked = true;
+                    clearTimeout(lockTimeout);
+                    lockTimeout = setTimeout(function() { isLocked = false; }, 700);
+                }
+                // At the edges (first or last slide) — do NOT prevent; let page scroll naturally
+            }, { passive: false });
+
+            // Touch swipe
+            servicesSection.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            servicesSection.addEventListener('touchend', function(e) {
+                var dx = e.changedTouches[0].clientX - touchStartX;
+                var dy = e.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                    if (dx < 0) goToSlide(currentIdx + 1);
+                    else goToSlide(currentIdx - 1);
+                }
+            }, { passive: true });
+
+            // Keyboard arrow support when section is in view
+            document.addEventListener('keydown', function(e) {
+                var rect = servicesSection.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5) {
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        goToSlide(currentIdx + 1);
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        goToSlide(currentIdx - 1);
+                    }
+                }
+            });
+        })();
+
+        /* ============================================
+           SCROLL PROGRESS NAV - with light/dark awareness
+           ============================================ */
+        (function() {
+            var scrollNav = document.querySelector('.op-scroll-nav');
+            var navItems = document.querySelectorAll('.op-scroll-nav__item');
+            var sections = ['hero', 'stats', 'vaas', 'services', 'approach', 'cta'];
+            // Sections with dark backgrounds need light nav dots
+            var darkSections = ['stats', 'vaas', 'cta'];
+
+            function updateProgress() {
+                var scrollPos = window.scrollY + window.innerHeight / 2;
+                var currentSection = 'hero';
+
+                sections.forEach(function(id, i) {
+                    var section = document.getElementById(id);
+                    if (section) {
+                        var top = section.offsetTop;
+                        var bottom = top + section.offsetHeight;
+                        if (scrollPos >= top && scrollPos < bottom) {
+                            navItems.forEach(function(n) { n.classList.remove('is-active'); });
+                            navItems[i].classList.add('is-active');
+                            currentSection = id;
+                        }
+                    }
+                });
+
+                // Toggle light class based on current section background
+                if (darkSections.indexOf(currentSection) !== -1) {
+                    scrollNav.classList.add('is-light');
+                } else {
+                    scrollNav.classList.remove('is-light');
+                }
+            }
+
+            window.addEventListener('scroll', updateProgress, { passive: true });
+            updateProgress(); // run once on load
+
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var id = item.getAttribute('data-section');
+                    var section = document.getElementById(id);
+                    if (section) section.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        })();
+
+        /* ============================================
+           FADE-IN ON SCROLL - Intersection Observer
+           ============================================ */
+        (function() {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+            document.querySelectorAll('.op-fade-in').forEach(function(el) {
+                observer.observe(el);
+            });
+        })();
+
+        /* ============================================
+           MOBILE MENU
+           ============================================ */
+        (function() {
+            var hamburger = document.querySelector('.op-header__hamburger');
+            var mobileMenu = document.getElementById('mobileMenu');
+            var closeBtn = document.getElementById('mobileMenuClose');
+            var mobileLinks = document.querySelectorAll('[data-mobile-link]');
+
+            function openMenu() {
+                mobileMenu.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                hamburger.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeMenu() {
+                mobileMenu.classList.remove('is-open');
+                document.body.style.overflow = '';
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+
+            hamburger.addEventListener('click', openMenu);
+            closeBtn.addEventListener('click', closeMenu);
+
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    closeMenu();
+                });
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('is-open')) {
+                    closeMenu();
+                }
+            });
+        })();
+
+        /* ============================================
+           CONTACT MODAL
+           ============================================ */
+        (function() {
+            var modal = document.getElementById('contactModal');
+            var formView = document.getElementById('modalFormView');
+            var successView = document.getElementById('modalSuccess');
+            var form = document.getElementById('contactForm');
+            var submitBtn = document.getElementById('contactSubmit');
+            var openBtns = document.querySelectorAll('[data-open-modal]');
+            var closeBtns = document.querySelectorAll('[data-close-modal]');
+
+            function openModal(e) {
+                if (e) e.preventDefault();
+                modal.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                // Reset to form view
+                formView.style.display = '';
+                successView.classList.remove('is-visible');
+                // Pre-select service if data-service attribute exists
+                var target = e ? (e.currentTarget || e.target) : null;
+                if (target && target.getAttribute('data-service')) {
+                    var serviceSelect = document.getElementById('cf-service');
+                    var serviceVal = target.getAttribute('data-service');
+                    for (var i = 0; i < serviceSelect.options.length; i++) {
+                        if (serviceSelect.options[i].value === serviceVal || serviceSelect.options[i].text === serviceVal) {
+                            serviceSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            function closeModal() {
+                modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+            }
+
+            openBtns.forEach(function(btn) {
+                btn.addEventListener('click', openModal);
+            });
+
+            closeBtns.forEach(function(btn) {
+                btn.addEventListener('click', closeModal);
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+                    closeModal();
+                }
+            });
+
+            // Form submission with EmailJS
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Basic validation
+                var firstName = document.getElementById('cf-first').value.trim();
+                var lastName = document.getElementById('cf-last').value.trim();
+                var email = document.getElementById('cf-email').value.trim();
+
+                if (!firstName || !lastName || !email) {
+                    // Highlight empty required fields
+                    [document.getElementById('cf-first'), document.getElementById('cf-last'), document.getElementById('cf-email')].forEach(function(field) {
+                        if (!field.value.trim()) {
+                            field.style.borderColor = 'var(--color-orange)';
+                            setTimeout(function() { field.style.borderColor = ''; }, 2000);
+                        }
+                    });
+                    return;
+                }
+
+                // Email format check
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    document.getElementById('cf-email').style.borderColor = 'var(--color-orange)';
+                    setTimeout(function() { document.getElementById('cf-email').style.borderColor = ''; }, 2000);
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+
+                // EmailJS send
+                // -----------------------------------------------------------
+                // SETUP: Go to https://www.emailjs.com and:
+                // 1. Create a free account
+                // 2. Add your Gmail as an email service (get your SERVICE_ID)
+                // 3. Create an email template with variables:
+                //    {{first_name}}, {{last_name}}, {{email}}, {{phone}},
+                //    {{company}}, {{service}}, {{message}}
+                //    Set the "To" email to: info@paioneers.nl
+                // 4. Get your TEMPLATE_ID and PUBLIC_KEY
+                // 5. Replace the placeholders below
+                // -----------------------------------------------------------
+
+                var templateParams = {
+                    first_name: firstName,
+                    last_name: lastName,
+                    email: email,
+                    phone: document.getElementById('cf-phone').value.trim(),
+                    company: document.getElementById('cf-company').value.trim(),
+                    service: document.getElementById('cf-service').value,
+                    message: document.getElementById('cf-message').value.trim(),
+                    to_email: 'info@paioneers.nl'
+                };
+
+                // Check if EmailJS is loaded and configured
+                if (typeof emailjs !== 'undefined') {
+                    emailjs.send(
+                        'YOUR_SERVICE_ID',    // Replace with your EmailJS service ID
+                        'YOUR_TEMPLATE_ID',   // Replace with your EmailJS template ID
+                        templateParams
+                    ).then(function() {
+                        showSuccess();
+                    }, function(error) {
+                        console.error('EmailJS error:', error);
+                        // Fallback to mailto
+                        fallbackMailto(templateParams);
+                        showSuccess();
+                    });
+                } else {
+                    // Fallback: mailto if EmailJS not loaded yet
+                    fallbackMailto(templateParams);
+                    showSuccess();
+                }
+            });
+
+            function fallbackMailto(params) {
+                var subject = encodeURIComponent('New Inquiry from ' + params.first_name + ' ' + params.last_name + ' - ' + (params.service || 'General'));
+                var body = encodeURIComponent(
+                    'Name: ' + params.first_name + ' ' + params.last_name + '\n' +
+                    'Email: ' + params.email + '\n' +
+                    'Phone: ' + (params.phone || 'N/A') + '\n' +
+                    'Company: ' + (params.company || 'N/A') + '\n' +
+                    'Service Interest: ' + (params.service || 'N/A') + '\n\n' +
+                    'Message:\n' + (params.message || 'No message provided')
+                );
+                window.open('mailto:info@paioneers.nl?subject=' + subject + '&body=' + body, '_blank');
+            }
+
+            function showSuccess() {
+                formView.style.display = 'none';
+                successView.classList.add('is-visible');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+                form.reset();
+            }
+        })();
+    </script>
+
+    <!-- EmailJS SDK - Replace YOUR_PUBLIC_KEY with your actual key from emailjs.com -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS with your public key
+        // Get this from: https://dashboard.emailjs.com/admin/account
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init('YOUR_PUBLIC_KEY');
+        }
+    </script>
+</body>
+</html>
