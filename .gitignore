@@ -1,8 +1,7 @@
 # macOS
 .DS_Store
 
-# Video files (too large for git)
-*.mp4
+# Video files (too large for git - excluding MP4s as asked)
 *.mov
 
 # Claude Code
