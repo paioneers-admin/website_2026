@@ -8,5 +8,10 @@
 # Claude Code
 .claude/
 
+# Environment variables
+.env
+.env.*
+
 # Node
 node_modules/
+.vercel

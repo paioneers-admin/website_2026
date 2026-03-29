@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paioneers - AI-Powered Revenue Systems for Sales Teams</title>
     <meta name="description" content="We build AI-powered revenue systems that automate prospect research, personalise outreach at scale, and keep every deal moving — so your team focuses on selling.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.jsdelivr.net https://cdn.prod.website-files.com; media-src 'self'; connect-src 'self' https://api.emailjs.com;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="Ressources/images/logo_white.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -597,8 +601,8 @@
             margin: 0 auto;
             padding: 0 60px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 80px;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 60px;
         }
 
         .op-vaas__headline {
@@ -684,252 +688,479 @@
             color: #000;
         }
 
-        /* Dashboard panel */
-        .op-vaas__dashboard {
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(15, 122, 153, 0.4);
-            padding: 36px;
-        }
-
-        .op-vaas__chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .op-vaas__chart-value {
-            display: flex;
-            align-items: baseline;
-            gap: 16px;
-        }
-
-        .op-vaas__chart-value h3 {
-            font-size: 44px;
-            font-weight: 300;
-        }
-
-        .op-vaas__chart-value span {
-            font-family: var(--font-mono);
-            font-size: 15px;
-            opacity: 0.6;
-        }
-
-        .op-vaas__chart-btn {
-            border: 1px solid var(--color-periwinkle);
-            color: var(--color-periwinkle);
-            padding: 8px 16px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            background: transparent;
-            border-radius: 4px;
-            transition: all 0.25s ease;
-        }
-
-        .op-vaas__chart-btn:hover {
-            background: rgba(169, 184, 255, 0.1);
-        }
-
-        .op-vaas__area-chart {
-            width: 100%;
-            height: 180px;
-            display: block;
-        }
-
-        .op-vaas__lower-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            border-top: 1px solid rgba(15, 122, 153, 0.35);
-        }
-
-        .op-vaas__gauge-col {
-            padding: 28px;
-            border-right: 1px solid rgba(15, 122, 153, 0.35);
-        }
-
-        .op-vaas__gauge-title {
-            font-size: 17px;
-            font-weight: 400;
-            margin-bottom: 16px;
-        }
-
-        .op-vaas__metrics-col {
-            padding: 28px;
-        }
-
-        .op-vaas__metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .op-vaas__metric-value {
-            font-size: 28px;
-            font-weight: 400;
-            margin-bottom: 4px;
-            line-height: 1;
-        }
-
-        .op-vaas__metric-label {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--color-periwinkle);
-            line-height: 1.4;
-        }
-
-        /* Comparison table */
+        /* Comparison Dashboard — Before/After Slider */
         .op-vaas__comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            border-radius: 2px;
+            position: relative;
             overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
+        /* --- Shared column base --- */
         .op-vaas__col {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
+        /* "Them" column sits as the base layer */
         .op-vaas__col--them {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(169, 184, 255, 0.1);
+            position: relative;
+            z-index: 1;
         }
 
+        /* "Us" column overlays on top, clipped by slider */
         .op-vaas__col--us {
-            background: rgba(15, 122, 153, 0.12);
-            border: 1px solid rgba(15, 122, 153, 0.45);
-            border-left: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            clip-path: inset(0 0 0 var(--slider-pos, 50%));
+        }
+
+        /* --- Slider handle --- */
+        .op-vaas__slider-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: var(--slider-pos, 50%);
+            transform: translateX(-50%);
+            z-index: 10;
+            width: 44px;
+            cursor: ew-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .op-vaas__slider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--color-teal), var(--color-periwinkle), var(--color-orange));
+            box-shadow: 0 0 12px rgba(15, 122, 153, 0.5);
+        }
+
+        .op-vaas__slider-knob {
             position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(3, 44, 45, 0.9);
+            border: 2px solid var(--color-periwinkle);
+            box-shadow: 0 0 20px rgba(15, 122, 153, 0.4), 0 2px 8px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            pointer-events: none;
+        }
+
+        .op-vaas__slider-handle:hover .op-vaas__slider-knob,
+        .op-vaas__slider-handle.is-dragging .op-vaas__slider-knob {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px rgba(15, 122, 153, 0.6), 0 2px 12px rgba(0,0,0,0.4);
+        }
+
+        .op-vaas__slider-arrow {
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--color-periwinkle);
+            border-bottom: 2px solid var(--color-periwinkle);
+        }
+
+        .op-vaas__slider-arrow--left {
+            transform: rotate(135deg);
+        }
+
+        .op-vaas__slider-arrow--right {
+            transform: rotate(-45deg);
+        }
+
+        /* Slider labels — overlay bar at top of comparison, always visible */
+        .op-vaas__slider-labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: linear-gradient(180deg, rgba(3, 44, 45, 0.92) 0%, rgba(3, 44, 45, 0) 100%);
+            pointer-events: none;
+        }
+
+        .op-vaas__slider-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(169, 184, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .op-vaas__slider-label--right {
+            text-align: right;
+        }
+
+        .op-vaas__slider-label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .op-vaas__slider-label-dot--before {
+            background: rgba(243, 124, 56, 0.6);
+        }
+
+        .op-vaas__slider-label-dot--after {
+            background: var(--color-teal);
+            box-shadow: 0 0 6px rgba(15, 122, 153, 0.6);
+        }
+
+        .op-vaas__col-header {
+            padding: 46px 28px 18px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .op-vaas__col-header-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* --- "Them" column (dim / problem state) --- */
+        .op-vaas__col--them {
+            background: rgba(3, 44, 45, 0.95);
+            border: 1px solid rgba(169, 184, 255, 0.08);
+        }
+
+        .op-vaas__col--them .op-vaas__col-header {
+            color: rgba(169, 184, 255, 0.35);
+            border-bottom: 1px solid rgba(169, 184, 255, 0.06);
+        }
+
+        .op-vaas__col--them .op-vaas__col-header-dot {
+            background: rgba(243, 124, 56, 0.45);
+            box-shadow: 0 0 6px rgba(243, 124, 56, 0.3);
+        }
+
+        /* Dim area chart */
+        .op-vaas__dim-chart {
+            padding: 24px 28px 0;
+            opacity: 0.45;
+        }
+
+        .op-vaas__dim-chart svg {
+            width: 100%;
+            height: 90px;
+            display: block;
+        }
+
+        /* Dim metrics row */
+        .op-vaas__dim-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            padding: 20px 28px 24px;
+            gap: 12px;
+        }
+
+        .op-vaas__dim-metric {
+            text-align: center;
+        }
+
+        .op-vaas__dim-metric-value {
+            font-size: 26px;
+            font-weight: 300;
+            color: rgba(250, 255, 239, 0.22);
+            line-height: 1;
+            margin-bottom: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .op-vaas__dim-metric-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(169, 184, 255, 0.22);
+            line-height: 1.35;
+        }
+
+        /* Dim items list */
+        .op-vaas__dim-items {
+            border-top: 1px solid rgba(169, 184, 255, 0.06);
+        }
+
+        .op-vaas__dim-item {
+            padding: 13px 28px;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: rgba(250, 255, 239, 0.3);
+            border-bottom: 1px solid rgba(169, 184, 255, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.25s ease;
+        }
+
+        .op-vaas__dim-item:last-child { border-bottom: none; }
+
+        .op-vaas__dim-item:hover { color: rgba(250, 255, 239, 0.5); }
+
+        .op-vaas__dim-item-icon {
+            flex-shrink: 0;
+            width: 14px;
+            height: 14px;
+            opacity: 0.35;
+        }
+
+        /* --- "Us" column (vibrant / solution state) --- */
+        .op-vaas__col--us {
+            background: rgba(3, 44, 45, 0.97);
+            border: 1px solid rgba(15, 122, 153, 0.5);
         }
 
         .op-vaas__col--us::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 2px;
-            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
-        }
-
-        .op-vaas__col-header {
-            padding: 20px 24px 18px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid rgba(169, 184, 255, 0.1);
-        }
-
-        .op-vaas__col--them .op-vaas__col-header {
-            color: rgba(169, 184, 255, 0.45);
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle), var(--color-orange));
         }
 
         .op-vaas__col--us .op-vaas__col-header {
             color: var(--color-periwinkle);
-            border-bottom-color: rgba(15, 122, 153, 0.35);
-        }
-
-        .op-vaas__col-header-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .op-vaas__col--them .op-vaas__col-header-dot {
-            background: rgba(169, 184, 255, 0.3);
+            border-bottom: 1px solid rgba(15, 122, 153, 0.3);
         }
 
         .op-vaas__col--us .op-vaas__col-header-dot {
             background: var(--color-teal);
-            box-shadow: 0 0 6px rgba(15, 122, 153, 0.8);
+            box-shadow: 0 0 8px rgba(15, 122, 153, 0.9);
+            animation: pulse-dot 2.5s ease-in-out infinite;
         }
 
-        .op-vaas__col-items {
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 8px rgba(15, 122, 153, 0.9); }
+            50% { box-shadow: 0 0 16px rgba(15, 122, 153, 1), 0 0 30px rgba(15, 122, 153, 0.3); }
+        }
+
+        /* Hero value strip */
+        .op-vaas__hero-strip {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding: 18px 28px 14px;
+        }
+
+        .op-vaas__hero-value {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .op-vaas__hero-value h3 {
+            font-size: 42px;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .op-vaas__hero-value span {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--color-periwinkle);
+            opacity: 0.7;
+        }
+
+        .op-vaas__hero-btn {
+            border: 1px solid rgba(169, 184, 255, 0.4);
+            color: var(--color-periwinkle);
+            padding: 7px 14px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .op-vaas__hero-btn:hover {
+            background: rgba(169, 184, 255, 0.12);
+            border-color: var(--color-periwinkle);
+        }
+
+        /* Vibrant area chart */
+        .op-vaas__live-chart {
+            padding: 0 28px;
+        }
+
+        .op-vaas__live-chart svg {
+            width: 100%;
+            height: 120px;
+            display: block;
+        }
+
+        /* Lower grid: gauge + metrics */
+        .op-vaas__lower-panel {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            border-top: 1px solid rgba(15, 122, 153, 0.3);
+        }
+
+        /* Gauge */
+        .op-vaas__gauge {
+            padding: 24px 28px;
+            border-right: 1px solid rgba(15, 122, 153, 0.3);
             display: flex;
             flex-direction: column;
-            flex: 1;
+            align-items: center;
         }
 
-        .op-vaas__col-item {
-            padding: 16px 24px;
-            font-size: 14px;
+        .op-vaas__gauge-label {
+            font-size: 15px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            align-self: flex-start;
+        }
+
+        .op-vaas__gauge-wrap {
+            position: relative;
+            width: 140px;
+        }
+
+        .op-vaas__gauge-wrap svg {
+            width: 100%;
+            display: block;
+        }
+
+        .op-vaas__gauge-number {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
             font-weight: 300;
-            line-height: 1.55;
-            border-bottom: 1px solid rgba(169, 184, 255, 0.07);
+            line-height: 1;
+        }
+
+        .op-vaas__gauge-range {
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            min-height: 64px;
-            transition: transform 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth);
-            transform-origin: left center;
-            will-change: transform;
-        }
-
-        .op-vaas__col-item:last-child {
-            border-bottom: none;
-        }
-
-        .op-vaas__col--them .op-vaas__col-item {
+            justify-content: space-between;
+            width: 100%;
+            font-family: var(--font-mono);
+            font-size: 10px;
             color: rgba(250, 255, 239, 0.4);
+            margin-top: 6px;
         }
 
-        .op-vaas__col--them .op-vaas__col-item:hover {
-            color: rgba(250, 255, 239, 0.62);
-            transform: scaleY(1.04) translateX(2px);
+        /* Metrics grid */
+        .op-vaas__live-metrics {
+            padding: 24px 28px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 18px 14px;
         }
 
-        .op-vaas__col--us .op-vaas__col-item {
-            color: rgba(250, 255, 239, 0.9);
-            border-bottom-color: rgba(15, 122, 153, 0.18);
+        .op-vaas__live-metric {
+            text-align: left;
         }
 
-        .op-vaas__col--us .op-vaas__col-item:hover {
-            color: rgba(250, 255, 239, 1);
+        .op-vaas__live-metric-value {
+            font-size: 26px;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 4px;
+            font-variant-numeric: tabular-nums;
+            color: var(--color-cream);
+        }
+
+        .op-vaas__live-metric-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-periwinkle);
+            line-height: 1.35;
+        }
+
+        /* Items list */
+        .op-vaas__live-items {
+            border-top: 1px solid rgba(15, 122, 153, 0.18);
+        }
+
+        .op-vaas__live-item {
+            padding: 13px 28px;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: rgba(250, 255, 239, 0.88);
+            border-bottom: 1px solid rgba(15, 122, 153, 0.12);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+        }
+
+        .op-vaas__live-item:last-child { border-bottom: none; }
+
+        .op-vaas__live-item:hover {
+            color: var(--color-cream);
             background: rgba(15, 122, 153, 0.1);
-            transform: scaleY(1.04) translateX(2px);
+            transform: translateX(3px);
         }
 
-        .op-vaas__col-item-icon {
+        .op-vaas__live-item-icon {
             flex-shrink: 0;
-            margin-top: 2px;
             width: 14px;
             height: 14px;
-            opacity: 0.5;
-        }
-
-        .op-vaas__col--us .op-vaas__col-item-icon {
-            opacity: 1;
             color: var(--color-teal);
         }
 
+        /* ---- Responsive ---- */
         @media (max-width: 968px) {
-            .op-vaas__comparison { grid-template-columns: 1fr 1fr; }
-            .op-vaas__col-item { font-size: 13px; padding: 14px 16px; min-height: 56px; }
-            .op-vaas__col-header { padding: 16px 16px 14px; font-size: 10px; }
+            .op-vaas__hero-value h3 { font-size: 32px; }
+            .op-vaas__dim-metric-value,
+            .op-vaas__live-metric-value { font-size: 22px; }
+            .op-vaas__lower-panel { grid-template-columns: 1fr; }
+            .op-vaas__gauge { border-right: none; border-bottom: 1px solid rgba(15, 122, 153, 0.3); flex-direction: row; align-items: center; gap: 20px; }
+            .op-vaas__gauge-label { margin-bottom: 0; }
+            .op-vaas__gauge-wrap { width: 100px; }
+            .op-vaas__live-metrics { grid-template-columns: repeat(3, 1fr); }
+            .op-vaas__slider-knob { width: 38px; height: 38px; }
         }
 
         @media (max-width: 600px) {
-            .op-vaas__comparison { grid-template-columns: 1fr; }
-            .op-vaas__col--us { border-left: 1px solid rgba(15, 122, 153, 0.45); border-top: none; }
-            .op-vaas__col--us::before { display: none; }
+            .op-vaas__dim-metrics { grid-template-columns: repeat(3, 1fr); }
+            .op-vaas__live-metrics { grid-template-columns: repeat(2, 1fr); }
+            .op-vaas__hero-strip { flex-direction: column; gap: 12px; }
+            .op-vaas__slider-knob { width: 34px; height: 34px; }
+            .op-vaas__slider-label { font-size: 8px; letter-spacing: 0.08em; }
+            .op-vaas__slider-labels { padding: 10px 14px; }
         }
 
         /* ============================================
-           SERVICES SECTION
+           SERVICES SECTION — stacked scroll-through
            ============================================ */
         .op-services {
-            height: 100vh;
             position: relative;
             background: linear-gradient(135deg,
                 var(--color-salmon-1) 0%,
@@ -939,30 +1170,7 @@
                 var(--color-purple-1) 56%,
                 var(--color-purple-2) 70%,
                 var(--color-blue-1) 100%);
-            background-size: 300% 300%;
-            background-position: 100% 100%;
-            transition: background-position 0.8s var(--ease-smooth);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Giant ghost number — editorial typographic anchor */
-        .op-services__ghost-number {
-            position: absolute;
-            bottom: -0.15em;
-            left: 52px;
-            font-family: var(--font-mono);
-            font-size: clamp(220px, 28vw, 380px);
-            font-weight: 600;
-            line-height: 1;
-            color: var(--color-dark-teal);
-            opacity: 0.06;
-            pointer-events: none;
-            user-select: none;
-            transition: opacity 0.25s ease;
-            letter-spacing: -0.04em;
-            z-index: 0;
+            background-size: 100% 100%;
         }
 
         .op-services__inner {
@@ -970,20 +1178,14 @@
             width: 100%;
             margin: 0 auto;
             padding: 0 60px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            z-index: 1;
         }
 
-        /* ── Top bar: label + nav ── */
+        /* ── Header ── */
         .op-services__header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 44px 0 0;
-            flex-shrink: 0;
+            padding: 80px 0 0;
             border-bottom: 1px solid rgba(3, 44, 45, 0.12);
             padding-bottom: 24px;
         }
@@ -997,72 +1199,42 @@
             opacity: 0.6;
         }
 
-        .op-services__nav {
-            display: flex;
-            gap: 0;
-            align-items: center;
-        }
-
-        .op-services__nav li {
+        .op-services__counter {
             font-family: var(--font-mono);
-            font-size: 12px;
-            text-transform: uppercase;
+            font-size: 13px;
             letter-spacing: 0.08em;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: opacity 0.25s ease;
             color: var(--color-dark-teal);
-            padding: 6px 0 6px 32px;
-            position: relative;
+            opacity: 0.45;
         }
 
-        .op-services__nav li::before {
-            content: '';
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--color-dark-teal);
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .op-services__nav li:first-child {
-            padding-left: 0;
-        }
-
-        .op-services__nav li:first-child::before {
-            display: none;
-        }
-
-        .op-services__nav li:hover { opacity: 0.7; }
-        .op-services__nav li.is-active {
-            opacity: 1;
-        }
-        .op-services__nav li.is-active::before {
-            opacity: 1;
-        }
-
-        /* ── Main stage ── */
-        .op-services__display {
-            flex: 1;
+        /* ── Individual service item ── */
+        .op-services__item {
             display: grid;
-            grid-template-columns: 1fr 600px;
-            gap: 0 80px;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
             align-items: center;
-            min-height: 0;
-            padding: 0;
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(3, 44, 45, 0.08);
         }
 
-        /* ── Left: text content ── */
+        .op-services__item:last-child {
+            border-bottom: none;
+        }
+
+        .op-services__item:nth-child(even) {
+            direction: rtl;
+        }
+
+        .op-services__item:nth-child(even) > * {
+            direction: ltr;
+        }
+
+        /* ── Text content ── */
         .op-services__content {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            max-width: 640px;
+            max-width: 560px;
         }
 
         .op-services__index {
@@ -1072,18 +1244,16 @@
             text-transform: uppercase;
             color: var(--color-dark-teal);
             opacity: 0.45;
-            margin-bottom: 28px;
-            transition: opacity 0.4s ease;
+            margin-bottom: 24px;
         }
 
         .op-services__content h2 {
-            font-size: clamp(44px, 5.5vw, 72px);
+            font-size: clamp(36px, 4.5vw, 56px);
             font-weight: 200;
-            line-height: 1.05;
+            line-height: 1.08;
             letter-spacing: -0.03em;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             color: var(--color-dark-teal);
-            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
         }
 
         .op-services__divider {
@@ -1091,53 +1261,43 @@
             height: 1px;
             background: var(--color-dark-teal);
             opacity: 0.3;
-            margin-bottom: 28px;
-            transition: opacity 0.35s ease;
+            margin-bottom: 24px;
         }
 
         .op-services__content p {
             font-size: 16px;
             line-height: 1.75;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
             color: rgba(3, 44, 45, 0.7);
-            max-width: 520px;
-            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
+            max-width: 480px;
         }
 
-        /* ── Right: floating icon ── */
-        .op-services__icon-wrap {
+        .op-services__cta {
+            margin-top: 8px;
+            padding: 10px 22px;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            align-self: flex-start;
+        }
+
+        /* ── Video column ── */
+        .op-services__video-col {
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
 
-        .op-services__video-wrap {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-            z-index: 2;
-        }
-
-        .op-services__video-wrap.is-visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Screen bezel frame */
         .op-services__video-frame {
             position: relative;
             width: 100%;
+            max-width: 500px;
             margin: 0 auto;
-            transform: translateX(-40px);
-            border-radius: 10px;
+            border-radius: 12px;
             background: #010f10;
-            border: 1px solid rgba(15, 122, 153, 0.25);
+            border: 1px solid rgba(15, 122, 153, 0.2);
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.3),
+                0 0 48px rgba(15, 122, 153, 0.06);
             overflow: hidden;
         }
 
@@ -1145,178 +1305,400 @@
         .op-services__video-frame::before {
             content: '';
             display: block;
-            height: 28px;
-            background: #021a1b;
-            border-bottom: 1px solid rgba(15, 122, 153, 0.18);
-            flex-shrink: 0;
+            height: 32px;
+            background: linear-gradient(180deg, #031e1f 0%, #021a1b 100%);
+            border-bottom: 1px solid rgba(15, 122, 153, 0.12);
         }
 
         /* Three dots */
         .op-services__video-frame::after {
             content: '';
             position: absolute;
-            top: 10px;
+            top: 12px;
             left: 14px;
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
-            background: rgba(243, 124, 56, 0.55);
-            box-shadow: 14px 0 0 rgba(169, 184, 255, 0.4), 28px 0 0 rgba(15, 122, 153, 0.5);
+            background: rgba(243, 124, 56, 0.45);
+            box-shadow: 14px 0 0 rgba(169, 184, 255, 0.3), 28px 0 0 rgba(15, 122, 153, 0.4);
         }
 
         .op-services__video {
             display: block;
             width: 100%;
-            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
         }
 
         /* Vignette overlay */
         .op-services__video-glow {
             position: absolute;
-            inset: 28px 0 0 0;
+            inset: 32px 0 0 0;
             pointer-events: none;
             background:
-                linear-gradient(to right, rgba(1, 15, 16, 0.4) 0%, transparent 15%, transparent 85%, rgba(1, 15, 16, 0.4) 100%),
-                linear-gradient(to bottom, transparent 65%, rgba(1, 15, 16, 0.55) 100%);
-        }
-
-        .op-services__icon-ring {
-            transition: opacity 0.5s ease;
-        }
-
-        .op-services__icon-wrap.show-video .op-services__icon-ring {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .op-services__icon-ring {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            border: 1px solid rgba(3, 44, 45, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: transform 0.6s var(--ease-smooth);
-        }
-
-        .op-services__icon-ring::before {
-            content: '';
-            position: absolute;
-            inset: 16px;
-            border-radius: 50%;
-            border: 1px solid rgba(3, 44, 45, 0.08);
-        }
-
-        .op-services__icon {
-            width: 88px;
-            height: 88px;
-            color: var(--color-dark-teal);
-            opacity: 0.7;
-            transition: transform 0.5s var(--ease-smooth), opacity 0.4s ease;
+                linear-gradient(to right, rgba(1, 15, 16, 0.25) 0%, transparent 12%, transparent 88%, rgba(1, 15, 16, 0.25) 100%),
+                linear-gradient(to bottom, transparent 70%, rgba(1, 15, 16, 0.4) 100%);
         }
 
         /* ── Bottom bar ── */
         .op-services__bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 0 0 36px;
-            flex-shrink: 0;
+            padding: 20px 0 60px;
             border-top: 1px solid rgba(3, 44, 45, 0.12);
-            padding-top: 20px;
         }
 
         .op-services__loop {
             font-size: 13px;
             opacity: 0.5;
-            max-width: 400px;
+            max-width: 560px;
             color: var(--color-dark-teal);
             line-height: 1.6;
         }
 
-        .op-services__counter {
-            font-family: var(--font-mono);
-            font-size: 13px;
-            letter-spacing: 0.08em;
-            color: var(--color-dark-teal);
-            opacity: 0.45;
-        }
-
-        /* ── Transition states ── */
-        .op-services__display.is-transitioning .op-services__icon {
-            transform: scale(0.8) rotate(-8deg);
+        /* ── Scroll-reveal animation ── */
+        .op-services__item .op-services__content,
+        .op-services__item .op-services__video-col {
             opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .op-services__display.is-transitioning .op-services__icon-ring {
-            transform: scale(0.92);
+        .op-services__item .op-services__video-col {
+            transition-delay: 0.1s;
         }
 
-        .op-services__display.is-transitioning .op-services__index,
-        .op-services__display.is-transitioning .op-services__content h2,
-        .op-services__display.is-transitioning .op-services__content p,
-        .op-services__display.is-transitioning .op-services__cta {
-            opacity: 0;
-            transform: translateY(12px);
+        .op-services__item.is-visible .op-services__content,
+        .op-services__item.is-visible .op-services__video-col {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .op-services__index,
-        .op-services__content h2,
-        .op-services__content p,
-        .op-services__cta {
-            transition: opacity 0.35s ease, transform 0.45s var(--ease-smooth);
-        }
-
-        .op-services__cta {
-            margin-top: 24px;
-            padding: 10px 22px;
-            font-size: 11px;
-            letter-spacing: 0.12em;
+        @media (prefers-reduced-motion: reduce) {
+            .op-services__item .op-services__content,
+            .op-services__item .op-services__video-col {
+                transition-duration: 0.01s !important;
+                transition-delay: 0s !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
         }
 
         /* ============================================
-           APPROACH SECTION
+           APPROACH SECTION — 5 alternating sub-zones
            ============================================ */
         .op-approach {
-            padding: 140px 0;
-            background: var(--color-cream);
+            position: relative;
+            overflow: hidden;
         }
 
-        .op-approach__inner {
+        .op-approach__label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            display: block;
+            margin-bottom: 32px;
+        }
+
+        /* ── Sub-zone A: Intro (warm gradient) ── */
+        .op-approach__intro {
+            background: linear-gradient(135deg,
+                var(--color-salmon-1) 0%,
+                var(--color-salmon-2) 14%,
+                var(--color-mauve-1) 28%,
+                var(--color-mauve-2) 42%,
+                var(--color-purple-1) 56%,
+                var(--color-purple-2) 70%,
+                var(--color-blue-1) 100%);
+            padding: 120px 0 100px;
+        }
+
+        .op-approach__intro-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            text-align: center;
+        }
+
+        .op-approach__intro .op-approach__label {
+            color: var(--color-dark-teal);
+            opacity: 0.6;
+        }
+
+        .op-approach__headline {
+            font-size: clamp(42px, 5vw, 64px);
+            font-weight: 300;
+            line-height: 1.08;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+            color: var(--color-dark-teal);
+        }
+
+        .op-approach__subheadline {
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--color-dark-teal);
+            opacity: 0.85;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* ── Sub-zone B: Origin Story (dark teal) ── */
+        .op-approach__origin {
+            background: var(--color-dark-teal);
+            color: var(--color-cream);
+            padding: 100px 0;
+        }
+
+        .op-approach__origin-inner {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 60px;
             display: grid;
-            grid-template-columns: 1.1fr 1fr;
+            grid-template-columns: 1.2fr 0.8fr;
             gap: 80px;
             align-items: center;
         }
 
-        .op-approach__headline {
-            font-size: clamp(42px, 5vw, 72px);
-            font-weight: 300;
-            line-height: 1.08;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
+        .op-approach__origin .op-approach__label {
+            color: var(--color-periwinkle);
+            opacity: 0.7;
         }
 
-        .op-approach__subheadline {
-            font-size: 26px;
+        .op-approach__origin-text {
+            font-size: 19px;
             font-weight: 300;
-            line-height: 1.35;
-            margin-bottom: 28px;
-            color: var(--color-dark-teal);
-            opacity: 0.85;
-        }
-
-        .op-approach__text {
-            font-size: 18px;
             line-height: 1.7;
-            margin-bottom: 36px;
+            color: rgba(250, 255, 239, 0.88);
+        }
+
+        .op-approach__origin-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .op-approach__origin-visual svg {
+            width: 100%;
+            max-width: 360px;
+            height: auto;
+        }
+
+        .op-approach__origin-path {
+            stroke-dasharray: 800;
+            stroke-dashoffset: 800;
+            transition: stroke-dashoffset 2s var(--ease-smooth);
+        }
+
+        .op-fade-in.is-visible .op-approach__origin-path {
+            stroke-dashoffset: 0;
+        }
+
+        .op-approach__origin-dot {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .op-fade-in.is-visible .op-approach__origin-dot {
+            opacity: 1;
+        }
+
+        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(2) { transition-delay: 0.8s; }
+        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(3) { transition-delay: 1.2s; }
+        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(4) { transition-delay: 1.6s; }
+
+        /* ── Sub-zone C: Three Pillars (cream) ── */
+        .op-approach__pillars {
+            background: var(--color-cream);
+            padding: 100px 0;
+        }
+
+        .op-approach__pillars-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+        }
+
+        .op-approach__pillar {
+            position: relative;
+            padding-top: 32px;
+        }
+
+        .op-approach__pillar-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
+            transition: width 0.6s var(--ease-smooth) 0.2s;
+        }
+
+        .op-fade-in.is-visible .op-approach__pillar-accent {
+            width: 48px;
+        }
+
+        .op-approach__pillar-index {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.45;
+            display: block;
+            margin-bottom: 24px;
+            color: var(--color-dark-teal);
+        }
+
+        .op-approach__pillar-title {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--color-dark-teal);
+            margin-bottom: 16px;
+        }
+
+        .op-approach__pillar-text {
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--color-dark-teal);
+            opacity: 0.78;
+        }
+
+        /* ── Sub-zone E: Toolkit + CTA (cream) ── */
+        .op-approach__toolkit {
+            background: var(--color-cream);
+            padding: 100px 0 120px;
+        }
+
+        .op-approach__toolkit-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 60px;
+        }
+
+        .op-approach__toolkit-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 56px;
+        }
+
+        .op-approach__toolkit-header .op-approach__label {
+            color: var(--color-dark-teal);
+            opacity: 0.45;
+            margin-bottom: 0;
+        }
+
+        .op-approach__toolkit-headline {
+            font-size: clamp(28px, 3vw, 36px);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--color-dark-teal);
+            margin-top: 16px;
             max-width: 560px;
-            opacity: 0.8;
+        }
+
+        .op-approach__toolkit .op-approach__label {
+            color: var(--color-dark-teal);
+            opacity: 0.45;
+        }
+
+        .op-approach__logo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 64px;
+        }
+
+        .op-approach__logo-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 28px 24px;
+            border: 1px solid rgba(3, 44, 45, 0.1);
+            background: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .op-approach__logo-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
+            transition: width 0.4s var(--ease-smooth);
+        }
+
+        .op-approach__logo-card:hover {
+            border-color: rgba(15, 122, 153, 0.25);
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .op-approach__logo-card:hover::after {
+            width: 100%;
+        }
+
+        .op-approach__logo-card-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .op-approach__logo-card-icon img,
+        .op-approach__logo-card-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .op-approach__logo-card-info {
+            min-width: 0;
+        }
+
+        .op-approach__logo-card-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--color-dark-teal);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .op-approach__logo-card-role {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--color-dark-teal);
+            opacity: 0.5;
+        }
+
+        .op-approach__toolkit-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 48px;
+            border-top: 1px solid rgba(3, 44, 45, 0.1);
+        }
+
+        .op-approach__toolkit-note {
+            font-size: 17px;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--color-dark-teal);
+            opacity: 0.7;
+            max-width: 480px;
         }
 
         .op-approach__buttons {
@@ -1341,17 +1723,6 @@
         .op-approach__button:hover {
             background: var(--color-dark-teal);
             color: var(--color-cream);
-        }
-
-        .op-approach__image-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .op-approach__image-wrapper img {
-            width: 100%;
-            height: 600px;
-            object-fit: cover;
         }
 
         /* ============================================
@@ -1444,10 +1815,108 @@
 
         .op-footer__top {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 60px;
             padding-bottom: 60px;
             border-bottom: 1px solid rgba(15, 122, 153, 0.15);
+        }
+
+        /* --- Newsletter Form --- */
+        .op-footer__newsletter-title {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        .op-footer__newsletter-form {
+            position: relative;
+            max-width: 310px;
+        }
+
+        .op-footer__newsletter-input-wrap {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(169, 184, 255, 0.3);
+            position: relative;
+            padding-bottom: 8px;
+            transition: border-color 0.3s ease;
+        }
+
+        .op-footer__newsletter-input-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--color-orange), var(--color-periwinkle));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            pointer-events: none;
+        }
+
+        .op-footer__newsletter-input-wrap:focus-within::after,
+        .op-footer__newsletter-input-wrap:hover::after {
+            transform: scaleX(1);
+        }
+
+        .op-footer__newsletter-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: var(--color-cream);
+            font-size: 18px;
+            font-family: inherit;
+            outline: none;
+            padding: 8px 0;
+            min-width: 0;
+        }
+
+        .op-footer__newsletter-input::placeholder {
+            color: rgba(250, 255, 239, 0.5);
+            font-weight: 300;
+        }
+
+        .op-footer__newsletter-icons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .op-footer__newsletter-clay {
+            width: 20px;
+            height: 20px;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .op-footer__newsletter-clay:hover {
+            opacity: 1;
+        }
+
+        .op-footer__newsletter-submit {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--color-cream);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .op-footer__newsletter-submit:hover {
+            color: var(--color-periwinkle);
+            transform: translate(2px, -2px);
+        }
+
+        .op-footer__newsletter-arrow {
+            width: 20px;
+            height: 20px;
         }
 
         .op-footer__brand-name {
@@ -1825,9 +2294,10 @@
             .op-stats__divider { display: none; }
             .op-stats__content-col { grid-template-columns: 1fr 1fr; }
             .op-vaas__inner { grid-template-columns: 1fr; }
-            .op-services__display { grid-template-columns: 1fr 280px; gap: 0 48px; }
-            .op-services__icon-ring { width: 200px; height: 200px; }
-            .op-services__icon { width: 72px; height: 72px; }
+            .op-services__item { gap: 40px; }
+            .op-services__video-frame { max-width: 400px; }
+            .op-approach__origin-inner { grid-template-columns: 1fr; gap: 48px; }
+            .op-approach__logo-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 968px) {
@@ -1856,14 +2326,20 @@
             .op-vaas__metrics-grid { grid-template-columns: repeat(2, 1fr); }
 
             .op-services__inner { padding: 0 24px; }
-            .op-services__display { grid-template-columns: 1fr !important; gap: 0; }
-            .op-services__icon-wrap { display: none; }
-            .op-services__ghost-number { font-size: 140px; left: 20px; }
-            .op-services__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .op-services__item { grid-template-columns: 1fr; gap: 32px; padding: 56px 0; }
+            .op-services__item:nth-child(even) { direction: ltr; }
+            .op-services__video-frame { max-width: 100%; }
+            .op-services__header { padding-top: 56px; }
 
-            .op-approach__inner { grid-template-columns: 1fr; padding: 0 24px; }
-            .op-approach__image-wrapper { order: -1; }
-            .op-approach__image-wrapper img { height: 360px; }
+            .op-approach__intro-inner { padding: 0 24px; }
+            .op-approach__origin-inner { padding: 0 24px; grid-template-columns: 1fr; gap: 48px; }
+            .op-approach__pillars-inner { padding: 0 24px; grid-template-columns: 1fr; gap: 40px; }
+            .op-approach__toolkit-inner { padding: 0 24px; }
+            .op-approach__logo-grid { grid-template-columns: repeat(2, 1fr); }
+            .op-approach__toolkit-header { flex-direction: column; align-items: flex-start; }
+            .op-approach__toolkit-bottom { flex-direction: column; align-items: flex-start; gap: 32px; }
+            .op-approach__buttons { justify-content: flex-start; }
+            .op-approach__quote { font-size: 18px; padding-left: 20px; }
 
             .op-cta__inner { grid-template-columns: 1fr; padding: 0 24px; }
             .op-cta__graphics { display: none; }
@@ -1882,6 +2358,12 @@
             .op-vaas__chart-value h3 { font-size: 32px; }
             .op-vaas__metric-value { font-size: 22px; }
             .op-vaas__metrics-grid { grid-template-columns: 1fr; }
+
+            .op-approach__intro { padding: 80px 0 60px; }
+            .op-approach__origin { padding: 60px 0; }
+            .op-approach__pillars { padding: 60px 0; }
+            .op-approach__toolkit { padding: 60px 0 80px; }
+            .op-approach__logo-grid { grid-template-columns: 1fr; }
         }
 
         /* ============================================
@@ -1896,7 +2378,7 @@
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.4s var(--ease-smooth), visibility 0.4s;
+            transition: opacity 0.45s var(--ease-smooth), visibility 0.45s;
         }
 
         .op-modal-overlay.is-open {
@@ -1907,17 +2389,18 @@
         .op-modal-overlay__bg {
             position: absolute;
             inset: 0;
-            background: rgba(3, 44, 45, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(3, 44, 45, 0.6);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
         }
 
         .op-modal {
             position: relative;
             width: 94%;
-            max-width: 920px;
+            max-width: 960px;
             max-height: 92vh;
             overflow-y: auto;
+            border-radius: 20px;
             background: linear-gradient(145deg,
                 var(--color-blue-1) 0%,
                 var(--color-purple-2) 20%,
@@ -1927,9 +2410,13 @@
                 var(--color-salmon-2) 100%);
             background-size: 200% 200%;
             animation: modalGradientShift 12s ease infinite;
-            transform: translateY(30px) scale(0.97);
-            transition: transform 0.5s var(--ease-out);
-            box-shadow: 0 40px 80px rgba(3, 44, 45, 0.35), 0 0 0 1px rgba(255,255,255,0.08);
+            transform: translateY(40px) scale(0.95);
+            transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow:
+                0 50px 100px rgba(3, 44, 45, 0.3),
+                0 20px 40px rgba(3, 44, 45, 0.15),
+                0 0 0 1px rgba(255,255,255,0.12),
+                inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         .op-modal-overlay.is-open .op-modal {
@@ -1941,10 +2428,11 @@
             50% { background-position: 100% 50%; }
         }
 
+        /* Close button */
         .op-modal__close {
             position: absolute;
-            top: 24px;
-            right: 24px;
+            top: 20px;
+            right: 20px;
             width: 44px;
             height: 44px;
             display: flex;
@@ -1952,99 +2440,168 @@
             justify-content: center;
             color: var(--color-dark-teal);
             z-index: 10;
-            transition: transform 0.3s ease, opacity 0.2s ease;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
         }
 
         .op-modal__close:hover {
-            transform: rotate(90deg);
-            opacity: 0.7;
+            transform: rotate(90deg) scale(1.08);
+            background: rgba(255, 255, 255, 0.45);
         }
 
         .op-modal__close svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
         }
 
+        /* Two-column layout */
         .op-modal__inner {
             display: grid;
             grid-template-columns: 1fr 1fr;
             min-height: 560px;
         }
 
+        /* Left panel — info side */
         .op-modal__left {
-            padding: 56px 48px;
+            padding: 60px 52px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: rgba(3, 44, 45, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .op-modal__left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(3, 44, 45, 0.05);
+            border-right: 1px solid rgba(3, 44, 45, 0.08);
+        }
+
+        .op-modal__left::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(3, 44, 45, 0.06) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .op-modal__label {
             font-family: var(--font-mono);
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.15em;
             color: var(--color-dark-teal);
-            opacity: 0.7;
-            margin-bottom: 16px;
+            opacity: 0.6;
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .op-modal__label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 1px;
+            background: var(--color-dark-teal);
+            opacity: 0.5;
         }
 
         .op-modal__headline {
-            font-size: clamp(28px, 3.5vw, 42px);
+            font-size: clamp(26px, 3.2vw, 40px);
             font-weight: 300;
-            line-height: 1.15;
+            line-height: 1.18;
             color: var(--color-dark-teal);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            letter-spacing: -0.01em;
+            position: relative;
         }
 
         .op-modal__divider {
-            width: 60px;
-            height: 1px;
-            background: rgba(3, 44, 45, 0.3);
-            margin-bottom: 20px;
+            width: 48px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-dark-teal), transparent);
+            margin-bottom: 24px;
+            border-radius: 1px;
         }
 
         .op-modal__desc {
-            font-size: 16px;
-            line-height: 1.65;
-            color: rgba(3, 44, 45, 0.75);
-            margin-bottom: 32px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(3, 44, 45, 0.7);
+            margin-bottom: 36px;
+            max-width: 340px;
         }
 
+        /* Calendar button */
         .op-modal__calendar-link {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
+            gap: 12px;
+            padding: 15px 30px;
             background: var(--color-dark-teal);
             color: var(--color-cream);
             font-family: var(--font-mono);
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s ease;
+            letter-spacing: 0.12em;
+            border-radius: 10px;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .op-modal__calendar-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .op-modal__calendar-link:hover {
-            background: rgba(3, 44, 45, 0.85);
-            transform: translateY(-1px);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(3, 44, 45, 0.25);
+        }
+
+        .op-modal__calendar-link:hover::before {
+            opacity: 1;
         }
 
         .op-modal__calendar-link svg {
             width: 18px;
             height: 18px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
+        .op-modal__calendar-link:hover svg {
+            transform: rotate(-8deg) scale(1.1);
+        }
+
+        /* Divider "or" */
         .op-modal__or {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-top: 24px;
+            margin-top: 28px;
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(3, 44, 45, 0.4);
+            letter-spacing: 0.14em;
+            color: rgba(3, 44, 45, 0.35);
         }
 
         .op-modal__or::before,
@@ -2052,102 +2609,271 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: rgba(3, 44, 45, 0.15);
+            background: linear-gradient(90deg, rgba(3, 44, 45, 0.12), transparent);
         }
 
+        .op-modal__or::after {
+            background: linear-gradient(270deg, rgba(3, 44, 45, 0.12), transparent);
+        }
+
+        /* Right panel — glassmorphism form side */
         .op-modal__right {
             padding: 56px 48px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0 20px 20px 0;
+        }
+
+        .op-modal__right::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .op-modal__form-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 400;
             color: var(--color-dark-teal);
-            margin-bottom: 28px;
+            margin-bottom: 32px;
+            letter-spacing: 0.01em;
+            opacity: 0.85;
         }
 
+        /* Form fields with animated underline focus */
         .op-modal__field {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .op-modal__field label {
             display: block;
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: rgba(3, 44, 45, 0.6);
-            margin-bottom: 6px;
+            letter-spacing: 0.1em;
+            color: rgba(3, 44, 45, 0.5);
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .op-modal__field:focus-within label {
+            color: var(--color-dark-teal);
         }
 
         .op-modal__field input,
         .op-modal__field select,
         .op-modal__field textarea {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid rgba(3, 44, 45, 0.18);
-            background: rgba(255, 255, 255, 0.45);
+            padding: 13px 16px;
+            height: 46px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 1.5px solid rgba(3, 44, 45, 0.12);
+            border-radius: 8px 8px 0 0;
+            background: rgba(255, 255, 255, 0.35);
             font-family: var(--font-sans);
             font-size: 15px;
             color: var(--color-dark-teal);
-            transition: border-color 0.3s ease, background 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
             outline: none;
+            position: relative;
         }
 
         .op-modal__field input:focus,
         .op-modal__field select:focus,
         .op-modal__field textarea:focus {
+            background: rgba(255, 255, 255, 0.55);
             border-color: var(--color-dark-teal);
-            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 0 0 var(--color-dark-teal);
         }
 
         .op-modal__field input::placeholder,
         .op-modal__field textarea::placeholder {
-            color: rgba(3, 44, 45, 0.35);
+            color: rgba(3, 44, 45, 0.28);
+            font-weight: 300;
         }
 
         .op-modal__field textarea {
             resize: vertical;
+            height: 80px;
             min-height: 80px;
+            border-radius: 8px 8px 0 0;
         }
 
         .op-modal__row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 16px;
         }
 
+        /* Submit button with shimmer sweep */
         .op-modal__submit {
             width: 100%;
-            padding: 16px 32px;
-            border: 1px solid var(--color-dark-teal);
+            padding: 17px 32px;
+            border: 2px solid var(--color-dark-teal);
             background: var(--color-dark-teal);
             color: var(--color-cream);
             font-family: var(--font-mono);
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: all 0.3s ease;
-            margin-top: 8px;
+            letter-spacing: 0.12em;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-top: 12px;
             position: relative;
             overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .op-modal__submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.15) 45%,
+                rgba(255, 255, 255, 0.25) 50%,
+                rgba(255, 255, 255, 0.15) 55%,
+                transparent 100%
+            );
+            transition: left 0.6s ease;
+        }
+
+        .op-modal__submit:hover::before {
+            left: 100%;
         }
 
         .op-modal__submit:hover {
-            background: transparent;
-            color: var(--color-dark-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(3, 44, 45, 0.25);
+        }
+
+        .op-modal__submit:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: none;
         }
 
         .op-modal__submit:disabled {
-            opacity: 0.5;
+            opacity: 0.45;
             cursor: not-allowed;
+            transform: none;
         }
 
         .op-modal__submit:disabled:hover {
             background: var(--color-dark-teal);
             color: var(--color-cream);
+            box-shadow: none;
+            transform: none;
         }
 
+        .op-modal__submit:disabled::before {
+            display: none;
+        }
+
+        /* Staggered entrance animations for form fields */
+        .op-modal-overlay .op-modal__right .op-modal__field,
+        .op-modal-overlay .op-modal__right .op-modal__row,
+        .op-modal-overlay .op-modal__right .op-modal__form-title,
+        .op-modal-overlay .op-modal__right .op-modal__submit {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right .op-modal__form-title {
+            opacity: 0.85;
+            transform: translateY(0);
+            transition-delay: 0.15s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right .op-modal__row:nth-child(1),
+        .op-modal-overlay.is-open .op-modal__right .op-modal__field:nth-child(1),
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.26s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.32s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.38s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(5) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.44s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(6) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.50s;
+        }
+
+        .op-modal-overlay.is-open .op-modal__right > form > *:nth-child(7) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.56s;
+        }
+
+        /* Left panel entrance animations */
+        .op-modal-overlay .op-modal__left .op-modal__label,
+        .op-modal-overlay .op-modal__left .op-modal__headline,
+        .op-modal-overlay .op-modal__left .op-modal__divider,
+        .op-modal-overlay .op-modal__left .op-modal__desc,
+        .op-modal-overlay .op-modal__left .op-modal__calendar-link,
+        .op-modal-overlay .op-modal__left .op-modal__or {
+            opacity: 0;
+            transform: translateX(-16px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .op-modal-overlay.is-open .op-modal__left .op-modal__label {
+            opacity: 0.6; transform: translateX(0); transition-delay: 0.12s;
+        }
+        .op-modal-overlay.is-open .op-modal__left .op-modal__headline {
+            opacity: 1; transform: translateX(0); transition-delay: 0.18s;
+        }
+        .op-modal-overlay.is-open .op-modal__left .op-modal__divider {
+            opacity: 1; transform: translateX(0); transition-delay: 0.24s;
+        }
+        .op-modal-overlay.is-open .op-modal__left .op-modal__desc {
+            opacity: 1; transform: translateX(0); transition-delay: 0.30s;
+        }
+        .op-modal-overlay.is-open .op-modal__left .op-modal__calendar-link {
+            opacity: 1; transform: translateX(0); transition-delay: 0.36s;
+        }
+        .op-modal-overlay.is-open .op-modal__left .op-modal__or {
+            opacity: 1; transform: translateX(0); transition-delay: 0.42s;
+        }
+
+        /* Success view */
         .op-modal__success {
             display: none;
             text-align: center;
@@ -2163,41 +2889,43 @@
         }
 
         .op-modal__success-icon {
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
             border: 2px solid var(--color-dark-teal);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 24px;
-            animation: successPop 0.5s var(--ease-out);
+            margin-bottom: 28px;
+            animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         @keyframes successPop {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.12) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .op-modal__success-icon svg {
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             color: var(--color-dark-teal);
         }
 
         .op-modal__success h3 {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 300;
             color: var(--color-dark-teal);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
         }
 
         .op-modal__success p {
-            font-size: 16px;
-            color: rgba(3, 44, 45, 0.7);
-            max-width: 380px;
-            line-height: 1.6;
+            font-size: 15px;
+            color: rgba(3, 44, 45, 0.65);
+            max-width: 360px;
+            line-height: 1.7;
         }
 
         /* ============================================
@@ -2294,8 +3022,14 @@
             .op-modal__left {
                 padding: 40px 28px 28px;
             }
+            .op-modal__left::before {
+                border-right: none;
+                border-bottom: 1px solid rgba(3, 44, 45, 0.08);
+            }
             .op-modal__right {
                 padding: 28px 28px 40px;
+                border-left: none;
+                border-radius: 0 0 20px 20px;
             }
             .op-modal__row {
                 grid-template-columns: 1fr;
@@ -2303,6 +3037,7 @@
             .op-modal {
                 max-height: 96vh;
                 width: 96%;
+                border-radius: 16px;
             }
         }
 
@@ -2328,7 +3063,7 @@
             <div class="op-loader__corner op-loader__corner--tr"></div>
             <div class="op-loader__corner op-loader__corner--bl"></div>
             <div class="op-loader__corner op-loader__corner--br"></div>
-            <img src="logoforge-result (2).png" alt="" class="op-loader__img" aria-hidden="true">
+            <img src="Ressources/images/logo_white.png" alt="" class="op-loader__img" aria-hidden="true" width="60" height="60">
         </div>
         <div class="op-loader__wordmark">Paioneers</div>
         <div class="op-loader__status" id="loaderStatus">Initialising</div>
@@ -2363,6 +3098,12 @@
                 <stop offset="50%" stop-color="#A9B8FF" stop-opacity="0.6"/>
                 <stop offset="100%" stop-color="#F37C38" stop-opacity="0.9"/>
             </linearGradient>
+            <!-- Approach origin visual gradient -->
+            <linearGradient id="approachPathGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0F7A99" stop-opacity="0.9"/>
+                <stop offset="50%" stop-color="#A9B8FF" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#F37C38" stop-opacity="0.9"/>
+            </linearGradient>
             <!-- CTA arrow gradients -->
             <linearGradient id="ctaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stop-color="#0F7A99"/>
@@ -2391,7 +3132,7 @@
     <header class="op-header" id="header">
         <div class="op-header__inner">
             <a href="#hero" class="op-header__logo">
-                <img src="logoforge-result.png" alt="" class="op-header__logo-img" aria-hidden="true">
+                <img src="Ressources/images/logo_black1.svg" alt="Paioneers" class="op-header__logo-img" aria-hidden="true" width="32" height="32">
                 Paioneers
             </a>
             <nav class="op-header__nav">
@@ -2399,7 +3140,7 @@
                 <a href="#services" class="op-header__link">Services</a>
                 <a href="#stats" class="op-header__link">Results</a>
                 <a href="#cta" class="op-header__link">Contact</a>
-                <a href="#" class="op-header__cta" data-open-modal>Book a Workshop</a>
+                <button type="button" class="op-header__cta" data-open-modal>Book a Workshop</button>
             </nav>
             <button class="op-header__hamburger" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -2413,7 +3154,7 @@
             <div class="op-hero__text-col">
                 <h1 class="op-hero__headline">Your Sales Team Spends More Time Researching Than Selling</h1>
                 <p class="op-hero__text">We build AI-powered revenue systems that automate prospect research, personalise outreach at scale, and keep every deal moving — so your team focuses on selling.</p>
-                <a href="#" class="op-hero__button" data-open-modal>Book a Bottleneck Workshop</a>
+                <button type="button" class="op-hero__button" data-open-modal>Book a Bottleneck Workshop</button>
             </div>
         </div>
         <div class="op-hero__visual" aria-hidden="true">
@@ -2470,85 +3211,210 @@
         <div class="op-vaas__inner">
             <div class="op-fade-in">
                 <h2 class="op-vaas__headline">What Most Sales Teams Look Like vs. What's Possible</h2>
-                <p class="op-vaas__text">The left column isn't a bad company. It's a normal company. The right column is what happens when you treat sales like infrastructure.</p>
+                <p class="op-vaas__text">The left side isn't a bad company. It's a normal company. Drag the slider to reveal what happens when you treat sales like infrastructure.</p>
                 <a href="#" class="op-vaas__button" data-open-modal><span>Workshop</span></a>
             </div>
 
-            <div class="op-vaas__comparison op-fade-in">
+            <div class="op-vaas__comparison op-fade-in" id="vaasSlider">
 
-                <!-- Left column: status quo -->
+                <!-- Slider overlay labels — always visible -->
+                <div class="op-vaas__slider-labels">
+                    <span class="op-vaas__slider-label"><span class="op-vaas__slider-label-dot op-vaas__slider-label-dot--before"></span> What most companies have</span>
+                    <span class="op-vaas__slider-label op-vaas__slider-label--right"><span class="op-vaas__slider-label-dot op-vaas__slider-label-dot--after"></span> What Paioneers builds</span>
+                </div>
+
+                <!-- ============ BEFORE: Status Quo (dim dashboard) ============ -->
                 <div class="op-vaas__col op-vaas__col--them">
                     <div class="op-vaas__col-header">
                         <span class="op-vaas__col-header-dot"></span>
-                        What most companies have
+                        Drag to explore
                     </div>
-                    <div class="op-vaas__col-items">
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+
+                    <!-- Flat / declining area chart -->
+                    <div class="op-vaas__dim-chart">
+                        <svg viewBox="0 0 400 90" fill="none" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="dimGrad" x1="200" y1="0" x2="200" y2="90" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#F37C38" stop-opacity="0.25"/>
+                                    <stop offset="1" stop-color="#F37C38" stop-opacity="0.02"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0 48 C40 44, 80 52, 120 50 C160 48, 200 56, 240 58 C280 60, 320 64, 360 68 L400 72 L400 90 L0 90Z" fill="url(#dimGrad)"/>
+                            <path d="M0 48 C40 44, 80 52, 120 50 C160 48, 200 56, 240 58 C280 60, 320 64, 360 68 L400 72" stroke="rgba(243,124,56,0.35)" stroke-width="1.5" fill="none"/>
+                        </svg>
+                    </div>
+
+                    <!-- Dim metrics -->
+                    <div class="op-vaas__dim-metrics">
+                        <div class="op-vaas__dim-metric">
+                            <div class="op-vaas__dim-metric-value">2.1%</div>
+                            <div class="op-vaas__dim-metric-label">Reply Rate</div>
+                        </div>
+                        <div class="op-vaas__dim-metric">
+                            <div class="op-vaas__dim-metric-value">14%</div>
+                            <div class="op-vaas__dim-metric-label">Pipeline Accuracy</div>
+                        </div>
+                        <div class="op-vaas__dim-metric">
+                            <div class="op-vaas__dim-metric-value">91 d</div>
+                            <div class="op-vaas__dim-metric-label">Avg Rep Ramp</div>
+                        </div>
+                    </div>
+
+                    <!-- Problem items -->
+                    <div class="op-vaas__dim-items">
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             Reps manually researching prospects
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             Generic email templates sent to thousands
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                            CRM data that's 3 weeks old
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            CRM data that’s 3 weeks old
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             Stalled deals that nobody notices
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             Follow-ups written from scratch
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             Forecasts based on gut feeling
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        <div class="op-vaas__dim-item">
+                            <svg class="op-vaas__dim-item-icon" viewBox="0 0 14 14" fill="none"><line x1="2" y1="2" x2="12" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="2" x2="2" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                             New reps take 3 months to ramp
                         </div>
                     </div>
                 </div>
 
-                <!-- Right column: Paioneers -->
+                <!-- ============ AFTER: Paioneers (vibrant dashboard) ============ -->
                 <div class="op-vaas__col op-vaas__col--us">
                     <div class="op-vaas__col-header">
                         <span class="op-vaas__col-header-dot"></span>
-                        What Paioneers builds
+                        Paioneers system
                     </div>
-                    <div class="op-vaas__col-items">
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                    <!-- Hero value + CTA -->
+                    <div class="op-vaas__hero-strip">
+                        <div class="op-vaas__hero-value">
+                            <h3 class="op-vaas__counter" data-target="38" data-prefix="+">+38%</h3>
+                            <span>| Pipeline Revenue</span>
+                        </div>
+                        <button class="op-vaas__hero-btn">Live Dashboard</button>
+                    </div>
+
+                    <!-- Rising area chart -->
+                    <div class="op-vaas__live-chart">
+                        <svg viewBox="0 0 500 120" fill="none" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="liveGrad" x1="250" y1="0" x2="250" y2="120" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#0F7A99"/>
+                                    <stop offset="0.5" stop-color="#A9B8FF"/>
+                                    <stop offset="1" stop-color="#F37C38"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0 95 C50 88, 100 80, 150 72 C200 64, 250 52, 300 40 C350 28, 400 18, 450 12 L500 6 L500 120 L0 120Z" fill="url(#liveGrad)" opacity="0.6"/>
+                            <path d="M0 95 C50 88, 100 80, 150 72 C200 64, 250 52, 300 40 C350 28, 400 18, 450 12 L500 6" stroke="rgba(250,255,239,0.6)" stroke-width="1.5" fill="none"/>
+                            <circle cx="300" cy="40" r="4" fill="#FAFFEF"/>
+                            <line x1="300" y1="40" x2="300" y2="120" stroke="rgba(250,255,239,0.25)" stroke-width="1"/>
+                        </svg>
+                    </div>
+
+                    <!-- Lower panel: gauge + metrics -->
+                    <div class="op-vaas__lower-panel">
+                        <!-- Gauge -->
+                        <div class="op-vaas__gauge">
+                            <div class="op-vaas__gauge-label">Pipeline Health</div>
+                            <div class="op-vaas__gauge-wrap">
+                                <svg viewBox="-5 -6 203 105" fill="none">
+                                    <path d="M99 0V33C62.5482 33 33 62.5482 33 99H0C0 44.3223 44.3223 0 99 0Z" fill="#F37C38"/>
+                                    <path d="M169.003 28.9971L145.669 52.3314C133.726 40.3854 117.226 33 99 33V0C126.337 0 151.087 11.0814 169.003 28.9971Z" fill="#A9B8FF"/>
+                                    <path d="M198 99H165C165 80.7741 157.614 64.2741 145.668 52.3314L169.003 28.9971C186.918 46.9128 198 71.6628 198 99Z" fill="#0F7A99"/>
+                                    <circle cx="168.5" cy="29" r="5.5" fill="#FAFFEF"/>
+                                    <line x1="145.646" y1="52.1464" x2="165.646" y2="32.1464" stroke="white" stroke-width="1"/>
+                                </svg>
+                                <div class="op-vaas__gauge-number op-vaas__counter" data-target="87">87</div>
+                            </div>
+                            <div class="op-vaas__gauge-range">
+                                <span>0</span>
+                                <span>100</span>
+                            </div>
+                        </div>
+
+                        <!-- Metrics -->
+                        <div class="op-vaas__live-metrics">
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="18.7" data-suffix="%">18.7%</div>
+                                <div class="op-vaas__live-metric-label">Reply Rate</div>
+                            </div>
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="92" data-suffix="%">92%</div>
+                                <div class="op-vaas__live-metric-label">Pipeline Accuracy</div>
+                            </div>
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="7" data-suffix=" d">7 d</div>
+                                <div class="op-vaas__live-metric-label">Rep Ramp Time</div>
+                            </div>
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="50" data-suffix="+">50+</div>
+                                <div class="op-vaas__live-metric-label">Data Points Per Prospect</div>
+                            </div>
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="8" data-suffix=" hrs">8 hrs</div>
+                                <div class="op-vaas__live-metric-label">Saved Per Rep / Week</div>
+                            </div>
+                            <div class="op-vaas__live-metric">
+                                <div class="op-vaas__live-metric-value op-vaas__counter" data-target="4" data-suffix=" wks">4 wks</div>
+                                <div class="op-vaas__live-metric-label">Kickoff to Live</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solution items -->
+                    <div class="op-vaas__live-items">
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             AI-enriched dossiers before every touchpoint
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             Hyper-personalised outreach, 50+ data points per prospect
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             CRM that updates itself after every interaction
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             Daily AI pipeline scan with next-action recommendations
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             AI-drafted follow-ups based on actual call transcripts
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             Forecasts based on live, structured, complete data
                         </div>
-                        <div class="op-vaas__col-item">
-                            <svg class="op-vaas__col-item-icon" viewBox="0 0 14 14" fill="none" aria-hidden="true"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div class="op-vaas__live-item">
+                            <svg class="op-vaas__live-item-icon" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             Day-one reps perform like veterans with AI prep
                         </div>
+                    </div>
+                </div>
+
+                <!-- Slider handle -->
+                <div class="op-vaas__slider-handle" id="vaasSliderHandle">
+                    <div class="op-vaas__slider-line"></div>
+                    <div class="op-vaas__slider-knob">
+                        <span class="op-vaas__slider-arrow op-vaas__slider-arrow--left"></span>
+                        <span class="op-vaas__slider-arrow op-vaas__slider-arrow--right"></span>
                     </div>
                 </div>
 
@@ -2558,68 +3424,66 @@
 
     <!-- Services Section -->
     <section class="op-services" id="services">
-        <!-- Ghost number behind everything -->
-        <div class="op-services__ghost-number" id="servicesGhost" aria-hidden="true">01</div>
-
         <div class="op-services__inner">
-            <!-- Top bar -->
+            <!-- Header -->
             <div class="op-services__header">
                 <div class="op-services__label">Services</div>
-                <ul class="op-services__nav" id="servicesNav">
-                    <li class="is-active" data-index="0">Bottleneck Workshop</li>
-                    <li data-index="1">Pipeline Accelerator</li>
-                    <li data-index="2">Revenue Conversion Engine</li>
-                </ul>
+                <div class="op-services__counter">03 Services</div>
             </div>
 
-            <!-- Main stage -->
-            <div class="op-services__display" id="servicesDisplay">
-                <!-- Left: text -->
+            <!-- Service 1: Bottleneck Workshop -->
+            <div class="op-services__item">
                 <div class="op-services__content">
-                    <div class="op-services__index" id="serviceIndex">01 / 03</div>
-                    <h2 id="serviceTitle">Bottleneck Workshop</h2>
+                    <div class="op-services__index">01 / 03</div>
+                    <h2>Bottleneck Workshop</h2>
                     <div class="op-services__divider"></div>
-                    <p id="serviceText">A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don't walk out with at least 3 actionable insights, it's free.</p>
-                    <a href="#" class="op-gradient-cta op-services__cta" id="serviceCta" data-open-modal data-service="Bottleneck Workshop"><span>Let's Talk</span></a>
+                    <p>A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don't walk out with at least 3 actionable insights, it's free.</p>
+                    <button type="button" class="op-gradient-cta op-services__cta" data-open-modal data-service="Bottleneck Workshop"><span>Let's Talk</span></button>
                 </div>
+                <div class="op-services__video-col">
+                    <div class="op-services__video-frame">
+                        <video class="op-services__video" autoplay loop muted playsinline preload="none">
+                            <source src="bottleneck_workshp.mp4" type="video/mp4">
+                        </video>
+                        <div class="op-services__video-glow"></div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Right: floating icon in ring -->
-                <div class="op-services__icon-wrap">
-                    <!-- Bottleneck video — visible only on Bottleneck Workshop slide (index 0) -->
-                    <div class="op-services__video-wrap" id="serviceVideoWrap0">
-                        <div class="op-services__video-frame">
-                            <video class="op-services__video" autoplay loop muted playsinline>
-                                <source src="bottleneck_workshp.mp4" type="video/mp4">
-                            </video>
-                            <div class="op-services__video-glow"></div>
-                        </div>
+            <!-- Service 2: Pipeline Accelerator -->
+            <div class="op-services__item">
+                <div class="op-services__content">
+                    <div class="op-services__index">02 / 03</div>
+                    <h2>Pipeline Accelerator</h2>
+                    <div class="op-services__divider"></div>
+                    <p>A fully automated outbound engine. AI-powered prospect research, hyper-personalised outreach across email and LinkedIn, and multi-channel sequencing — generating qualified meetings without your team writing a single email. 6 meetings guaranteed in 90 days.</p>
+                    <button type="button" class="op-gradient-cta op-services__cta" data-open-modal data-service="Pipeline Accelerator"><span>Workshop</span></button>
+                </div>
+                <div class="op-services__video-col">
+                    <div class="op-services__video-frame">
+                        <video class="op-services__video" autoplay loop muted playsinline preload="none">
+                            <source src="Clay - Clay Web - Simple animation 3 - R1.mp4" type="video/mp4">
+                        </video>
+                        <div class="op-services__video-glow"></div>
                     </div>
-                    <!-- Clay video — visible only on Pipeline Accelerator slide (index 1) -->
-                    <div class="op-services__video-wrap" id="serviceVideoWrap">
-                        <div class="op-services__video-frame">
-                            <video class="op-services__video" autoplay loop muted playsinline>
-                                <source src="Clay - Clay Web - Simple animation 3 - R1.mp4" type="video/mp4">
-                            </video>
-                            <div class="op-services__video-glow"></div>
-                        </div>
-                    </div>
-                    <!-- Revenue Engine video — visible only on Revenue Conversion Engine slide (index 2) -->
-                    <div class="op-services__video-wrap" id="serviceVideoWrap2">
-                        <div class="op-services__video-frame">
-                            <video class="op-services__video" autoplay loop muted playsinline>
-                                <source src="revenue_engine.mp4" type="video/mp4">
-                            </video>
-                            <div class="op-services__video-glow"></div>
-                        </div>
-                    </div>
-                    <div class="op-services__icon-ring">
-                        <svg class="op-services__icon" id="serviceIcon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-                            <circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="40" cy="40" r="12" fill="currentColor" opacity="0.2"/>
-                            <path d="M40 12v16M40 52v16M12 40h16M52 40h16" stroke="currentColor" stroke-width="1.5"/>
-                            <circle cx="40" cy="40" r="6" fill="currentColor"/>
-                            <path d="M26 26l8 8M46 46l8 8M54 26l-8 8M34 46l-8 8" stroke="currentColor" stroke-width="1"/>
-                        </svg>
+                </div>
+            </div>
+
+            <!-- Service 3: Revenue Conversion Engine -->
+            <div class="op-services__item">
+                <div class="op-services__content">
+                    <div class="op-services__index">03 / 03</div>
+                    <h2>Revenue Conversion Engine</h2>
+                    <div class="op-services__divider"></div>
+                    <p>AI infrastructure that prepares reps before every call, automates CRM updates and follow-ups after every interaction, and monitors your pipeline daily. No deal stalls without someone knowing about it. System live in 4 weeks.</p>
+                    <button type="button" class="op-gradient-cta op-services__cta" data-open-modal data-service="Revenue Conversion Engine"><span>Workshop</span></button>
+                </div>
+                <div class="op-services__video-col">
+                    <div class="op-services__video-frame">
+                        <video class="op-services__video" autoplay loop muted playsinline preload="none">
+                            <source src="revenue_engine.mp4" type="video/mp4">
+                        </video>
+                        <div class="op-services__video-glow"></div>
                     </div>
                 </div>
             </div>
@@ -2627,27 +3491,193 @@
             <!-- Bottom bar -->
             <div class="op-services__bottom">
                 <div class="op-services__loop">Both engines connect through <strong>The Loop</strong> — insights from every closed and lost deal feed back into targeting and messaging. The system gets smarter every cycle.</div>
-                <div class="op-services__counter" id="servicesCounter">01 / 03</div>
             </div>
         </div>
     </section>
 
     <!-- Our Approach -->
     <section class="op-approach" id="approach">
-        <div class="op-approach__inner">
-            <div class="op-fade-in">
-                <h2 class="op-approach__headline">Technical Background. Commercial Execution.</h2>
-                <p class="op-approach__subheadline">Paioneers was built by sales reps and GTM engineers who lived the problem before solving it.</p>
-                <p class="op-approach__text">We've carried quota at Salesforce and LinkedIn, built commercial engines at agencies and SMBs, and felt the pain of manual research, inconsistent data, and tools that don't talk to each other. We stopped solving the same problems manually and started building systems.</p>
-                <div class="op-approach__buttons">
-                    <a href="#" class="op-gradient-cta op-gradient-cta--dark" data-open-modal><span>Workshop</span></a>
-                    <a href="#services" class="op-approach__button">Our Services</a>
-                </div>
-            </div>
-            <div class="op-approach__image-wrapper op-fade-in">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=1000&fit=crop" alt="Paioneers team collaborating on sales automation" loading="lazy" width="800" height="1000">
+
+        <!-- Sub-zone A: Intro -->
+        <div class="op-approach__intro">
+            <div class="op-approach__intro-inner">
+                <span class="op-approach__label op-fade-in">Our Approach</span>
+                <h2 class="op-approach__headline op-fade-in">Technical Background. Commercial Execution.</h2>
+                <p class="op-approach__subheadline op-fade-in">Paioneers was built by quota-carrying sales leaders and GTM engineers who lived the problem before solving it. We stopped solving the same problems manually and started building systems that scale.</p>
             </div>
         </div>
+
+        <!-- Sub-zone B: Origin Story -->
+        <div class="op-approach__origin">
+            <div class="op-approach__origin-inner">
+                <div class="op-approach__origin-content op-fade-in">
+                    <span class="op-approach__label">The Founders</span>
+                    <p class="op-approach__origin-text">Our founders carried quota at Salesforce and LinkedIn, earning Presidents Club before most people learn what a pipeline is. They saw the same problem everywhere: brilliant sales teams drowning in manual research, copy-paste outreach, and CRMs that nobody trusts. So they built the system they wished they had.</p>
+                </div>
+                <div class="op-approach__origin-visual op-fade-in">
+                    <svg viewBox="0 0 320 280" fill="none">
+                        <!-- Abstract growth path -->
+                        <path class="op-approach__origin-path" d="M20,250 C60,250 80,220 100,200 S140,140 180,120 S240,80 280,30" stroke="url(#approachPathGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <!-- Milestone dots -->
+                        <g class="op-approach__origin-dot">
+                            <circle cx="20" cy="250" r="6" fill="#0F7A99" opacity="0.9"/>
+                            <circle cx="20" cy="250" r="12" fill="#0F7A99" opacity="0.15"/>
+                        </g>
+                        <g class="op-approach__origin-dot">
+                            <circle cx="100" cy="200" r="6" fill="#7B91FF" opacity="0.9"/>
+                            <circle cx="100" cy="200" r="12" fill="#7B91FF" opacity="0.15"/>
+                        </g>
+                        <g class="op-approach__origin-dot">
+                            <circle cx="180" cy="120" r="6" fill="#A9B8FF" opacity="0.9"/>
+                            <circle cx="180" cy="120" r="12" fill="#A9B8FF" opacity="0.15"/>
+                        </g>
+                        <g class="op-approach__origin-dot">
+                            <circle cx="280" cy="30" r="8" fill="#F37C38" opacity="0.9"/>
+                            <circle cx="280" cy="30" r="16" fill="#F37C38" opacity="0.15"/>
+                        </g>
+                        <!-- Subtle grid lines -->
+                        <line x1="0" y1="250" x2="320" y2="250" stroke="rgba(250,255,239,0.06)" stroke-width="1"/>
+                        <line x1="0" y1="180" x2="320" y2="180" stroke="rgba(250,255,239,0.04)" stroke-width="1"/>
+                        <line x1="0" y1="110" x2="320" y2="110" stroke="rgba(250,255,239,0.04)" stroke-width="1"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-zone C: Three Pillars -->
+        <div class="op-approach__pillars">
+            <div class="op-approach__pillars-inner">
+                <div class="op-approach__pillar op-fade-in">
+                    <div class="op-approach__pillar-accent"></div>
+                    <span class="op-approach__pillar-index">01 / 03</span>
+                    <h3 class="op-approach__pillar-title">We Lived It First</h3>
+                    <p class="op-approach__pillar-text">Years of carrying quota taught us what works and what breaks. Every system we build comes from real pipeline experience, not theory.</p>
+                </div>
+                <div class="op-approach__pillar op-fade-in" style="transition-delay: 0.15s;">
+                    <div class="op-approach__pillar-accent"></div>
+                    <span class="op-approach__pillar-index">02 / 03</span>
+                    <h3 class="op-approach__pillar-title">Systems, Not Slide Decks</h3>
+                    <p class="op-approach__pillar-text">We don't consult — we build. Automated revenue infrastructure with Clay workflows, AI enrichment, and CRM automations that run while your team sells.</p>
+                </div>
+                <div class="op-approach__pillar op-fade-in" style="transition-delay: 0.3s;">
+                    <div class="op-approach__pillar-accent"></div>
+                    <span class="op-approach__pillar-index">03 / 03</span>
+                    <h3 class="op-approach__pillar-title">Built to Compound</h3>
+                    <p class="op-approach__pillar-text">Every closed and lost deal feeds data back into the system. Targeting, messaging, and timing improve automatically. Your pipeline gets smarter every cycle.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sub-zone E: Toolkit + CTA -->
+        <div class="op-approach__toolkit">
+            <div class="op-approach__toolkit-inner">
+                <div class="op-approach__toolkit-header op-fade-in">
+                    <div>
+                        <span class="op-approach__label">Our Toolkit</span>
+                        <h3 class="op-approach__toolkit-headline">The stack behind every system we build</h3>
+                    </div>
+                </div>
+
+                <div class="op-approach__logo-grid">
+                    <!-- Clay -->
+                    <div class="op-approach__logo-card op-fade-in">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.prod.website-files.com/61477f2c24a826836f969afe/677c0a6767557563354e34a3_Clay%20icon.png" alt="Clay" loading="lazy">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Clay</div>
+                            <div class="op-approach__logo-card-role">Data Enrichment</div>
+                        </div>
+                    </div>
+
+                    <!-- Claude -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.05s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/claude.svg" alt="Claude" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Claude</div>
+                            <div class="op-approach__logo-card-role">AI Intelligence</div>
+                        </div>
+                    </div>
+
+                    <!-- n8n -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.1s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/n8n.svg" alt="n8n" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">n8n</div>
+                            <div class="op-approach__logo-card-role">Workflow Automation</div>
+                        </div>
+                    </div>
+
+                    <!-- Make -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.15s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/make.svg" alt="Make" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Make</div>
+                            <div class="op-approach__logo-card-role">Integration Platform</div>
+                        </div>
+                    </div>
+
+                    <!-- Instantly -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.2s;">
+                        <div class="op-approach__logo-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L4 14h5v7l9-11h-5V3z" fill="#0081FF"/></svg>
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Instantly</div>
+                            <div class="op-approach__logo-card-role">Outreach Automation</div>
+                        </div>
+                    </div>
+
+                    <!-- Salesforce -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.25s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/salesforce.svg" alt="Salesforce" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Salesforce</div>
+                            <div class="op-approach__logo-card-role">CRM Platform</div>
+                        </div>
+                    </div>
+
+                    <!-- HubSpot -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.3s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/hubspot.svg" alt="HubSpot" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">HubSpot</div>
+                            <div class="op-approach__logo-card-role">CRM Platform</div>
+                        </div>
+                    </div>
+
+                    <!-- Porkbun -->
+                    <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.35s;">
+                        <div class="op-approach__logo-card-icon">
+                            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/porkbun.svg" alt="Porkbun" loading="lazy" style="filter: brightness(0) saturate(100%) invert(25%) sepia(30%) saturate(900%) hue-rotate(155deg);">
+                        </div>
+                        <div class="op-approach__logo-card-info">
+                            <div class="op-approach__logo-card-name">Porkbun</div>
+                            <div class="op-approach__logo-card-role">Domain Management</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="op-approach__toolkit-bottom op-fade-in">
+                    <p class="op-approach__toolkit-note">Every tool is selected for reliability, API depth, and how well it compounds results over time.</p>
+                    <div class="op-approach__buttons">
+                        <a href="#" class="op-gradient-cta op-gradient-cta--dark" data-open-modal><span>Book a Workshop</span></a>
+                        <a href="#services" class="op-approach__button">Our Services</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <!-- CTA Section -->
@@ -2716,29 +3746,25 @@
                 <div class="op-modal__right">
                     <div class="op-modal__form-title">Send us your details</div>
                     <form id="contactForm" novalidate>
-                        <div class="op-modal__row">
-                            <div class="op-modal__field">
-                                <label for="cf-first">First Name</label>
-                                <input type="text" id="cf-first" name="first_name" placeholder="John" required>
-                            </div>
-                            <div class="op-modal__field">
-                                <label for="cf-last">Last Name</label>
-                                <input type="text" id="cf-last" name="last_name" placeholder="Doe" required>
-                            </div>
+                        <div class="op-modal__field">
+                            <label for="cf-first">First Name</label>
+                            <input type="text" id="cf-first" name="first_name" placeholder="John" required>
+                        </div>
+                        <div class="op-modal__field">
+                            <label for="cf-last">Last Name</label>
+                            <input type="text" id="cf-last" name="last_name" placeholder="Doe" required>
                         </div>
                         <div class="op-modal__field">
                             <label for="cf-email">Email</label>
                             <input type="email" id="cf-email" name="email" placeholder="john@company.com" required>
                         </div>
-                        <div class="op-modal__row">
-                            <div class="op-modal__field">
-                                <label for="cf-phone">Phone</label>
-                                <input type="tel" id="cf-phone" name="phone" placeholder="+1 (555) 000-0000">
-                            </div>
-                            <div class="op-modal__field">
-                                <label for="cf-company">Company</label>
-                                <input type="text" id="cf-company" name="company" placeholder="Your Company">
-                            </div>
+                        <div class="op-modal__field">
+                            <label for="cf-phone">Phone</label>
+                            <input type="tel" id="cf-phone" name="phone" placeholder="+1 (555) 000-0000">
+                        </div>
+                        <div class="op-modal__field">
+                            <label for="cf-company">Company</label>
+                            <input type="text" id="cf-company" name="company" placeholder="Your Company">
                         </div>
                         <div class="op-modal__field">
                             <label for="cf-service">Service Interest</label>
@@ -2775,7 +3801,7 @@
             <div class="op-footer__top">
                 <div>
                     <div class="op-footer__brand-name">
-                        <img src="logoforge-result (2).png" alt="" class="op-header__logo-img" aria-hidden="true">
+                        <img src="Ressources/images/logo_white.png" alt="Paioneers" class="op-header__logo-img" aria-hidden="true" width="32" height="32">
                         Paioneers
                     </div>
                     <address class="op-footer__address">
@@ -2786,6 +3812,28 @@
                     <a href="mailto:info@paioneers.nl" class="op-footer__contact-link">info@paioneers.nl</a>
                 </div>
                 <div>
+                    <h3 class="op-footer__newsletter-title">Join Our Newsletter</h3>
+                    <form class="op-footer__newsletter-form" id="newsletterForm">
+                        <div class="op-footer__newsletter-input-wrap">
+                            <input type="email" id="newsletterEmail" placeholder="Email" required class="op-footer__newsletter-input">
+                            <div class="op-footer__newsletter-icons">
+                                <svg class="op-footer__newsletter-clay" viewBox="0 0 24 24" fill="none">
+                                    <rect width="24" height="24" rx="4" fill="#E24A4A"/>
+                                    <circle cx="6" cy="12" r="1.5" fill="#fff"/>
+                                    <circle cx="10" cy="12" r="1.5" fill="#fff"/>
+                                    <circle cx="14" cy="12" r="1.5" fill="#fff"/>
+                                    <line x1="18" y1="8" x2="18" y2="16" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                                <button type="submit" class="op-footer__newsletter-submit" aria-label="Subscribe">
+                                    <svg viewBox="0 0 24 24" fill="none" class="op-footer__newsletter-arrow">
+                                        <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
                     <div class="op-footer__cta-box">
                         <div>
                             <div class="op-footer__cta-label">Certified</div>
@@ -2793,7 +3841,7 @@
                         </div>
                         <div>
                             <div class="op-footer__cta-label">Experience</div>
-                            <p class="op-footer__cta-text">Salesforce · LinkedIn · Juniper</p>
+                            <p class="op-footer__cta-text">Salesforce · LinkedIn · HPE · Mercedes-Benz · Juniper Networks</p>
                         </div>
                     </div>
                     <a href="#" class="op-footer__cta-button" data-open-modal>Book a Workshop</a>
@@ -2804,7 +3852,8 @@
                 <div class="op-footer__social">
                     <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
                     <a href="mailto:info@paioneers.nl">Email</a>
-                    <a href="#">YouTube</a>
+                    <!-- TODO: Replace with actual YouTube channel URL -->
+                    <a href="javascript:void(0)" aria-disabled="true">YouTube</a>
                 </div>
             </div>
         </div>
@@ -2859,14 +3908,13 @@
             }
 
             if (document.readyState === 'complete') {
-                // Already loaded (cached)
-                setTimeout(dismiss, 600);
+                dismiss();
             } else {
                 window.addEventListener('load', function() {
-                    setTimeout(dismiss, 400);
+                    setTimeout(dismiss, 100);
                 });
-                // Safety net: dismiss after 4s regardless
-                setTimeout(dismiss, 4000);
+                // Safety net: dismiss after 3s regardless
+                setTimeout(dismiss, 3000);
             }
         })();
 
@@ -2945,192 +3993,27 @@
         })();
 
         /* ============================================
-           SERVICES - Horizontal scroll with smooth transitions
+           SERVICES - Scroll-reveal for stacked items
            ============================================ */
         (function() {
-            var serviceData = [
-                { title: 'Bottleneck Workshop', text: 'A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don\'t walk out with at least 3 actionable insights, it\'s free.', linkText: 'Let\'s Talk',
-                  icon: '<circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2"/><circle cx="40" cy="40" r="12" fill="currentColor" opacity="0.3"/><path d="M40 12v16M40 52v16M12 40h16M52 40h16" stroke="currentColor" stroke-width="1.5"/><circle cx="40" cy="40" r="6" fill="currentColor"/><path d="M26 26l8 8M46 46l8 8M54 26l-8 8M34 46l-8 8" stroke="currentColor" stroke-width="1"/>' },
-                { title: 'Pipeline Accelerator', text: 'A fully automated outbound engine. AI-powered prospect research, hyper-personalised outreach across email and LinkedIn, and multi-channel sequencing — generating qualified meetings without your team writing a single email. 6 meetings guaranteed in 90 days.', linkText: 'Workshop',
-                  icon: '<path d="M12 60V20l56 20-56 20z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M20 52V28l36 12-36 12z" fill="currentColor" opacity="0.3"/><path d="M28 44V36l20 4-20 4z" fill="currentColor"/>' },
-                { title: 'Revenue Conversion Engine', text: 'AI infrastructure that prepares reps before every call, automates CRM updates and follow-ups after every interaction, and monitors your pipeline daily. No deal stalls without someone knowing about it. System live in 4 weeks.', linkText: 'Workshop',
-                  icon: '<circle cx="40" cy="40" r="28" stroke="currentColor" stroke-width="2" fill="none"/><path d="M28 28l24 0 0 24-24 0z" fill="currentColor" opacity="0.3" transform="rotate(45 40 40)"/><circle cx="40" cy="40" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="40" cy="40" r="4" fill="currentColor"/><path d="M40 16v8M40 56v8M16 40h8M56 40h8" stroke="currentColor" stroke-width="1.5"/>' }
-            ];
+            var items = document.querySelectorAll('.op-services__item');
+            if (!items.length) return;
 
-            var navItems = document.querySelectorAll('#servicesNav li');
-            var counter = document.getElementById('servicesCounter');
-            var titleEl = document.getElementById('serviceTitle');
-            var indexEl = document.getElementById('serviceIndex');
-            var textEl = document.getElementById('serviceText');
-            var iconEl = document.getElementById('serviceIcon');
-            var ghostEl = document.getElementById('servicesGhost');
-            var servicesSection = document.querySelector('.op-services');
-            var display = document.getElementById('servicesDisplay');
-            var videoWrap0 = document.getElementById('serviceVideoWrap0');
-            var videoWrap = document.getElementById('serviceVideoWrap');
-            var videoWrap2 = document.getElementById('serviceVideoWrap2');
-            var iconWrap = document.querySelector('.op-services__icon-wrap');
-            var bottleneckVideo = videoWrap0 ? videoWrap0.querySelector('video') : null;
-            var clayVideo = videoWrap ? videoWrap.querySelector('video') : null;
-            var revenueVideo = videoWrap2 ? videoWrap2.querySelector('video') : null;
-            var currentIdx = 0;
-            var isTransitioning = false;
-            var total = serviceData.length;
-
-            // Initialise: show bottleneck video on load (index 0)
-            if (videoWrap0) videoWrap0.classList.add('is-visible');
-            if (iconWrap) iconWrap.classList.add('show-video');
-
-            // Background positions: tab 0 (blue end) → tab 2 (salmon end)
-            var bgPositions = [
-                '100% 100%',   // Bottleneck Workshop    — blue (#aeb2ec)
-                '50% 50%',     // Pipeline Accelerator   — purple (#bba2c0)
-                '0% 0%'        // Revenue Conversion     — salmon (#d3866c)
-            ];
-
-            function padded(n) { return (n < 10 ? '0' : '') + n; }
-
-            function goToSlide(idx) {
-                if (idx === currentIdx || isTransitioning || idx < 0 || idx >= total) return;
-                isTransitioning = true;
-
-                // Start transition out
-                display.classList.add('is-transitioning');
-                servicesSection.style.backgroundPosition = bgPositions[idx];
-
-                // Update nav
-                navItems.forEach(function(n) { n.classList.remove('is-active'); });
-                navItems[idx].classList.add('is-active');
-
-                // Fade ghost number
-                if (ghostEl) ghostEl.style.opacity = '0';
-
-                setTimeout(function() {
-                    var num = padded(idx + 1);
-                    var label = num + ' / ' + padded(total);
-
-                    // Swap content
-                    if (counter) counter.textContent = label;
-                    if (indexEl) indexEl.textContent = label;
-                    if (ghostEl) { ghostEl.textContent = num; ghostEl.style.opacity = ''; }
-                    titleEl.textContent = serviceData[idx].title;
-                    textEl.textContent = serviceData[idx].text;
-                    iconEl.innerHTML = serviceData[idx].icon;
-
-                    // Show correct video per slide, hide otherwise
-                    if (videoWrap0) videoWrap0.classList.toggle('is-visible', idx === 0);
-                    if (videoWrap) videoWrap.classList.toggle('is-visible', idx === 1);
-                    if (videoWrap2) videoWrap2.classList.toggle('is-visible', idx === 2);
-                    if (iconWrap) iconWrap.classList.toggle('show-video', true);
-
-                    if (idx === 0) {
-                        if (bottleneckVideo) bottleneckVideo.play();
-                        if (clayVideo) clayVideo.pause();
-                        if (revenueVideo) revenueVideo.pause();
-                    } else if (idx === 1) {
-                        if (clayVideo) clayVideo.play();
-                        if (bottleneckVideo) bottleneckVideo.pause();
-                        if (revenueVideo) revenueVideo.pause();
-                    } else if (idx === 2) {
-                        if (revenueVideo) revenueVideo.play();
-                        if (bottleneckVideo) bottleneckVideo.pause();
-                        if (clayVideo) clayVideo.pause();
-                    }
-
-                    // Update CTA button
-                    var serviceCta = document.getElementById('serviceCta');
-                    if (serviceCta) {
-                        serviceCta.setAttribute('data-service', serviceData[idx].title);
-                        serviceCta.querySelector('span').textContent = serviceData[idx].linkText;
-                    }
-
-                    // Transition in
-                    display.classList.remove('is-transitioning');
-                    currentIdx = idx;
-
-                    setTimeout(function() {
-                        isTransitioning = false;
-                    }, 400);
-                }, 300);
+            if (!('IntersectionObserver' in window)) {
+                items.forEach(function(item) { item.classList.add('is-visible'); });
+                return;
             }
 
-            // Nav click
-            navItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    goToSlide(parseInt(item.getAttribute('data-index')));
-                });
-            });
-
-            // Horizontal scroll / swipe detection on services section
-            var touchStartX = 0;
-            var touchStartY = 0;
-            var wheelAccum = 0;
-            var wheelTimeout;
-
-            var isLocked = false;
-            var lockTimeout;
-
-            servicesSection.addEventListener('wheel', function(e) {
-                var delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-
-                // If we're locked mid-navigation, just prevent and wait
-                if (isLocked) {
-                    e.preventDefault();
-                    return;
-                }
-
-                wheelAccum += delta;
-                clearTimeout(wheelTimeout);
-                wheelTimeout = setTimeout(function() { wheelAccum = 0; }, 200);
-
-                var threshold = 80;
-
-                if (wheelAccum > threshold && currentIdx < serviceData.length - 1) {
-                    // Navigate forward — lock briefly so page doesn't also scroll
-                    e.preventDefault();
-                    goToSlide(currentIdx + 1);
-                    wheelAccum = 0;
-                    isLocked = true;
-                    clearTimeout(lockTimeout);
-                    lockTimeout = setTimeout(function() { isLocked = false; }, 700);
-                } else if (wheelAccum < -threshold && currentIdx > 0) {
-                    // Navigate backward
-                    e.preventDefault();
-                    goToSlide(currentIdx - 1);
-                    wheelAccum = 0;
-                    isLocked = true;
-                    clearTimeout(lockTimeout);
-                    lockTimeout = setTimeout(function() { isLocked = false; }, 700);
-                }
-                // At the edges (first or last slide) — do NOT prevent; let page scroll naturally
-            }, { passive: false });
-
-            // Touch swipe
-            servicesSection.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            servicesSection.addEventListener('touchend', function(e) {
-                var dx = e.changedTouches[0].clientX - touchStartX;
-                var dy = e.changedTouches[0].clientY - touchStartY;
-                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-                    if (dx < 0) goToSlide(currentIdx + 1);
-                    else goToSlide(currentIdx - 1);
-                }
-            }, { passive: true });
-
-            // Keyboard arrow support when section is in view
-            document.addEventListener('keydown', function(e) {
-                var rect = servicesSection.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5) {
-                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                        goToSlide(currentIdx + 1);
-                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                        goToSlide(currentIdx - 1);
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
                     }
-                }
-            });
+                });
+            }, { threshold: 0.15 });
+
+            items.forEach(function(item) { observer.observe(item); });
         })();
 
         /* ============================================
@@ -3168,7 +4051,16 @@
                 }
             }
 
-            window.addEventListener('scroll', updateProgress, { passive: true });
+            var scrollTicking = false;
+            window.addEventListener('scroll', function() {
+                if (!scrollTicking) {
+                    requestAnimationFrame(function() {
+                        updateProgress();
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
+                }
+            }, { passive: true });
             updateProgress(); // run once on load
 
             navItems.forEach(function(item) {
@@ -3194,6 +4086,135 @@
 
             document.querySelectorAll('.op-fade-in').forEach(function(el) {
                 observer.observe(el);
+            });
+        })();
+
+        /* ============================================
+           VAAS DASHBOARD - Animated counters
+           ============================================ */
+        (function() {
+            var counters = document.querySelectorAll('.op-vaas__counter');
+            if (!counters.length) return;
+
+            function animateCounter(el) {
+                var target = parseFloat(el.getAttribute('data-target'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var isFloat = String(target).indexOf('.') !== -1;
+                var duration = 1600;
+                var start = performance.now();
+
+                function tick(now) {
+                    var elapsed = now - start;
+                    var progress = Math.min(elapsed / duration, 1);
+                    // ease-out cubic
+                    var ease = 1 - Math.pow(1 - progress, 3);
+                    var current = target * ease;
+                    el.textContent = prefix + (isFloat ? current.toFixed(1) : Math.round(current)) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            counters.forEach(function(el) { observer.observe(el); });
+        })();
+
+        /* ============================================
+           BEFORE / AFTER COMPARISON SLIDER
+           ============================================ */
+        (function() {
+            var slider = document.getElementById('vaasSlider');
+            var handle = document.getElementById('vaasSliderHandle');
+            if (!slider || !handle) return;
+
+            var colThem = slider.querySelector('.op-vaas__col--them');
+            var colUs = slider.querySelector('.op-vaas__col--us');
+            var isDragging = false;
+
+            // Set initial position at 50%
+            function setPosition(pct) {
+                pct = Math.max(0, Math.min(100, pct));
+                slider.style.setProperty('--slider-pos', pct + '%');
+            }
+
+            // Sync heights: the "us" column is absolute, so the container
+            // height is driven by the "them" column. We need both to have
+            // enough room — use the taller of the two.
+            function syncHeight() {
+                // Temporarily make "us" position static to measure its natural height
+                colUs.style.position = 'static';
+                colUs.style.clipPath = 'none';
+                var usH = colUs.offsetHeight;
+                colUs.style.position = '';
+                colUs.style.clipPath = '';
+
+                var themH = colThem.offsetHeight;
+                var maxH = Math.max(themH, usH);
+                slider.style.minHeight = maxH + 'px';
+            }
+
+            setPosition(50);
+            // Delay initial sync to let everything render
+            setTimeout(syncHeight, 100);
+            window.addEventListener('resize', syncHeight);
+
+            // --- Pointer events (mouse + touch) ---
+            function getPercent(e) {
+                var rect = slider.getBoundingClientRect();
+                var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                return ((clientX - rect.left) / rect.width) * 100;
+            }
+
+            function onStart(e) {
+                e.preventDefault();
+                isDragging = true;
+                handle.classList.add('is-dragging');
+                setPosition(getPercent(e));
+            }
+
+            function onMove(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                setPosition(getPercent(e));
+            }
+
+            function onEnd() {
+                isDragging = false;
+                handle.classList.remove('is-dragging');
+            }
+
+            // Handle drag starts on the handle itself
+            handle.addEventListener('mousedown', onStart);
+            handle.addEventListener('touchstart', onStart, { passive: false });
+
+            // Also allow clicking anywhere on the slider to jump
+            slider.addEventListener('mousedown', function(e) {
+                if (e.target === handle || handle.contains(e.target)) return;
+                onStart(e);
+            });
+            slider.addEventListener('touchstart', function(e) {
+                if (e.target === handle || handle.contains(e.target)) return;
+                onStart(e);
+            }, { passive: false });
+
+            // Track moves and release on document level
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchend', onEnd);
+
+            // Prevent text selection while dragging
+            slider.addEventListener('selectstart', function(e) {
+                if (isDragging) e.preventDefault();
             });
         })();
 
@@ -3287,8 +4308,12 @@
             });
 
             // Form submission with EmailJS
+            var formCooldown = false;
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
+
+                // Rate limiting: prevent resubmission for 30 seconds
+                if (formCooldown) return;
 
                 // Basic validation
                 var firstName = document.getElementById('cf-first').value.trim();
@@ -3315,6 +4340,8 @@
 
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Sending...';
+                formCooldown = true;
+                setTimeout(function() { formCooldown = false; }, 30000);
 
                 // EmailJS send
                 // -----------------------------------------------------------
@@ -3343,8 +4370,8 @@
                 // Check if EmailJS is loaded and configured
                 if (typeof emailjs !== 'undefined') {
                     emailjs.send(
-                        'YOUR_SERVICE_ID',    // Replace with your EmailJS service ID
-                        'YOUR_TEMPLATE_ID',   // Replace with your EmailJS template ID
+                        'service_ieyl6pb',
+                        'template_595ckqo',
                         templateParams
                     ).then(function() {
                         showSuccess();
@@ -3382,15 +4409,31 @@
                 form.reset();
             }
         })();
+
+        // Newsletter form submission handler
+        (function() {
+            var form = document.getElementById('newsletterForm');
+            var emailInput = document.getElementById('newsletterEmail');
+            if (form && emailInput) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var email = emailInput.value.trim();
+                    if (email) {
+                        window.location.href = 'mailto:info@paioneers.nl?subject=Newsletter Subscription&body=Please add my email to your newsletter: ' + encodeURIComponent(email);
+                        form.reset();
+                    }
+                });
+            }
+        })();
     </script>
 
     <!-- EmailJS SDK - Replace YOUR_PUBLIC_KEY with your actual key from emailjs.com -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous">
     <script>
         // Initialize EmailJS with your public key
         // Get this from: https://dashboard.emailjs.com/admin/account
         if (typeof emailjs !== 'undefined') {
-            emailjs.init('YOUR_PUBLIC_KEY');
+            emailjs.init('F9i7fSIFN92ZRBX-p');
         }
     </script>
 </body>
