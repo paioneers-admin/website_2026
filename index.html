@@ -1746,6 +1746,10 @@
             align-items: center;
         }
 
+        .op-cta__title-wrap {
+            margin-bottom: 24px;
+        }
+
         .op-cta__sep {
             width: 1px;
             height: 80px;
@@ -1757,7 +1761,7 @@
             font-size: clamp(42px, 5vw, 64px);
             font-weight: 300;
             line-height: 1.1;
-            margin-bottom: 24px;
+            margin-bottom: 0;
         }
 
         .op-cta__text {
@@ -2306,7 +2310,7 @@
             .op-header__nav { display: none; }
             .op-header__hamburger { display: flex; }
 
-            .op-hero__inner { grid-template-columns: 1fr; padding: 0 24px; }
+            .op-hero__inner { grid-template-columns: 1fr; padding: 100px 24px 0; }
             .op-hero__visual {
                 position: relative;
                 right: 0;
@@ -2317,12 +2321,18 @@
                 top: 0;
             }
 
+            .op-stats { padding: 64px 0; }
             .op-stats__inner { padding: 0 24px; }
             .op-stats__content-col { grid-template-columns: 1fr; }
 
+            .op-vaas { padding: 64px 0 80px; }
             .op-vaas__inner { padding: 0 24px; gap: 40px; }
             .op-vaas__lower-grid { grid-template-columns: 1fr; }
             .op-vaas__gauge-col { border-right: none; border-bottom: 1px solid rgba(15, 122, 153, 0.35); }
+            .op-vaas__gauge-wrap svg { display: none; }
+            .op-vaas__gauge-number { position: static; transform: none; font-size: 32px; line-height: 1; }
+            .op-vaas__gauge-wrap { width: auto; display: flex; align-items: center; }
+            .op-vaas__gauge-range { display: none; }
             .op-vaas__metrics-grid { grid-template-columns: repeat(2, 1fr); }
 
             .op-services__inner { padding: 0 24px; }
@@ -2341,8 +2351,22 @@
             .op-approach__buttons { justify-content: flex-start; }
             .op-approach__quote { font-size: 18px; padding-left: 20px; }
 
+            .op-cta { padding: 64px 0; }
             .op-cta__inner { grid-template-columns: 1fr; padding: 0 24px; }
             .op-cta__graphics { display: none; }
+            
+            .op-cta__title-wrap {
+                display: flex;
+                gap: 16px;
+                align-items: stretch;
+                margin-bottom: 20px;
+            }
+            .op-cta__sep { 
+                height: auto; 
+                width: 2px;
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
 
             .op-footer__inner { padding: 0 24px; }
             .op-footer__top { grid-template-columns: 1fr; gap: 40px; }
@@ -3159,7 +3183,7 @@
             <div class="op-hero__text-col">
                 <h1 class="op-hero__headline">Your Sales Team Spends More Time Researching Than Selling</h1>
                 <p class="op-hero__text">We build AI-powered revenue systems that automate prospect research, personalise outreach at scale, and keep every deal moving — so your team focuses on selling.</p>
-                <button type="button" class="op-hero__button" data-open-modal>Book a Bottleneck Workshop</button>
+                <button type="button" class="op-hero__button" data-open-modal>Book Workshop</button>
             </div>
         </div>
         <div class="op-hero__visual" aria-hidden="true">
@@ -3689,8 +3713,10 @@
     <section class="op-cta" id="cta">
         <div class="op-cta__inner">
             <div class="op-fade-in">
-                <div class="op-cta__sep"></div>
-                <h2 class="op-cta__headline">Let's Find Where Your Pipeline Leaks</h2>
+                <div class="op-cta__title-wrap">
+                    <div class="op-cta__sep"></div>
+                    <h2 class="op-cta__headline">Let's Find Where Your Pipeline Leaks</h2>
+                </div>
                 <p class="op-cta__text">The Bottleneck Workshop maps your sales process in half a day and gives you a prioritised roadmap within a week. If you don't walk away with at least 3 actionable insights, it's free.</p>
                 <a href="#" class="op-gradient-cta" data-open-modal><span>Workshop</span></a>
             </div>
@@ -4205,15 +4231,11 @@
             handle.addEventListener('mousedown', onStart);
             handle.addEventListener('touchstart', onStart, { passive: false });
 
-            // Also allow clicking anywhere on the slider to jump
+            // Also allow clicking anywhere on the slider to jump (mouse/desktop only)
             slider.addEventListener('mousedown', function(e) {
                 if (e.target === handle || handle.contains(e.target)) return;
                 onStart(e);
             });
-            slider.addEventListener('touchstart', function(e) {
-                if (e.target === handle || handle.contains(e.target)) return;
-                onStart(e);
-            }, { passive: false });
 
             // Track moves and release on document level
             document.addEventListener('mousemove', onMove);
@@ -4437,7 +4459,7 @@
     </script>
 
     <!-- EmailJS SDK - Replace YOUR_PUBLIC_KEY with your actual key from emailjs.com -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous"></script>
     <script>
         // Initialize EmailJS with your public key
         // Get this from: https://dashboard.emailjs.com/admin/account
