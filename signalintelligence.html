@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Intelligence — 4-Layer ICP Market Monitoring | Paioneers</title>
+    <meta name="description" content="Custom monitoring infrastructure tracks Industry, Account, Persona, Lead signals to spot demand early. Built for B2B consultancies.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.emailjs.com;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="Ressources/images/logoblack.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ─────────────────────────────────────────────
+           DESIGN TOKENS — 8pt grid, modular type scale
+           ───────────────────────────────────────────── */
+        :root {
+            /* Brand */
+            --cream:      #FAFFEF;
+            --dark-teal:  #032C2D;
+            --teal:       #0F7A99;
+            --periwinkle: #A9B8FF;
+            --orange:     #F37C38;
+            --blue:       #5B8DEF;
+
+            /* Spectrum (gradient section) */
+            --s1:#d3866c; --s2:#cf8b7d; --s3:#c89495;
+            --s4:#c29baa; --s5:#bba2c0; --s6:#b5aad7; --s7:#aeb2ec;
+
+            /* Fonts */
+            --sans: 'IBM Plex Sans', sans-serif;
+            --mono: 'IBM Plex Mono', monospace;
+
+            /* Modular type scale (1.25 ratio) */
+            --t-xs:  11px;
+            --t-sm:  13px;
+            --t-md:  16px;
+            --t-lg:  20px;
+            --t-xl:  clamp(28px, 3.5vw, 44px);
+            --t-2xl: clamp(36px, 5vw, 64px);
+            --t-3xl: clamp(48px, 6.5vw, 80px);
+
+            /* 8pt spacing scale */
+            --sp-1: 8px;   --sp-2: 16px;  --sp-3: 24px;
+            --sp-4: 32px;  --sp-5: 40px;  --sp-6: 48px;
+            --sp-7: 56px;  --sp-8: 64px;  --sp-10: 80px;
+            --sp-12: 96px; --sp-15: 120px;
+
+            /* Easing */
+            --ease:    cubic-bezier(0.4, 0, 0.2, 1);
+            --spring:  cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+            /* Radius */
+            --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+
+            /* Z-index scale */
+            --z-base: 0; --z-above: 10; --z-overlay: 100; --z-fixed: 1000;
+        }
+
+        /* ─── Reset ─── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--sans);
+            background: var(--cream);
+            color: var(--dark-teal);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ─────────────────────────────────────────────
+           SKIP LINK (accessibility)
+           ───────────────────────────────────────────── */
+        .skip-link {
+            position: absolute; top: -100%; left: var(--sp-2);
+            background: var(--dark-teal); color: var(--cream);
+            padding: var(--sp-1) var(--sp-2); font-size: var(--t-sm);
+            border-radius: 0 0 var(--r-sm) var(--r-sm);
+            z-index: calc(var(--z-fixed) + 10);
+            transition: top 0.2s;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* ─────────────────────────────────────────────
+           HEADER
+           ───────────────────────────────────────────── */
+        .hdr {
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: var(--z-fixed);
+            padding: var(--sp-4) 60px;
+            transition: background .35s var(--ease), padding .35s var(--ease), box-shadow .35s var(--ease);
+        }
+        .hdr.scrolled {
+            background: rgba(250,255,239,0.94);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            padding: var(--sp-2) 60px;
+            box-shadow: 0 1px 0 rgba(3,44,45,.08), 0 4px 20px rgba(3,44,45,.04);
+        }
+        .hdr__inner {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .hdr__logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: var(--t-md); font-weight: 600; color: var(--dark-teal);
+            letter-spacing: -0.01em;
+        }
+        .hdr__logo img { width: 32px; height: 32px; }
+        .hdr__nav { display: flex; align-items: center; gap: var(--sp-5); }
+        .hdr__link {
+            font-size: var(--t-sm); color: var(--dark-teal);
+            opacity: .6; transition: opacity .2s var(--ease);
+            cursor: pointer;
+        }
+        .hdr__link:hover, .hdr__link:focus-visible { opacity: 1; outline: none; }
+        .hdr__link:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px; }
+        .hdr__cta {
+            padding: 9px 20px;
+            border: 1px solid rgba(3,44,45,.7);
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em; color: var(--dark-teal);
+            border-radius: var(--r-sm);
+            transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+        }
+        .hdr__cta:hover, .hdr__cta:focus-visible {
+            background: var(--dark-teal); color: var(--cream); outline: none;
+        }
+        .hdr__cta:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+
+        /* ─────────────────────────────────────────────
+           GRADIENT CTA BUTTON
+           ───────────────────────────────────────────── */
+        /* Primary filled CTA — dark-teal bg, cream text */
+        .gcta {
+            position: relative; display: inline-flex;
+            align-items: center; justify-content: center;
+            padding: 14px 32px;
+            font-family: var(--mono); font-size: var(--t-sm);
+            text-transform: uppercase; letter-spacing: .15em;
+            color: var(--cream); cursor: pointer;
+            background: var(--dark-teal);
+            overflow: hidden; border: none; isolation: isolate;
+            border-radius: 2px;
+            transition: background .25s var(--ease), letter-spacing .35s var(--ease);
+        }
+        .gcta::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--teal), var(--periwinkle), var(--orange));
+            clip-path: polygon(0 0,calc(100% - 20px) 0,100% 50%,calc(100% - 20px) 100%,0 100%,20px 50%);
+            opacity: 0; transform: scaleX(.92); transform-origin: left center;
+            transition: opacity .35s var(--ease), transform .35s var(--spring);
+            z-index: 0;
+        }
+        .gcta span { position: relative; z-index: 1; transition: letter-spacing .35s var(--ease); }
+        .gcta:hover::after, .gcta:focus-visible::after { opacity: 1; transform: scaleX(1); }
+        .gcta:hover span, .gcta:focus-visible span { letter-spacing: .2em; }
+        .gcta:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+
+        /* Secondary outline CTA — used for the second hero action */
+        .gcta--outline {
+            background: transparent;
+            box-shadow: inset 0 0 0 1.5px rgba(3,44,45,.35);
+            color: var(--dark-teal);
+        }
+        .gcta--outline::after {
+            background: linear-gradient(90deg, var(--dark-teal), rgba(3,44,45,.7));
+        }
+        .gcta--outline:hover span, .gcta--outline:focus-visible span { color: var(--cream); }
+        .gcta--outline:focus-visible { outline-color: var(--dark-teal); }
+
+        /* prefers-reduced-motion: disable all non-essential motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .ticker__track { animation: none !important; }
+        }
+
+        /* ─────────────────────────────────────────────
+           HERO — full-viewport, dark, premium
+           ───────────────────────────────────────────── */
+        .hero {
+            background: var(--cream);
+            color: var(--dark-teal);
+            min-height: 100dvh;
+            display: flex; align-items: center;
+            padding: var(--sp-15) 60px var(--sp-10);
+            position: relative; overflow: hidden;
+        }
+
+        /* Subtle noise texture overlay */
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 0;
+        }
+
+        /* Ambient glows */
+        .hero__glow-1 {
+            position: absolute; top: -20%; right: -5%;
+            width: 720px; height: 720px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(15,122,153,.22) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+        .hero__glow-2 {
+            position: absolute; bottom: -20%; left: -8%;
+            width: 560px; height: 560px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(169,184,255,.18) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+        .hero__glow-3 {
+            position: absolute; top: 40%; left: 40%;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(243,124,56,.1) 0%, transparent 65%);
+            pointer-events: none; z-index: 0;
+        }
+
+        .hero__inner {
+            max-width: 1400px; margin: 0 auto; width: 100%;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: var(--sp-10); align-items: center;
+            position: relative; z-index: 1;
+        }
+
+        .hero__kicker {
+            display: inline-flex; align-items: center; gap: var(--sp-2);
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .16em;
+            color: var(--teal); margin-bottom: var(--sp-3);
+            opacity: 0; animation: fadeUp .6s var(--spring) .1s forwards;
+        }
+        .hero__kicker-line {
+            width: 28px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--teal));
+        }
+        .hero__kicker-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--orange); flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(243,124,56,.5);
+        }
+
+        .hero h1 {
+            font-size: var(--t-3xl);
+            font-weight: 200; line-height: 1.05;
+            letter-spacing: -.04em; margin-bottom: var(--sp-4);
+            opacity: 0; animation: fadeUp .7s var(--spring) .2s forwards;
+        }
+        .hero h1 strong {
+            font-weight: 300;
+            background: linear-gradient(115deg, var(--teal) 0%, var(--periwinkle) 50%, var(--orange) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .hero__body {
+            font-size: 18px; line-height: 1.8; font-weight: 300;
+            color: rgba(3,44,45,.62); max-width: 480px;
+            margin-bottom: var(--sp-5);
+            opacity: 0; animation: fadeUp .7s var(--spring) .3s forwards;
+        }
+
+        .hero__actions {
+            display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
+            opacity: 0; animation: fadeUp .7s var(--spring) .4s forwards;
+        }
+
+        .hero__secondary-cta {
+            display: flex; align-items: center; gap: var(--sp-1);
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(3,44,45,.45);
+            border-bottom: 1px solid rgba(3,44,45,.18);
+            padding-bottom: 2px;
+            transition: color .25s var(--ease), border-color .25s var(--ease);
+        }
+        .hero__secondary-cta:hover, .hero__secondary-cta:focus-visible {
+            color: rgba(3,44,45,.75); border-color: rgba(3,44,45,.4);
+        }
+        .hero__secondary-cta:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 2px; }
+        .hero__secondary-cta svg { width: 10px; height: 10px; transition: transform .25s var(--ease); }
+        .hero__secondary-cta:hover svg { transform: translateX(3px); }
+
+        .hero__proof {
+            display: flex; align-items: center; gap: var(--sp-2);
+            margin-top: var(--sp-3);
+            font-family: var(--mono); font-size: var(--t-xs);
+            color: rgba(3,44,45,.38); letter-spacing: .05em;
+            opacity: 0; animation: fadeUp .7s var(--spring) .5s forwards;
+        }
+        .hero__proof-sep { opacity: .3; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Hero signal panel ── */
+        .hero__panel {
+            background: var(--dark-teal);
+            border: 1px solid rgba(15,122,153,.3);
+            border-radius: var(--r-xl);
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,.04) inset,
+                0 24px 48px rgba(3,44,45,.18),
+                0 64px 120px rgba(3,44,45,.12);
+            opacity: 0; animation: panelIn .8s var(--spring) .5s forwards;
+        }
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(24px) scale(.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .hero__panel-bar {
+            padding: 12px var(--sp-3);
+            background: rgba(255,255,255,.04);
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            display: flex; align-items: center; gap: var(--sp-1);
+        }
+        .hero__panel-dots { display: flex; gap: 6px; }
+        .hero__panel-dots span {
+            width: 11px; height: 11px; border-radius: 50%;
+        }
+        .hero__panel-dots span:nth-child(1) { background: rgba(255,95,87,.55); }
+        .hero__panel-dots span:nth-child(2) { background: rgba(255,189,46,.45); }
+        .hero__panel-dots span:nth-child(3) { background: rgba(40,200,64,.4); }
+        .hero__panel-title {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .12em;
+            color: rgba(250,255,239,.3); margin-left: 6px;
+        }
+        .hero__panel-live {
+            margin-left: auto;
+            display: flex; align-items: center; gap: 6px;
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(52,211,153,.7);
+        }
+        .hero__panel-live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: rgba(52,211,153,.8);
+            box-shadow: 0 0 0 3px rgba(52,211,153,.12);
+            animation: livePulse 2.4s ease-in-out infinite;
+        }
+        @keyframes livePulse {
+            0%,100% { box-shadow: 0 0 0 3px rgba(52,211,153,.12); }
+            50%      { box-shadow: 0 0 0 7px rgba(52,211,153,.04); }
+        }
+
+        .hero__panel-body { padding: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-1); }
+
+        /* Signal cards */
+        .sig-card {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: var(--r-md);
+            opacity: 0; transform: translateX(20px);
+            animation: cardIn .5s var(--spring) forwards;
+            transition: background .2s var(--ease), border-color .2s var(--ease);
+            cursor: default;
+        }
+        .sig-card:hover {
+            background: rgba(255,255,255,.07);
+            border-color: rgba(255,255,255,.1);
+        }
+        .sig-card:nth-child(1) { animation-delay: .6s; }
+        .sig-card:nth-child(2) { animation-delay: .72s; }
+        .sig-card:nth-child(3) { animation-delay: .84s; }
+        .sig-card:nth-child(4) { animation-delay: .96s; }
+        .sig-card:nth-child(5) { animation-delay: 1.08s; }
+        @keyframes cardIn { to { opacity: 1; transform: translateX(0); } }
+
+        .sig-card__dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            flex-shrink: 0; margin-top: 5px;
+        }
+        .sig-card__content { flex: 1; min-width: 0; }
+        .sig-card__layer {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .13em;
+            color: rgba(250,255,239,.3); margin-bottom: 3px;
+        }
+        .sig-card__text {
+            font-size: 13px; font-weight: 400;
+            color: rgba(250,255,239,.78);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+        .sig-card__badge {
+            flex-shrink: 0; align-self: center;
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .08em;
+            padding: 3px 8px; border-radius: 100px;
+            background: rgba(255,255,255,.07); color: rgba(250,255,239,.38);
+            white-space: nowrap; border: 1px solid rgba(255,255,255,.05);
+        }
+
+        /* Layer pulse bars */
+        .hero__panel-layers {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+        .hero__panel-layer {
+            padding: 12px 14px;
+            border-right: 1px solid rgba(255,255,255,.04);
+            text-align: center;
+        }
+        .hero__panel-layer:last-child { border-right: none; }
+        .hero__panel-layer-name {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(250,255,239,.65); margin-bottom: 7px;
+        }
+        .hero__panel-layer:nth-child(1) .hero__panel-layer-name { color: rgba(243,124,56,.85); }
+        .hero__panel-layer:nth-child(2) .hero__panel-layer-name { color: rgba(15,122,153,.9); }
+        .hero__panel-layer:nth-child(3) .hero__panel-layer-name { color: rgba(169,184,255,.85); }
+        .hero__panel-layer:nth-child(4) .hero__panel-layer-name { color: rgba(91,141,239,.9); }
+        .hero__panel-layer-track {
+            height: 3px; background: rgba(255,255,255,.07);
+            border-radius: 100px; overflow: hidden;
+        }
+        .hero__panel-layer-fill {
+            height: 100%; border-radius: 100px;
+            transform: scaleX(0); transform-origin: left;
+            animation: barGrow .9s var(--spring) forwards;
+        }
+        .hero__panel-layer:nth-child(1) .hero__panel-layer-fill { background: var(--orange);    width:28%; animation-delay:1.2s; }
+        .hero__panel-layer:nth-child(2) .hero__panel-layer-fill { background: var(--teal);      width:56%; animation-delay:1.35s; }
+        .hero__panel-layer:nth-child(3) .hero__panel-layer-fill { background: var(--periwinkle);width:72%; animation-delay:1.5s; }
+        .hero__panel-layer:nth-child(4) .hero__panel-layer-fill { background: var(--blue);      width:89%; animation-delay:1.65s; }
+        @keyframes barGrow { to { transform: scaleX(1); } }
+
+        /* ─────────────────────────────────────────────
+           TICKER / MARQUEE
+           ───────────────────────────────────────────── */
+        .ticker {
+            background: var(--dark-teal);
+            border-top: 1px solid rgba(15,122,153,.18);
+            border-bottom: 1px solid rgba(15,122,153,.18);
+            padding: 14px 0; overflow: hidden;
+            position: relative; z-index: var(--z-above);
+        }
+        .ticker__track {
+            display: flex; gap: var(--sp-8);
+            animation: marquee 30s linear infinite;
+            white-space: nowrap; will-change: transform;
+        }
+        .ticker__track:hover { animation-play-state: paused; }
+        @keyframes marquee { to { transform: translateX(-50%); } }
+        .ticker__item {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(250,255,239,.3); flex-shrink: 0;
+        }
+        .ticker__dot {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: var(--teal); opacity: .5; flex-shrink: 0;
+        }
+
+        /* ─────────────────────────────────────────────
+           SHARED SECTION LAYOUT
+           ───────────────────────────────────────────── */
+        .sec { padding: var(--sp-15) 60px; }
+        .sec__inner { max-width: 1400px; margin: 0 auto; }
+        .sec--dark  { background: var(--dark-teal); color: var(--cream); }
+        .sec--light { background: var(--cream); }
+        .sec--gradient {
+            background: linear-gradient(135deg,
+                var(--s1) 0%, var(--s2) 14%, var(--s3) 28%,
+                var(--s4) 42%, var(--s5) 56%, var(--s6) 70%, var(--s7) 100%);
+        }
+
+        .sec__eyebrow {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .16em;
+            opacity: .5; margin-bottom: var(--sp-2);
+        }
+        .sec__eyebrow-dot {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: currentColor; opacity: .6; flex-shrink: 0;
+        }
+        .sec--dark .sec__eyebrow { color: var(--periwinkle); opacity: .85; }
+        .sec--gradient .sec__eyebrow { color: var(--dark-teal); opacity: .55; }
+
+        .sec h2 {
+            font-size: var(--t-2xl);
+            font-weight: 200; line-height: 1.08;
+            letter-spacing: -.035em; margin-bottom: var(--sp-2);
+        }
+        .sec__lead {
+            font-size: 17px; line-height: 1.8; font-weight: 300;
+            max-width: 600px; margin-bottom: var(--sp-8);
+        }
+        .sec--dark .sec__lead  { color: rgba(250,255,239,.6); }
+        .sec--light .sec__lead { color: rgba(3,44,45,.62); }
+        .sec--gradient .sec__lead { color: rgba(3,44,45,.65); }
+
+        /* ─────────────────────────────────────────────
+           WHAT IS SI — intro 2-col
+           ───────────────────────────────────────────── */
+        .intro__grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: var(--sp-10); align-items: center;
+        }
+
+        .intro__stat-row {
+            display: flex; gap: var(--sp-4); margin-top: var(--sp-5);
+        }
+        .intro__stat {
+            flex: 1; padding: var(--sp-3) var(--sp-4);
+            background: rgba(15,122,153,.06);
+            border: 1px solid rgba(15,122,153,.12);
+            border-radius: var(--r-md);
+        }
+        .intro__stat-val {
+            font-size: 28px; font-weight: 300; letter-spacing: -.02em;
+            color: var(--teal); line-height: 1; margin-bottom: 4px;
+        }
+        .intro__stat-label {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(3,44,45,.5);
+        }
+
+        /* Visual — flow diagram */
+        .intro__vis {
+            background: var(--dark-teal);
+            border-radius: var(--r-xl); padding: var(--sp-6) var(--sp-5);
+            border: 1px solid rgba(15,122,153,.15);
+            box-shadow: 0 20px 60px rgba(3,44,45,.14), 0 0 0 1px rgba(255,255,255,.02) inset;
+        }
+        .intro__vis-label {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .13em;
+            color: rgba(250,255,239,.35); margin-bottom: var(--sp-3);
+        }
+        .flow-steps { display: flex; flex-direction: column; gap: 0; }
+        .flow-step {
+            display: flex; align-items: stretch; gap: 0;
+        }
+        .flow-step__connector {
+            display: flex; flex-direction: column; align-items: center;
+            width: 36px; flex-shrink: 0;
+        }
+        .flow-step__num {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: 10px; font-weight: 500;
+            flex-shrink: 0; margin-top: 10px;
+        }
+        .flow-step:nth-child(1) .flow-step__num { background: rgba(243,124,56,.2); color: #F37C38; border: 1px solid rgba(243,124,56,.3); }
+        .flow-step:nth-child(2) .flow-step__num { background: rgba(15,122,153,.2); color: var(--teal); border: 1px solid rgba(15,122,153,.3); }
+        .flow-step:nth-child(3) .flow-step__num { background: rgba(169,184,255,.15); color: var(--periwinkle); border: 1px solid rgba(169,184,255,.25); }
+        .flow-step:nth-child(4) .flow-step__num { background: rgba(52,211,153,.15); color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+
+        .flow-step__line {
+            width: 1px; flex: 1; min-height: 16px;
+            background: linear-gradient(to bottom, rgba(255,255,255,.08), rgba(255,255,255,.04));
+            margin: 0 auto;
+        }
+        .flow-step:last-child .flow-step__line { display: none; }
+
+        .flow-step__body {
+            flex: 1; padding: 10px 0 var(--sp-3) var(--sp-2);
+        }
+        .flow-step__title {
+            font-size: var(--t-sm); font-weight: 500;
+            color: rgba(250,255,239,.85); margin-bottom: 3px;
+        }
+        .flow-step__desc {
+            font-size: 12px; line-height: 1.6;
+            color: rgba(250,255,239,.42);
+        }
+
+        /* ─────────────────────────────────────────────
+           5-STEP PROCESS
+           ───────────────────────────────────────────── */
+        .steps {
+            display: grid; grid-template-columns: repeat(5,1fr);
+            margin-top: var(--sp-8);
+            position: relative;
+        }
+        /* top rule with gradient */
+        .steps::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%, rgba(15,122,153,.35) 25%,
+                rgba(169,184,255,.35) 50%, rgba(15,122,153,.35) 75%, transparent 100%);
+        }
+
+        .step {
+            padding: var(--sp-5) var(--sp-4) var(--sp-5);
+            border-right: 1px solid rgba(255,255,255,.06);
+            position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(18px);
+            transition: opacity .5s var(--spring), transform .5s var(--spring);
+        }
+        .step.visible { opacity: 1; transform: translateY(0); }
+        .step:last-child { border-right: none; }
+
+        /* Ghost number behind content */
+        .step::before {
+            content: attr(data-num);
+            position: absolute; top: var(--sp-3); right: var(--sp-2);
+            font-family: var(--mono); font-size: 64px; font-weight: 600;
+            line-height: 1; letter-spacing: -.04em;
+            color: rgba(255,255,255,.03); pointer-events: none;
+            user-select: none; transition: color .4s var(--ease);
+        }
+        .step:hover::before { color: rgba(255,255,255,.055); }
+
+        .step__num {
+            font-family: var(--mono); font-size: var(--t-xs);
+            color: var(--teal); letter-spacing: .1em;
+            margin-bottom: var(--sp-3);
+        }
+        .step__icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(15,122,153,.1);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: var(--sp-3);
+            transition: background .3s var(--ease), transform .3s var(--spring);
+        }
+        .step:hover .step__icon { background: rgba(15,122,153,.2); transform: scale(1.08); }
+        .step__icon svg { width: 18px; height: 18px; color: var(--teal); stroke-width: 1.5; }
+        .step h3 { font-size: var(--t-md); font-weight: 500; margin-bottom: var(--sp-1); color: var(--cream); letter-spacing: -.01em; }
+        .step p { font-size: var(--t-sm); line-height: 1.65; color: rgba(250,255,239,.5); }
+
+        /* ─────────────────────────────────────────────
+           4 LAYERS — UNIFIED INTERACTIVE VISUALIZATION
+           ───────────────────────────────────────────── */
+        .layers-sec { background: var(--cream); padding: var(--sp-15) 60px var(--sp-10); }
+        .layers-hdr { max-width: 1400px; margin: 0 auto var(--sp-8); }
+        .layers-hdr__eyebrow {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .16em;
+            color: var(--teal); opacity: .8; margin-bottom: var(--sp-2);
+        }
+        .layers-hdr__eyebrow-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--teal); }
+        .layers-hdr h2 {
+            font-size: var(--t-2xl);
+            font-weight: 200; line-height: 1.08;
+            letter-spacing: -.035em; color: var(--dark-teal);
+        }
+
+        /* ── Unified layout: text col + vis col ── */
+        .layers-layout {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: var(--sp-10); align-items: start;
+        }
+
+        /* ── Left: text content, cross-fades on layer change ── */
+        .layer-text {
+            position: relative;
+        }
+        .layer-text__panel {
+            display: none;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity .3s var(--ease), transform .3s var(--spring);
+        }
+        .layer-text__panel.active { display: block; }
+        .layer-text__panel.entering { opacity: 1; transform: translateY(0); }
+
+        .layer-text__eyebrow {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--teal); margin-bottom: var(--sp-2);
+        }
+        .layer-text__panel h3 {
+            font-size: clamp(26px, 3vw, 40px);
+            font-weight: 300; line-height: 1.15; letter-spacing: -.025em;
+            color: var(--dark-teal); margin-bottom: var(--sp-2);
+        }
+        .layer-text__body {
+            font-size: var(--t-md); line-height: 1.78; font-weight: 300;
+            color: rgba(3,44,45,.6); margin-bottom: var(--sp-4); max-width: 460px;
+        }
+        .layer-text__list { display: flex; flex-direction: column; gap: 14px; }
+        .layer-text__item {
+            display: flex; align-items: flex-start; gap: 12px;
+            font-size: var(--t-sm); line-height: 1.6; color: rgba(3,44,45,.72);
+        }
+        .layer-text__check {
+            flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+            background: rgba(15,122,153,.13);
+            display: flex; align-items: center; justify-content: center; margin-top: 1px;
+            transition: background .2s var(--ease);
+        }
+        .layer-text__item:hover .layer-text__check { background: rgba(15,122,153,.22); }
+        .layer-text__check svg { width: 10px; height: 10px; color: var(--teal); stroke-width: 3; }
+
+        /* ── Right: single interactive visualization card ── */
+        .layers-vis-card {
+            background: #fff;
+            border: 1px solid rgba(3,44,45,.09);
+            border-radius: var(--r-xl); overflow: hidden;
+            box-shadow:
+                0 2px 4px rgba(3,44,45,.03),
+                0 8px 24px rgba(3,44,45,.07),
+                0 40px 80px rgba(3,44,45,.07);
+            position: sticky; top: 100px;
+        }
+
+        /* ── Card chrome bar with macOS dots + layer switcher ── */
+        .layers-vis-bar {
+            padding: 12px var(--sp-3);
+            background: #f7f8f6;
+            border-bottom: 1px solid rgba(3,44,45,.07);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .layers-vis-bar__dots { display: flex; gap: 5px; flex-shrink: 0; }
+        .layers-vis-bar__dots span { width: 10px; height: 10px; border-radius: 50%; }
+        .layers-vis-bar__dots span:nth-child(1) { background: rgba(255,95,87,.5); }
+        .layers-vis-bar__dots span:nth-child(2) { background: rgba(255,189,46,.4); }
+        .layers-vis-bar__dots span:nth-child(3) { background: rgba(40,200,64,.38); }
+
+        /* Layer pill switcher inside the card */
+        .layers-vis-pills {
+            display: flex; gap: 4px; flex: 1;
+        }
+        .layer-pill {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            padding: 5px 10px; border-radius: 100px;
+            border: 1px solid transparent;
+            cursor: pointer; background: none;
+            color: rgba(3,44,45,.38);
+            transition: all .2s var(--ease);
+            white-space: nowrap;
+        }
+        .layer-pill:hover { color: rgba(3,44,45,.7); background: rgba(3,44,45,.05); }
+        .layer-pill.active {
+            color: var(--dark-teal); font-weight: 600;
+            background: #fff; border-color: rgba(3,44,45,.12);
+            box-shadow: 0 1px 4px rgba(3,44,45,.08);
+        }
+        .layer-pill[data-layer="industry"].active { color: #d4643a; border-color: rgba(212,100,58,.2); background: rgba(243,124,56,.06); }
+        .layer-pill[data-layer="account"].active  { color: #0F7A99; border-color: rgba(15,122,153,.2); background: rgba(15,122,153,.06); }
+        .layer-pill[data-layer="persona"].active  { color: #6b74c9; border-color: rgba(169,184,255,.4); background: rgba(169,184,255,.12); }
+        .layer-pill[data-layer="lead"].active     { color: #3a6fd4; border-color: rgba(91,141,239,.25); background: rgba(91,141,239,.08); }
+
+        .layers-vis-bar__live {
+            flex-shrink: 0; display: flex; align-items: center; gap: 5px;
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(3,44,45,.35);
+        }
+        .layers-vis-bar__live-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #3dba72;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+
+        /* ── Card body: signal list ── */
+        .layers-vis-body {
+            padding: var(--sp-3); background: #f0f3eb;
+            display: flex; flex-direction: column; gap: 8px;
+            min-height: 320px; justify-content: center;
+            position: relative;
+        }
+
+        /* Signal rows — interactive */
+        .sig-row {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 14px; background: #fff;
+            border-radius: 10px; border: 1px solid rgba(3,44,45,.06);
+            font-size: var(--t-sm); color: var(--dark-teal);
+            opacity: 0; transform: translateX(14px);
+            animation: rowIn .4s var(--spring) forwards;
+            cursor: pointer;
+            transition: box-shadow .2s var(--ease), transform .2s var(--spring), border-color .2s var(--ease);
+            flex-wrap: wrap;
+        }
+        .sig-row:hover {
+            box-shadow: 0 4px 20px rgba(3,44,45,.1);
+            transform: translateX(0) translateY(-2px);
+            border-color: rgba(3,44,45,.13);
+        }
+        .sig-row.expanded {
+            border-color: rgba(15,122,153,.25);
+            box-shadow: 0 6px 24px rgba(15,122,153,.1);
+        }
+        @keyframes rowIn { to { opacity: 1; transform: translateX(0); } }
+
+        /* Expand detail strip */
+        .sig-row__detail {
+            width: 100%; margin-top: 10px; padding-top: 10px;
+            border-top: 1px solid rgba(3,44,45,.07);
+            display: none;
+            flex-direction: column; gap: 8px;
+        }
+        .sig-row.expanded .sig-row__detail { display: flex; }
+
+        .sig-row__detail-bar-wrap {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sig-row__detail-bar-label {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(3,44,45,.4); white-space: nowrap;
+        }
+        .sig-row__detail-bar-track {
+            flex: 1; height: 4px; background: rgba(3,44,45,.08); border-radius: 100px; overflow: hidden;
+        }
+        .sig-row__detail-bar-fill {
+            height: 100%; border-radius: 100px;
+            transform: scaleX(0); transform-origin: left;
+            transition: transform .5s var(--spring);
+        }
+        .sig-row.expanded .sig-row__detail-bar-fill { transform: scaleX(1); }
+
+        .sig-row__detail-meta {
+            display: flex; align-items: center; gap: 14px;
+            font-size: 11px; color: rgba(3,44,45,.45);
+        }
+        .sig-row__detail-action {
+            margin-left: auto; font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            padding: 4px 10px; border-radius: 100px;
+            background: var(--dark-teal); color: var(--cream);
+            cursor: pointer; border: none;
+            transition: background .15s var(--ease), transform .15s;
+        }
+        .sig-row__detail-action:hover { background: var(--teal); transform: scale(1.02); }
+
+        /* Avatar for signal rows */
+        .sig-row__avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: 11px; font-weight: 600;
+            color: #fff; text-transform: uppercase;
+        }
+        .sig-row__info { flex: 1; min-width: 0; }
+        .sig-row__name {
+            font-size: 13px; font-weight: 500; color: var(--dark-teal);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sig-row__sub {
+            font-size: 11px; color: rgba(3,44,45,.45); margin-top: 1px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .sig-row__score {
+            flex-shrink: 0; font-family: var(--mono); font-size: 11px; font-weight: 600;
+            padding: 4px 10px; border-radius: 100px;
+            color: #fff; white-space: nowrap;
+        }
+        .sig-row__tag {
+            flex-shrink: 0; font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .07em;
+            padding: 3px 9px; border-radius: 100px;
+            background: rgba(3,44,45,.06); color: rgba(3,44,45,.45);
+            border: 1px solid rgba(3,44,45,.06);
+        }
+        /* Expand chevron */
+        .sig-row__chevron {
+            flex-shrink: 0; width: 16px; height: 16px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(3,44,45,.28);
+            transition: transform .25s var(--spring), color .2s var(--ease);
+        }
+        .sig-row__chevron svg { width: 12px; height: 12px; stroke-width: 2.5; }
+        .sig-row:hover .sig-row__chevron { color: rgba(3,44,45,.5); }
+        .sig-row.expanded .sig-row__chevron { transform: rotate(180deg); color: var(--teal); }
+
+        /* Top featured row — gradient card */
+        .sig-row--featured {
+            background: linear-gradient(90deg, #e8815a 0%, #c88fa0 50%, #8eaae8 100%);
+            border: none; padding: 14px 16px;
+        }
+        .sig-row--featured .sig-row__name { color: #fff; font-size: 14px; }
+        .sig-row--featured .sig-row__sub { color: rgba(255,255,255,.72); }
+        .sig-row--featured .sig-row__score { background: rgba(255,255,255,.25); color: #fff; }
+        .sig-row--featured .sig-row__avatar { background: rgba(255,255,255,.25) !important; color: #fff; }
+        .sig-row--featured .sig-row__chevron { color: rgba(255,255,255,.6); }
+        .sig-row--featured:hover .sig-row__chevron { color: rgba(255,255,255,.9); }
+        .sig-row--featured.expanded { border: 1px solid rgba(255,255,255,.3); }
+        .sig-row--featured .sig-row__detail { border-top-color: rgba(255,255,255,.2); }
+        .sig-row--featured .sig-row__detail-bar-label { color: rgba(255,255,255,.6); }
+        .sig-row--featured .sig-row__detail-bar-track { background: rgba(255,255,255,.2); }
+        .sig-row--featured .sig-row__detail-meta { color: rgba(255,255,255,.65); }
+        .sig-row--featured .sig-row__detail-action { background: rgba(255,255,255,.25); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+        .sig-row--featured .sig-row__detail-action:hover { background: rgba(255,255,255,.38); }
+
+        /* ── Vis layer panels (signal sets) ── */
+        .vis-layer-panel {
+            display: none; flex-direction: column; gap: 8px;
+            opacity: 0; transform: translateY(6px);
+            transition: opacity .25s var(--ease), transform .25s var(--spring);
+        }
+        .vis-layer-panel.active { display: flex; }
+        .vis-layer-panel.entering { opacity: 1; transform: translateY(0); }
+
+
+        /* ─────────────────────────────────────────────
+           WHY INFRASTRUCTURE
+           ───────────────────────────────────────────── */
+        .why__row {
+            display: grid;
+            grid-template-columns: 42% 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 0 56px;
+            align-items: stretch;
+        }
+        /* Left col spans both rows; right col (vis) spans both rows too */
+        .why__col {
+            grid-column: 1; grid-row: 1 / -1;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .why__vis-scene {
+            grid-column: 2; grid-row: 1 / -1;
+            align-self: end;
+        }
+        .why__grid { display: flex; flex-direction: column; gap: 10px; }
+
+        /* Feature card items */
+        .why__item {
+            display: flex; gap: 14px; align-items: flex-start;
+            background: rgba(255,255,255,.55);
+            border: 1px solid rgba(3,44,45,.07);
+            border-radius: 14px;
+            padding: 18px 20px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: background .2s ease, box-shadow .2s ease;
+        }
+        .why__item:hover {
+            background: rgba(255,255,255,.8);
+            box-shadow: 0 4px 20px rgba(3,44,45,.07);
+        }
+        .why__bullet {
+            flex-shrink: 0; width: 32px; height: 32px; border-radius: 9px;
+            background: linear-gradient(135deg, var(--dark-teal) 0%, rgba(15,122,153,.7) 100%);
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 1px;
+        }
+        .why__bullet svg { width: 16px; height: 16px; stroke: rgba(250,255,239,.85); stroke-width: 1.75; fill: none; }
+        .why__item h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: var(--dark-teal); letter-spacing: -.01em; }
+        .why__item p { font-size: 13px; line-height: 1.6; color: rgba(3,44,45,.58); }
+
+        /* ── Why vis card (comparison panel) ── */
+        .why__vis-scene { min-width: 0; max-height: 100%; }
+        .why__vis-card {
+            background: #fff;
+            border: 1px solid rgba(3,44,45,.08);
+            border-radius: 16px; overflow: hidden;
+            display: flex; flex-direction: column;
+            max-height: 320px;
+            box-shadow:
+                0 1px 2px rgba(3,44,45,.03),
+                0 8px 24px rgba(3,44,45,.07),
+                0 32px 72px rgba(3,44,45,.1),
+                0 64px 120px rgba(3,44,45,.06);
+        }
+        .why__vis-bar {
+            padding: 9px 16px;
+            background: #f4f6f3;
+            border-bottom: 1px solid rgba(3,44,45,.06);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .why__vis-bar-dots { display: flex; gap: 5px; flex-shrink: 0; }
+        .why__vis-bar-dots span { width: 8px; height: 8px; border-radius: 50%; }
+        .why__vis-bar-dots span:nth-child(1) { background: rgba(255,95,87,.5); }
+        .why__vis-bar-dots span:nth-child(2) { background: rgba(255,189,46,.4); }
+        .why__vis-bar-dots span:nth-child(3) { background: rgba(40,200,64,.38); }
+        .why__vis-bar-label {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .12em;
+            color: rgba(3,44,45,.4);
+        }
+
+        /* Split comparison body */
+        .why__vis-body {
+            display: grid; grid-template-columns: 1fr 1fr;
+            flex: 1; overflow: hidden; min-height: 0;
+        }
+        .why__vis-col {
+            padding: 12px 12px;
+            display: flex; flex-direction: column; gap: 5px;
+            overflow: hidden; min-height: 0;
+        }
+        .why__vis-col--generic { background: #fafafa; border-right: 1px solid rgba(3,44,45,.06); }
+        .why__vis-col--custom  { background: linear-gradient(160deg, #eef4f0 0%, #f4f7ff 100%); }
+
+        .why__vis-col-hdr {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .why__vis-col-title {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .13em;
+            color: rgba(3,44,45,.38);
+        }
+        .why__vis-col--custom .why__vis-col-title { color: var(--teal); opacity: .85; }
+
+        .why__vis-badge {
+            font-family: var(--mono); font-size: 8px;
+            text-transform: uppercase; letter-spacing: .07em;
+            padding: 2px 7px; border-radius: 100px;
+        }
+        .why__vis-badge--noise {
+            background: rgba(243,124,56,.1); color: #c0612a;
+            border: 1px solid rgba(243,124,56,.18);
+        }
+        .why__vis-badge--live {
+            background: rgba(15,122,153,.1); color: var(--teal);
+            border: 1px solid rgba(15,122,153,.18);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .why__vis-badge--live::before {
+            content: ''; display: block;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: #3dba72;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+
+        /* Generic noise rows */
+        .why__noise-row {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 8px; border-radius: 6px;
+            border: 1px solid rgba(3,44,45,.06);
+            opacity: 0; transform: translateX(-8px);
+            animation: rowIn .35s var(--spring) forwards;
+        }
+        .why__noise-row--dim { background: #fff; }
+        .why__noise-row--red { background: rgba(243,124,56,.05); border-color: rgba(243,124,56,.14); }
+        .why__noise-row__dot {
+            width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+        }
+        .why__noise-row__text {
+            flex: 1; min-width: 0;
+            font-size: 9px; color: rgba(3,44,45,.35);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .why__noise-row--red .why__noise-row__text { color: rgba(180,80,20,.55); }
+        .why__noise-row__tag {
+            flex-shrink: 0; font-family: var(--mono); font-size: 8px;
+            text-transform: uppercase; letter-spacing: .05em;
+            padding: 2px 6px; border-radius: 100px;
+            background: rgba(3,44,45,.05); color: rgba(3,44,45,.3);
+        }
+
+        /* Noise strikethrough overlay — red X icon on dim rows */
+        .why__noise-row__x {
+            flex-shrink: 0; width: 12px; height: 12px;
+            border-radius: 50%; background: rgba(243,100,56,.12);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .why__noise-row__x svg { width: 8px; height: 8px; stroke: #d45a25; stroke-width: 2.5; }
+
+        /* Clean signal rows on right */
+        .why__signal-row {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 10px; border-radius: 8px; background: #fff;
+            border: 1px solid rgba(15,122,153,.1);
+            box-shadow: 0 1px 3px rgba(15,122,153,.05), 0 4px 12px rgba(15,122,153,.04);
+            opacity: 0; transform: translateX(8px);
+            animation: rowIn .35s var(--spring) forwards;
+        }
+        .why__signal-row--top {
+            background: linear-gradient(90deg, rgba(15,122,153,.1) 0%, rgba(169,184,255,.12) 100%);
+            border-color: rgba(15,122,153,.18);
+            box-shadow: 0 2px 8px rgba(15,122,153,.1), 0 8px 24px rgba(15,122,153,.06);
+        }
+        .why__signal-row__avatar {
+            width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: 8px; font-weight: 600;
+            color: #fff; text-transform: uppercase; letter-spacing: .03em;
+        }
+        .why__signal-row__info { flex: 1; min-width: 0; }
+        .why__signal-row__name {
+            font-size: 10px; font-weight: 500; color: var(--dark-teal);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            letter-spacing: -.01em;
+        }
+        .why__signal-row__sub {
+            font-size: 9px; color: rgba(3,44,45,.42); margin-top: 1px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-family: var(--mono);
+        }
+        .why__signal-row__score {
+            flex-shrink: 0; font-family: var(--mono); font-size: 8px; font-weight: 600;
+            padding: 2px 6px; border-radius: 100px;
+            background: rgba(15,122,153,.12); color: var(--teal);
+            border: 1px solid rgba(15,122,153,.15);
+        }
+
+        /* Divider label between panels */
+        .why__vis-divider {
+            position: relative;
+            grid-column: 1 / -1;
+            display: flex; align-items: center; gap: 0;
+        }
+
+        /* Animated scroll loop for noise column */
+        @keyframes noiseScroll {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        @keyframes signalScroll {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        /* Shared track style for both columns */
+        .why__noise-track,
+        .why__signal-track {
+            overflow: hidden; flex: 1; min-height: 0;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        .why__noise-inner {
+            display: flex; flex-direction: column; gap: 5px;
+            animation: noiseScroll 8s linear infinite;
+        }
+        .why__signal-inner {
+            display: flex; flex-direction: column; gap: 6px;
+            animation: signalScroll 10s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .why__noise-inner, .why__signal-inner { animation: none; }
+        }
+
+        /* Override signal row to remove enter animation when inside scroll track */
+        .why__signal-track .why__signal-row {
+            opacity: 1; transform: none; animation: none;
+        }
+
+        /* ─────────────────────────────────────────────
+           DELIVERABLES
+           ───────────────────────────────────────────── */
+        /* ─────────────────────────────────────────────
+           DELIVERABLES — Intelligence File Layout
+           ───────────────────────────────────────────── */
+        .dlv-sec {
+            background: var(--dark-teal); padding: var(--sp-15) 60px;
+            position: relative; overflow: hidden;
+        }
+        .dlv-sec::before {
+            content: ''; position: absolute;
+            top: -20%; left: -5%;
+            width: 700px; height: 700px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(15,122,153,.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .dlv-sec__inner { max-width: 1100px; margin: 0 auto; position: relative; }
+
+        /* Header */
+        .dlv-header {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            margin-bottom: var(--sp-10); gap: var(--sp-4);
+        }
+        .dlv-eyebrow {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .16em;
+            color: var(--periwinkle); opacity: .9; margin-bottom: var(--sp-2);
+        }
+        .dlv-heading {
+            font-size: var(--t-2xl); font-weight: 200; line-height: 1.08;
+            letter-spacing: -.035em; color: var(--cream); margin-bottom: 0;
+        }
+        .dlv-header__rule {
+            flex: 1; height: 1px; margin-bottom: 10px;
+            background: linear-gradient(90deg, rgba(169,184,255,.18) 0%, transparent 100%);
+        }
+        .dlv-header__count {
+            font-family: var(--mono); font-size: var(--t-xs);
+            color: rgba(250,255,239,.28); letter-spacing: .1em;
+            text-transform: uppercase; white-space: nowrap; margin-bottom: 8px;
+        }
+
+        /* Stack — use CSS grid so all rows share the same column tracks */
+        .dlv-stack {
+            display: grid;
+            grid-template-columns: 84px 1fr 170px;
+            position: relative;
+        }
+
+        /* Vertical connector line */
+        .dlv-stack::before {
+            content: ''; position: absolute;
+            left: 42px; top: 24px; bottom: 24px; width: 1px;
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(169,184,255,.15) 15%,
+                rgba(169,184,255,.15) 85%,
+                transparent 100%);
+            pointer-events: none;
+        }
+
+        /* Row — subgrid so all three columns share the parent track widths */
+        .dlv-row {
+            display: grid;
+            grid-column: 1 / -1;
+            grid-template-columns: subgrid;
+            align-items: stretch;
+            position: relative;
+            opacity: 0; transform: translateX(-18px);
+            transition: opacity .65s var(--spring), transform .65s var(--spring);
+        }
+        .dlv-row.visible { opacity: 1; transform: translateX(0); }
+        .dlv-row:nth-child(2) { transition-delay: .12s; }
+        .dlv-row:nth-child(3) { transition-delay: .24s; }
+
+        .dlv-row + .dlv-row { border-top: 1px solid rgba(250,255,239,.06); }
+
+        /* Index column */
+        .dlv-row__index {
+            display: flex; flex-direction: column;
+            align-items: center; padding: var(--sp-6) 0;
+            position: relative; flex-shrink: 0;
+        }
+        .dlv-row__dot {
+            width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: 10px; font-weight: 600;
+            letter-spacing: .04em; position: relative; z-index: 1;
+            transition: transform .35s var(--spring);
+        }
+        .dlv-row:nth-child(1) .dlv-row__dot { background: rgba(243,124,56,.14); border: 1px solid rgba(243,124,56,.35); color: #F37C38; }
+        .dlv-row:nth-child(2) .dlv-row__dot { background: rgba(15,122,153,.14); border: 1px solid rgba(15,122,153,.4); color: #3dadb8; }
+        .dlv-row:nth-child(3) .dlv-row__dot { background: rgba(169,184,255,.12); border: 1px solid rgba(169,184,255,.35); color: #A9B8FF; }
+        .dlv-row:hover .dlv-row__dot { transform: scale(1.15); }
+
+        /* Content column */
+        .dlv-row__content {
+            padding: var(--sp-6) var(--sp-6) var(--sp-6) var(--sp-5);
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .dlv-row__content::before {
+            content: ''; position: absolute; inset: 0; opacity: 0;
+            transition: opacity .4s var(--ease); pointer-events: none;
+        }
+        .dlv-row:nth-child(1) .dlv-row__content::before { background: linear-gradient(90deg, rgba(243,124,56,.04) 0%, transparent 70%); }
+        .dlv-row:nth-child(2) .dlv-row__content::before { background: linear-gradient(90deg, rgba(15,122,153,.05) 0%, transparent 70%); }
+        .dlv-row:nth-child(3) .dlv-row__content::before { background: linear-gradient(90deg, rgba(169,184,255,.04) 0%, transparent 70%); }
+        .dlv-row:hover .dlv-row__content::before { opacity: 1; }
+
+        /* Accent bar */
+        .dlv-row__accent {
+            position: absolute; left: 0; top: 28%; bottom: 28%;
+            width: 2px; border-radius: 2px;
+            transition: top .35s var(--spring), bottom .35s var(--spring), opacity .35s var(--ease);
+            opacity: .45;
+        }
+        .dlv-row:hover .dlv-row__accent { top: 18%; bottom: 18%; opacity: 1; }
+        .dlv-row:nth-child(1) .dlv-row__accent { background: #F37C38; }
+        .dlv-row:nth-child(2) .dlv-row__accent { background: #3dadb8; }
+        .dlv-row:nth-child(3) .dlv-row__accent { background: #A9B8FF; }
+
+        .dlv-row__label {
+            font-family: var(--mono); font-size: 9px; text-transform: uppercase;
+            letter-spacing: .14em; margin-bottom: 6px;
+            color: rgba(250,255,239,.35);
+        }
+        .dlv-row h4 {
+            font-size: 19px; font-weight: 500; margin-bottom: var(--sp-1);
+            letter-spacing: -.02em; color: var(--cream); line-height: 1.25;
+            transition: color .25s var(--ease);
+        }
+        .dlv-row:nth-child(1):hover h4 { color: #ffd4b8; }
+        .dlv-row:nth-child(2):hover h4 { color: #b2e8ed; }
+        .dlv-row:nth-child(3):hover h4 { color: #d0d8ff; }
+
+        .dlv-row p {
+            font-size: var(--t-sm); line-height: 1.75;
+            color: rgba(250,255,239,.45); max-width: 540px; margin: 0;
+        }
+
+        /* Formats column */
+        .dlv-row__formats {
+            padding: var(--sp-6) var(--sp-3) var(--sp-6) var(--sp-4);
+            display: flex; flex-direction: column;
+            align-items: flex-end; justify-content: center;
+            gap: 8px;
+            border-left: 1px solid rgba(250,255,239,.05);
+        }
+        .dlv-row__fmt-label {
+            font-family: var(--mono); font-size: 8px; text-transform: uppercase;
+            letter-spacing: .14em; color: rgba(250,255,239,.22);
+            margin-bottom: 2px; align-self: flex-end;
+        }
+        .dlv-tag {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .08em;
+            padding: 5px 12px; border-radius: 100px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.07);
+            color: rgba(250,255,239,.35);
+            transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+            white-space: nowrap;
+        }
+        .dlv-row:nth-child(1):hover .dlv-tag { background: rgba(243,124,56,.12); border-color: rgba(243,124,56,.3); color: #F37C38; }
+        .dlv-row:nth-child(2):hover .dlv-tag { background: rgba(15,122,153,.12); border-color: rgba(15,122,153,.35); color: #3dadb8; }
+        .dlv-row:nth-child(3):hover .dlv-tag { background: rgba(169,184,255,.12); border-color: rgba(169,184,255,.3); color: #A9B8FF; }
+
+        /* ─────────────────────────────────────────────
+           FORM
+           ───────────────────────────────────────────── */
+        .form-sec {
+            background: var(--dark-teal); padding: var(--sp-15) 60px;
+            border-top: 1px solid rgba(15,122,153,.15);
+            position: relative; overflow: hidden;
+        }
+        .form-sec::before {
+            content: ''; position: absolute; bottom: -20%; left: -10%;
+            width: 500px; height: 500px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(15,122,153,.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .form-sec__inner { max-width: 680px; margin: 0 auto; position: relative; }
+
+        .form-eyebrow {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .16em;
+            color: var(--periwinkle); margin-bottom: var(--sp-2);
+        }
+        .form-sec__inner h2 {
+            font-size: var(--t-xl); font-weight: 200; line-height: 1.1;
+            letter-spacing: -.03em; color: var(--cream); margin-bottom: var(--sp-1);
+        }
+        .form-desc {
+            font-size: var(--t-md); line-height: 1.75; font-weight: 300;
+            color: rgba(250,255,239,.58); margin-bottom: var(--sp-7); max-width: 480px;
+        }
+
+        .si-form { display: flex; flex-direction: column; gap: var(--sp-3); }
+        .si-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+
+        .si-form__field { display: flex; flex-direction: column; gap: var(--sp-1); }
+        .si-form__field label {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(250,255,239,.48);
+        }
+        .si-form__field input,
+        .si-form__field textarea {
+            width: 100%; padding: 12px var(--sp-2);
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(15,122,153,.25);
+            border-radius: var(--r-sm); color: var(--cream);
+            font-family: var(--sans); font-size: var(--t-md); line-height: 1.5;
+            outline: none;
+            transition: border-color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+            min-height: 44px; /* touch target */
+        }
+        .si-form__field input:focus, .si-form__field textarea:focus {
+            border-color: var(--teal); background: rgba(255,255,255,.09);
+            box-shadow: 0 0 0 3px rgba(15,122,153,.15);
+        }
+        .si-form__field input::placeholder, .si-form__field textarea::placeholder {
+            color: rgba(250,255,239,.25);
+        }
+        .si-form__field textarea { resize: vertical; min-height: 88px; }
+        .si-form__field--opt label::after { content: ' (optional)'; opacity: .45; text-transform: none; letter-spacing: 0; font-family: var(--sans); }
+        .req { color: var(--orange); margin-left: 2px; }
+
+        /* Inline error */
+        .si-form__field-error {
+            font-size: 12px; color: rgba(255,138,112,.85);
+            display: none; margin-top: -4px;
+        }
+        .si-form__field.has-error input,
+        .si-form__field.has-error textarea {
+            border-color: rgba(255,100,60,.5);
+            box-shadow: 0 0 0 3px rgba(255,100,60,.1);
+        }
+        .si-form__field.has-error .si-form__field-error { display: block; }
+
+        .si-form__submit {
+            padding: 16px var(--sp-5); background: var(--cream); color: var(--dark-teal);
+            font-family: var(--mono); font-size: var(--t-sm);
+            text-transform: uppercase; letter-spacing: .12em;
+            border-radius: 2px; cursor: pointer;
+            transition: transform .25s var(--spring), box-shadow .25s var(--ease), opacity .25s var(--ease);
+            align-self: flex-start; margin-top: var(--sp-1);
+            min-height: 44px; /* touch target */
+        }
+        .si-form__submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+        .si-form__submit:focus-visible { outline: 2px solid var(--periwinkle); outline-offset: 4px; }
+        .si-form__submit:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .si-form__micro {
+            font-family: var(--mono); font-size: var(--t-xs);
+            color: rgba(250,255,239,.3); margin-top: var(--sp-1);
+        }
+        .si-form__global-error {
+            display: none; margin-top: var(--sp-2); padding: 12px var(--sp-2);
+            border-radius: var(--r-sm);
+            background: rgba(255,100,60,.14); border: 1px solid rgba(255,100,60,.3);
+            color: rgba(255,138,112,.9); font-size: var(--t-sm);
+            /* aria-live region — announced to screen readers */
+        }
+        .si-form__global-error.visible { display: block; }
+
+        .si-form__success { display: none; text-align: center; padding: var(--sp-6) 0; }
+        .si-form__success.visible { display: block; }
+        .si-form__success h3 {
+            font-size: clamp(24px,3vw,32px); font-weight: 300;
+            color: var(--cream); margin-bottom: var(--sp-2);
+        }
+        .si-form__success p { font-size: 15px; color: rgba(250,255,239,.58); line-height: 1.65; }
+
+        /* ─────────────────────────────────────────────
+           FOOTER
+           ───────────────────────────────────────────── */
+        .ftr {
+            background: var(--dark-teal); color: var(--cream);
+            padding: var(--sp-5) 0;
+            border-top: 1px solid rgba(15,122,153,.18);
+        }
+        .ftr__inner {
+            max-width: 1400px; margin: 0 auto; padding: 0 60px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .ftr__brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: var(--t-md); }
+        .ftr__brand img { width: 24px; height: 24px; }
+        .ftr__links {
+            display: flex; gap: var(--sp-3);
+            font-size: var(--t-sm); color: rgba(250,255,239,.45);
+        }
+        .ftr__links a { transition: color .2s var(--ease); }
+        .ftr__links a:hover { color: rgba(250,255,239,.8); }
+        .ftr__links a:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px; }
+        .ftr__copy { font-size: var(--t-sm); color: rgba(250,255,239,.3); }
+
+        /* ─────────────────────────────────────────────
+           SCROLL REVEAL
+           ───────────────────────────────────────────── */
+        .reveal {
+            opacity: 0; transform: translateY(22px);
+            transition: opacity .7s var(--spring), transform .7s var(--spring);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: .1s; }
+        .reveal-delay-2 { transition-delay: .2s; }
+        .reveal-delay-3 { transition-delay: .3s; }
+
+        /* ─────────────────────────────────────────────
+           RESPONSIVE
+           ───────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .dlv-stack { grid-template-columns: 84px 1fr; }
+            .dlv-row__formats { display: none; }
+        }
+
+        @media (max-width: 960px) {
+            .hdr { padding: var(--sp-3) var(--sp-4); }
+            .hdr.scrolled { padding: var(--sp-2) var(--sp-4); }
+            .hdr__nav { display: none; }
+
+            .hero { padding: var(--sp-15) var(--sp-4) var(--sp-10); min-height: auto; padding-top: 100px; }
+            .hero__inner { grid-template-columns: 1fr; gap: var(--sp-6); }
+            .hero__panel { display: none; }
+
+            .sec { padding: var(--sp-10) var(--sp-4); }
+            .layers-sec { padding: var(--sp-10) var(--sp-4) var(--sp-8); }
+            .dlv-sec { padding: var(--sp-10) var(--sp-4); }
+            .form-sec { padding: var(--sp-10) var(--sp-4); }
+
+            .intro__grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+            .intro__stat-row { gap: var(--sp-2); }
+
+            .steps { grid-template-columns: 1fr 1fr; }
+            .step { border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+            .step:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.06); }
+            .step:nth-last-child(-n+2) { border-bottom: none; }
+            .step:last-child { border-right: none; }
+
+            .layers-layout { grid-template-columns: 1fr; gap: var(--sp-5); }
+            .layers-vis-card { position: static; }
+            .layers-vis-pills { gap: 2px; }
+            .layer-pill { padding: 4px 8px; font-size: 8px; }
+
+            .why__row { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+            .why__col { grid-column: 1; grid-row: 1; }
+            .why__vis-scene { grid-column: 1; grid-row: 2; }
+            .why__vis-card { max-height: 260px; }
+
+            .si-form__row { grid-template-columns: 1fr; }
+            .ftr__inner { flex-direction: column; gap: var(--sp-2); text-align: center; padding: 0 var(--sp-4); }
+        }
+
+        @media (max-width: 600px) {
+            .steps { grid-template-columns: 1fr; }
+            .step { border-right: none !important; }
+            .dlv-stack { grid-template-columns: 56px 1fr; }
+            .dlv-stack::before { left: 28px; }
+            .dlv-row__dot { width: 24px; height: 24px; font-size: 9px; }
+            .dlv-header { flex-wrap: wrap; }
+            .dlv-header__rule, .dlv-header__count { display: none; }
+            .hero h1 { font-size: 38px; }
+            .intro__stat-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <!-- ══════════════════════════ HEADER ══════════════════════════ -->
+    <header class="hdr" id="hdr">
+        <div class="hdr__inner">
+            <a href="index.html" class="hdr__logo" aria-label="Paioneers home">
+                <img src="Ressources/images/logo_black1.svg" alt="" width="32" height="32" aria-hidden="true">
+                Paioneers
+            </a>
+            <nav class="hdr__nav" aria-label="Page navigation">
+                <a href="#what" class="hdr__link">What</a>
+                <a href="#process" class="hdr__link">Process</a>
+                <a href="#layers" class="hdr__link">4 Layers</a>
+                <a href="#form" class="hdr__link">Free Scan</a>
+                <a href="index.html" class="hdr__cta">Main Site</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+
+    <!-- ══════════════════════════ HERO ══════════════════════════ -->
+    <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero__glow-1" aria-hidden="true"></div>
+        <div class="hero__glow-2" aria-hidden="true"></div>
+        <div class="hero__glow-3" aria-hidden="true"></div>
+        <div class="hero__inner">
+            <div>
+                <div class="hero__kicker" aria-hidden="true">
+                    <span class="hero__kicker-line"></span>
+                    <span class="hero__kicker-dot"></span>
+                    Signal Intelligence
+                </div>
+                <h1 id="hero-heading">Spot Demand<br><strong>Before it Peaks.</strong></h1>
+                <p class="hero__body">Paioneers builds ICP-driven monitoring infrastructure across 4 layers — Industry, Account, Persona, Lead — to continuously track your target market and reveal where demand is building.</p>
+                <div class="hero__actions">
+                    <a href="#form" class="gcta"><span>Get My Free Signal Scan</span></a>
+                    <a href="#layers" class="gcta gcta--outline"><span>See the 4 Layers</span></a>
+                </div>
+            </div>
+
+            <!-- Live signal panel (decorative) -->
+            <div class="hero__panel" aria-hidden="true">
+                <div class="hero__panel-bar">
+                    <div class="hero__panel-dots"><span></span><span></span><span></span></div>
+                    <span class="hero__panel-title">Signal Feed</span>
+                    <span class="hero__panel-live"><span class="hero__panel-live-dot"></span>Live</span>
+                </div>
+                <div class="hero__panel-body">
+                    <div class="sig-card">
+                        <span class="sig-card__dot" style="background:#F37C38"></span>
+                        <div class="sig-card__content">
+                            <div class="sig-card__layer">Industry</div>
+                            <div class="sig-card__text">Sector funding wave — FinTech DACH</div>
+                        </div>
+                        <span class="sig-card__badge">M&amp;A</span>
+                    </div>
+                    <div class="sig-card">
+                        <span class="sig-card__dot" style="background:#0F7A99"></span>
+                        <div class="sig-card__content">
+                            <div class="sig-card__layer">Account</div>
+                            <div class="sig-card__text">CloudScale Systems — Series B, €14M</div>
+                        </div>
+                        <span class="sig-card__badge">Funding</span>
+                    </div>
+                    <div class="sig-card">
+                        <span class="sig-card__dot" style="background:#A9B8FF"></span>
+                        <div class="sig-card__content">
+                            <div class="sig-card__layer">Persona</div>
+                            <div class="sig-card__text">Sarah van den Berg — New VP Revenue Ops</div>
+                        </div>
+                        <span class="sig-card__badge">New Hire</span>
+                    </div>
+                    <div class="sig-card">
+                        <span class="sig-card__dot" style="background:#5B8DEF"></span>
+                        <div class="sig-card__content">
+                            <div class="sig-card__layer">Lead</div>
+                            <div class="sig-card__text">Thomas Krul — visited pricing page 3×</div>
+                        </div>
+                        <span class="sig-card__badge">Intent</span>
+                    </div>
+                    <div class="sig-card">
+                        <span class="sig-card__dot" style="background:#3dadb8"></span>
+                        <div class="sig-card__content">
+                            <div class="sig-card__layer">Account</div>
+                            <div class="sig-card__text">TechFlow BV — +22 hires in 60 days</div>
+                        </div>
+                        <span class="sig-card__badge">Headcount</span>
+                    </div>
+                </div>
+                <div class="hero__panel-layers">
+                    <div class="hero__panel-layer">
+                        <div class="hero__panel-layer-name">Industry</div>
+                        <div class="hero__panel-layer-track"><div class="hero__panel-layer-fill"></div></div>
+                    </div>
+                    <div class="hero__panel-layer">
+                        <div class="hero__panel-layer-name">Account</div>
+                        <div class="hero__panel-layer-track"><div class="hero__panel-layer-fill"></div></div>
+                    </div>
+                    <div class="hero__panel-layer">
+                        <div class="hero__panel-layer-name">Persona</div>
+                        <div class="hero__panel-layer-track"><div class="hero__panel-layer-fill"></div></div>
+                    </div>
+                    <div class="hero__panel-layer">
+                        <div class="hero__panel-layer-name">Lead</div>
+                        <div class="hero__panel-layer-track"><div class="hero__panel-layer-fill"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker__track">
+            <span class="ticker__item"><span class="ticker__dot"></span>Industry Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Account Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Persona Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Lead Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>ICP-Driven Monitoring</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Real-time Demand Mapping</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Signal Infrastructure</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Commercial Prioritisation</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Industry Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Account Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Persona Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Lead Signals</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>ICP-Driven Monitoring</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Real-time Demand Mapping</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Signal Infrastructure</span>
+            <span class="ticker__item"><span class="ticker__dot"></span>Commercial Prioritisation</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════ WHAT IS SI ══════════════════════════ -->
+    <section class="sec sec--light" id="what" aria-labelledby="what-heading">
+        <div class="sec__inner">
+            <div class="intro__grid">
+                <div class="reveal">
+                    <div class="sec__eyebrow"><span class="sec__eyebrow-dot" aria-hidden="true"></span>What is Signal Intelligence?</div>
+                    <h2 id="what-heading">Demand Visibility<br>Before Competitors</h2>
+                    <p class="sec__lead">Paioneers starts by understanding your services and ideal customers. We then build monitoring infrastructure that tracks market changes relevant to your ICP across 4 layers — so you see where demand emerges before anyone else.</p>
+                    <div class="intro__stat-row" aria-label="Key metrics">
+                        <div class="intro__stat">
+                            <div class="intro__stat-val">4</div>
+                            <div class="intro__stat-label">Signal Layers</div>
+                        </div>
+                        <div class="intro__stat">
+                            <div class="intro__stat-val">24h</div>
+                            <div class="intro__stat-label">Delivery</div>
+                        </div>
+                        <div class="intro__stat">
+                            <div class="intro__stat-val">∞</div>
+                            <div class="intro__stat-label">Continuous</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="intro__vis reveal reveal-delay-2" aria-hidden="true">
+                    <div class="intro__vis-label">How it works — end to end</div>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <div class="flow-step__connector">
+                                <div class="flow-step__num">01</div>
+                                <div class="flow-step__line"></div>
+                            </div>
+                            <div class="flow-step__body">
+                                <div class="flow-step__title">Define your ICP</div>
+                                <div class="flow-step__desc">Intensive workshop mapping best-fit customers, buyer personas &amp; triggers</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step__connector">
+                                <div class="flow-step__num">02</div>
+                                <div class="flow-step__line"></div>
+                            </div>
+                            <div class="flow-step__body">
+                                <div class="flow-step__title">Map signals to 4 layers</div>
+                                <div class="flow-step__desc">Translate ICP insights into observable triggers — custom to your market</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step__connector">
+                                <div class="flow-step__num">03</div>
+                                <div class="flow-step__line"></div>
+                            </div>
+                            <div class="flow-step__body">
+                                <div class="flow-step__title">Build monitoring infrastructure</div>
+                                <div class="flow-step__desc">Continuous infrastructure scanning your target market 24/7</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-step__connector">
+                                <div class="flow-step__num">04</div>
+                                <div class="flow-step__line"></div>
+                            </div>
+                            <div class="flow-step__body">
+                                <div class="flow-step__title">See the demand map — act first</div>
+                                <div class="flow-step__desc">Ranked opportunities with signal strength and ICP fit scores</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════ PROCESS ══════════════════════════ -->
+    <section class="sec sec--dark" id="process" aria-labelledby="process-heading">
+        <div class="sec__inner">
+            <div class="reveal">
+                <div class="sec__eyebrow"><span class="sec__eyebrow-dot" aria-hidden="true"></span>How It Works</div>
+                <h2 id="process-heading">From ICP to Commercial Prioritisation</h2>
+            </div>
+            <div class="steps" role="list">
+                <div class="step" role="listitem" data-num="01">
+                    <div class="step__num">01</div>
+                    <div class="step__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>
+                    </div>
+                    <h3>ICP Workshop</h3>
+                    <p>Intensive session mapping your best-fit customers, buyer personas, pain points, triggers, and commercial context across all 4 layers.</p>
+                </div>
+                <div class="step" role="listitem" data-num="02">
+                    <div class="step__num">02</div>
+                    <div class="step__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    </div>
+                    <h3>Signal Definition</h3>
+                    <p>Translate ICP insights into observable triggers across all 4 layers. Custom to your market — not generic platform defaults.</p>
+                </div>
+                <div class="step" role="listitem" data-num="03">
+                    <div class="step__num">03</div>
+                    <div class="step__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18M3 9h18"/></svg>
+                    </div>
+                    <h3>Custom Monitoring</h3>
+                    <p>Infrastructure to continuously monitor your target market across 4 layers, detecting patterns where demand may be building.</p>
+                </div>
+                <div class="step" role="listitem" data-num="04">
+                    <div class="step__num">04</div>
+                    <div class="step__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-6 4 4 5-8"/></svg>
+                    </div>
+                    <h3>Signal Interpretation</h3>
+                    <p>Filter noise from actionable insights. Link signals to your services, buyer pains, and timing across all layers.</p>
+                </div>
+                <div class="step" role="listitem" data-num="05">
+                    <div class="step__num">05</div>
+                    <div class="step__icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg>
+                    </div>
+                    <h3>Commercial Prioritisation</h3>
+                    <p>Clear direction: which segments, companies, and contacts to focus on first — ranked by signal strength and ICP fit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════ 4 LAYERS TABS ══════════════════════════ -->
+    <section id="layers" class="layers-sec" aria-labelledby="layers-heading">
+        <div class="layers-hdr reveal">
+            <div class="layers-hdr__eyebrow"><span class="layers-hdr__eyebrow-dot" aria-hidden="true"></span>Intelligence Framework</div>
+            <h2 id="layers-heading">Intelligence Across 4 Layers</h2>
+        </div>
+
+        <div class="layers-layout">
+
+            <!-- ── Left: text content, crossfades on layer change ── -->
+            <div class="layer-text" aria-live="polite">
+
+                <div class="layer-text__panel active entering" id="ltext-industry">
+                    <div class="layer-text__eyebrow">Layer 01 — Macro Market Pulse</div>
+                    <h3>See the Market Shifts<br>Before They Peak.</h3>
+                    <p class="layer-text__body">Your territory is shaped by forces you can't afford to miss. Paioneers monitors the macro signals relevant to your ICP — so you act on trends while competitors are still reacting.</p>
+                    <ul class="layer-text__list">
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Sector funding rounds &amp; M&amp;A activity tracked in real time</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Regulatory &amp; compliance shifts mapped to your service lines</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Competitor positioning changes surfaced automatically</li>
+                    </ul>
+                </div>
+
+                <div class="layer-text__panel" id="ltext-account">
+                    <div class="layer-text__eyebrow">Layer 02 — Company-Level Triggers</div>
+                    <h3>Catch the Moments<br>Accounts Are Ready to Buy.</h3>
+                    <p class="layer-text__body">Funding rounds, headcount spikes, tech stack changes — these are the moments that create buying windows. We surface them across your entire ICP-filtered account universe.</p>
+                    <ul class="layer-text__list">
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Funding announcements &amp; rounds matched to ICP</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Headcount growth patterns signalling expansion intent</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Tech stack changes and new tool adoption tracked</li>
+                    </ul>
+                </div>
+
+                <div class="layer-text__panel" id="ltext-persona">
+                    <div class="layer-text__eyebrow">Layer 03 — Buyer-Role Signals</div>
+                    <h3>Know When Decision-Makers<br>Are in Motion.</h3>
+                    <p class="layer-text__body">New hires, promotions, and role transitions signal open budgets and fresh mandates. Paioneers maps these movements to your buying committee before anyone else reaches out.</p>
+                    <ul class="layer-text__list">
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>New decision-maker hires detected within days</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Role transitions &amp; promotions mapped to buying windows</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Job postings decoded for initiative-level intent</li>
+                    </ul>
+                </div>
+
+                <div class="layer-text__panel" id="ltext-lead">
+                    <div class="layer-text__eyebrow">Layer 04 — Individual Intent</div>
+                    <h3>Reach Out When the<br>Signal Is Hottest.</h3>
+                    <p class="layer-text__body">The most granular layer. We track individual-level intent signals so you know exactly who is actively researching a problem you solve — before they fill out a competitor's form.</p>
+                    <ul class="layer-text__list">
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Content &amp; topic engagement tracked at the lead level</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Review site &amp; comparison activity surfaced instantly</li>
+                        <li class="layer-text__item"><span class="layer-text__check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2 6 5 9 10 3"/></svg></span>Event &amp; webinar attendance signals buying readiness</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- ── Right: single interactive visualization card ── -->
+            <div class="layers-vis-card" role="region" aria-label="Signal Intelligence visualization">
+
+                <!-- Card chrome: macOS dots + layer pill switcher -->
+                <div class="layers-vis-bar">
+                    <div class="layers-vis-bar__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                    <nav class="layers-vis-pills" role="tablist" aria-label="Signal layers">
+                        <button class="layer-pill active" role="tab" aria-selected="true" data-layer="industry">Industry</button>
+                        <button class="layer-pill" role="tab" aria-selected="false" data-layer="account">Account</button>
+                        <button class="layer-pill" role="tab" aria-selected="false" data-layer="persona">Persona</button>
+                        <button class="layer-pill" role="tab" aria-selected="false" data-layer="lead">Lead</button>
+                    </nav>
+                    <span class="layers-vis-bar__live" aria-label="Live feed">
+                        <span class="layers-vis-bar__live-dot" aria-hidden="true"></span>Live
+                    </span>
+                </div>
+
+                <!-- Signal list body -->
+                <div class="layers-vis-body">
+
+
+                    <!-- Industry signals -->
+                    <div class="vis-layer-panel active entering" id="vis-industry" role="tabpanel">
+                        <div class="sig-row sig-row--featured" style="animation-delay:.05s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:rgba(255,255,255,.25)" aria-hidden="true">FT</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">FinTech DACH &mdash; Sector Funding Wave</div>
+                                <div class="sig-row__sub">M&amp;A activity spiking &middot; 14 deals in 60 days</div>
+                            </div>
+                            <span class="sig-row__score">Hot</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:rgba(255,255,255,.7);width:92%"></div></div>
+                                    <span class="sig-row__detail-bar-label">92%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Detected 2h ago</span><span>&middot;</span><span>14 related signals</span>
+                                    <button class="sig-row__detail-action">Add to Watchlist</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.15s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#0F7A99" aria-hidden="true">N2</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">NIS2 Compliance Window Opening</div>
+                                <div class="sig-row__sub">Regulatory &middot; EU deadline approaching</div>
+                            </div>
+                            <span class="sig-row__tag">Regulatory</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#0F7A99;width:74%"></div></div>
+                                    <span class="sig-row__detail-bar-label">74%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Detected 6h ago</span><span>&middot;</span><span>EU-wide trigger</span>
+                                    <button class="sig-row__detail-action">Add to Watchlist</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.25s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#A9B8FF;color:#032C2D" aria-hidden="true">AI</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">AI Adoption Wave &mdash; Mid-Market</div>
+                                <div class="sig-row__sub">Tech Shift &middot; 3 signals in last 7 days</div>
+                            </div>
+                            <span class="sig-row__tag">Tech Shift</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#A9B8FF;width:61%"></div></div>
+                                    <span class="sig-row__detail-bar-label">61%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Detected 1d ago</span><span>&middot;</span><span>3 related signals</span>
+                                    <button class="sig-row__detail-action">Add to Watchlist</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.35s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#5B8DEF" aria-hidden="true">CP</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Competitor Repositioning &mdash; Upmarket</div>
+                                <div class="sig-row__sub">Competitive &middot; New pricing page detected</div>
+                            </div>
+                            <span class="sig-row__tag">Competitive</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#5B8DEF;width:48%"></div></div>
+                                    <span class="sig-row__detail-bar-label">48%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Detected 2d ago</span><span>&middot;</span><span>Pricing change</span>
+                                    <button class="sig-row__detail-action">Add to Watchlist</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account signals -->
+                    <div class="vis-layer-panel" id="vis-account" role="tabpanel">
+                        <div class="sig-row sig-row--featured" style="animation-delay:.05s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:rgba(255,255,255,.25)" aria-hidden="true">CS</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">CloudScale Systems &mdash; Series B, &euro;14M</div>
+                                <div class="sig-row__sub">200 employees &middot; 3 signals &middot; B2B SaaS</div>
+                            </div>
+                            <span class="sig-row__score">1150</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">ICP fit</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:rgba(255,255,255,.7);width:95%"></div></div>
+                                    <span class="sig-row__detail-bar-label">95%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Signal: Series B</span><span>&middot;</span><span>200 employees</span>
+                                    <button class="sig-row__detail-action">Prioritise</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.15s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#F37C38" aria-hidden="true">TF</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">TechFlow BV</div>
+                                <div class="sig-row__sub">+22 hires in 60 days &middot; Headcount signal</div>
+                            </div>
+                            <span class="sig-row__tag">Headcount</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Growth rate</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#F37C38;width:68%"></div></div>
+                                    <span class="sig-row__detail-bar-label">68%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>22 new hires</span><span>&middot;</span><span>60-day window</span>
+                                    <button class="sig-row__detail-action">Prioritise</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.25s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#A9B8FF;color:#032C2D" aria-hidden="true">GH</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">GrowthHub</div>
+                                <div class="sig-row__sub">Salesforce &rarr; HubSpot migration</div>
+                            </div>
+                            <span class="sig-row__tag">Tech Stack</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#A9B8FF;width:55%"></div></div>
+                                    <span class="sig-row__detail-bar-label">55%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>CRM migration</span><span>&middot;</span><span>Detected 3d ago</span>
+                                    <button class="sig-row__detail-action">Prioritise</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.35s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#5B8DEF" aria-hidden="true">PA</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Pipeline Accelerator</div>
+                                <div class="sig-row__sub">Amsterdam office opened &middot; Expansion</div>
+                            </div>
+                            <span class="sig-row__tag">Expansion</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Signal strength</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#5B8DEF;width:42%"></div></div>
+                                    <span class="sig-row__detail-bar-label">42%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>New office</span><span>&middot;</span><span>Amsterdam</span>
+                                    <button class="sig-row__detail-action">Prioritise</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Persona signals -->
+                    <div class="vis-layer-panel" id="vis-persona" role="tabpanel">
+                        <div class="sig-row sig-row--featured" style="animation-delay:.05s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:rgba(255,255,255,.25)" aria-hidden="true">SB</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Sarah van den Berg &mdash; New VP Revenue Ops</div>
+                                <div class="sig-row__sub">TechFlow Solutions &middot; Decision maker &middot; 2 signals</div>
+                            </div>
+                            <span class="sig-row__score">820</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Persona fit</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:rgba(255,255,255,.7);width:88%"></div></div>
+                                    <span class="sig-row__detail-bar-label">88%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>New hire &middot; 14d ago</span><span>&middot;</span><span>Open budget window</span>
+                                    <button class="sig-row__detail-action">Reach Out</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.15s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#F37C38" aria-hidden="true">MJ</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Michael Johnson</div>
+                                <div class="sig-row__sub">Promoted to CRO &middot; CloudScale Systems</div>
+                            </div>
+                            <span class="sig-row__tag">Promotion</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Seniority match</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#F37C38;width:80%"></div></div>
+                                    <span class="sig-row__detail-bar-label">80%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>CRO promotion</span><span>&middot;</span><span>7d ago</span>
+                                    <button class="sig-row__detail-action">Reach Out</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.25s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#0F7A99" aria-hidden="true">JW</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Jennifer Wu</div>
+                                <div class="sig-row__sub">Hiring 3&times; SDRs &middot; Intent signal</div>
+                            </div>
+                            <span class="sig-row__tag">Job Post</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Intent score</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#0F7A99;width:63%"></div></div>
+                                    <span class="sig-row__detail-bar-label">63%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>3 open roles</span><span>&middot;</span><span>LinkedIn posting</span>
+                                    <button class="sig-row__detail-action">Reach Out</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.35s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#5B8DEF" aria-hidden="true">RG</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Rachel Green</div>
+                                <div class="sig-row__sub">LinkedIn spike on pipeline topics</div>
+                            </div>
+                            <span class="sig-row__tag">Activity</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Engagement score</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#5B8DEF;width:44%"></div></div>
+                                    <span class="sig-row__detail-bar-label">44%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Pipeline posts</span><span>&middot;</span><span>5 engagements</span>
+                                    <button class="sig-row__detail-action">Reach Out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lead signals -->
+                    <div class="vis-layer-panel" id="vis-lead" role="tabpanel">
+                        <div class="sig-row sig-row--featured" style="animation-delay:.05s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:rgba(255,255,255,.25)" aria-hidden="true">TK</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Thomas Krul &mdash; Visited Pricing Page &times;3</div>
+                                <div class="sig-row__sub">VP of Operations &middot; CloudScale Systems &middot; Intent</div>
+                            </div>
+                            <span class="sig-row__score">690</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Intent score</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:rgba(255,255,255,.7);width:85%"></div></div>
+                                    <span class="sig-row__detail-bar-label">85%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>3&times; pricing visits</span><span>&middot;</span><span>Last visit: 4h ago</span>
+                                    <button class="sig-row__detail-action">Contact Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.15s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#0F7A99" aria-hidden="true">AM</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Anna M&uuml;ller</div>
+                                <div class="sig-row__sub">G2 comparison: RevOps tools</div>
+                            </div>
+                            <span class="sig-row__tag">Review Site</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Buying intent</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#0F7A99;width:72%"></div></div>
+                                    <span class="sig-row__detail-bar-label">72%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>G2 comparison</span><span>&middot;</span><span>Active evaluator</span>
+                                    <button class="sig-row__detail-action">Contact Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.25s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#A9B8FF;color:#032C2D" aria-hidden="true">DL</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">David Levi</div>
+                                <div class="sig-row__sub">Attended SalesHacker webinar</div>
+                            </div>
+                            <span class="sig-row__tag">Event</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Interest score</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#A9B8FF;width:56%"></div></div>
+                                    <span class="sig-row__detail-bar-label">56%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>Pipeline topic</span><span>&middot;</span><span>Yesterday</span>
+                                    <button class="sig-row__detail-action">Contact Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sig-row" style="animation-delay:.35s" tabindex="0" aria-expanded="false">
+                            <span class="sig-row__avatar" style="background:#5B8DEF" aria-hidden="true">LP</span>
+                            <div class="sig-row__info">
+                                <div class="sig-row__name">Lena Park</div>
+                                <div class="sig-row__sub">Opened outreach sequence &times;4</div>
+                            </div>
+                            <span class="sig-row__tag">Engagement</span>
+                            <span class="sig-row__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+                            <div class="sig-row__detail" aria-hidden="true">
+                                <div class="sig-row__detail-bar-wrap">
+                                    <span class="sig-row__detail-bar-label">Engagement rate</span>
+                                    <div class="sig-row__detail-bar-track"><div class="sig-row__detail-bar-fill" style="background:#5B8DEF;width:40%"></div></div>
+                                    <span class="sig-row__detail-bar-label">40%</span>
+                                </div>
+                                <div class="sig-row__detail-meta">
+                                    <span>4 opens</span><span>&middot;</span><span>No reply yet</span>
+                                    <button class="sig-row__detail-action">Contact Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.layers-vis-body -->
+            </div><!-- /.layers-vis-card -->
+
+        </div><!-- /.layers-layout -->
+
+    </section>
+
+    <!-- ══════════════════════════ WHY ══════════════════════════ -->
+    <section class="sec sec--gradient" aria-labelledby="why-heading">
+        <div class="sec__inner">
+            <div class="why__row">
+                <div class="why__col">
+                    <div class="reveal" style="margin-bottom: 28px;">
+                        <div class="sec__eyebrow"><span class="sec__eyebrow-dot" aria-hidden="true"></span>Why Custom Monitoring</div>
+                        <h2 id="why-heading">Why Custom Monitoring<br>Beats Generic Tools</h2>
+                        <p class="sec__lead" style="margin-bottom:0; font-size:16px;">Generic tools surface noise. Paioneers builds layered infrastructure that only shows signals matching your ICP — continuously, at scale.</p>
+                    </div>
+                    <div class="why__grid">
+                        <div class="why__item reveal">
+                            <div class="why__bullet" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                            </div>
+                            <div>
+                                <h4>Continuous Monitoring</h4>
+                                <p>Infrastructure that runs 24/7, catching signals the moment they appear — not weekly batch exports.</p>
+                            </div>
+                        </div>
+                        <div class="why__item reveal reveal-delay-1">
+                            <div class="why__bullet" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+                            </div>
+                            <div>
+                                <h4>ICP-Aligned Filtering</h4>
+                                <p>Every signal filtered through your ICP definition, ignoring irrelevant noise automatically.</p>
+                            </div>
+                        </div>
+                        <div class="why__item reveal reveal-delay-2">
+                            <div class="why__bullet" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                            </div>
+                            <div>
+                                <h4>Scalable Across Markets</h4>
+                                <p>Built to expand across Benelux/EU segments as your business grows into new territories.</p>
+                            </div>
+                        </div>
+                        <div class="why__item reveal reveal-delay-3">
+                            <div class="why__bullet" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            </div>
+                            <div>
+                                <h4>Better Commercial Decisions</h4>
+                                <p>Move from gut-feel to signal-driven prioritisation of sales and marketing efforts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="why__vis-scene reveal reveal-delay-2" aria-hidden="true">
+                    <div class="why__vis-card">
+                        <div class="why__vis-bar">
+                            <div class="why__vis-bar-dots"><span></span><span></span><span></span></div>
+                            <span class="why__vis-bar-label">Signal Feed Comparison</span>
+                        </div>
+                        <div class="why__vis-body">
+
+                            <!-- Left: Generic noise -->
+                            <div class="why__vis-col why__vis-col--generic">
+                                <div class="why__vis-col-hdr">
+                                    <span class="why__vis-col-title">Generic Tools</span>
+                                    <span class="why__vis-badge why__vis-badge--noise">Noise</span>
+                                </div>
+                                <div class="why__noise-track">
+                                    <div class="why__noise-inner">
+                                        <!-- Duplicated for seamless loop -->
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.04s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Job post — Sales Exec, London</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.10s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Press release — Q3 earnings</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.16s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">LinkedIn post — culture update</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.22s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Tech news — general AI trend</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.28s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Blog post — marketing tips</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.34s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Funding alert — wrong sector</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <!-- Duplicate for seamless loop -->
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.04s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Job post — Sales Exec, London</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.10s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Press release — Q3 earnings</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.16s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">LinkedIn post — culture update</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.22s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Tech news — general AI trend</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.28s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Blog post — marketing tips</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.34s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Funding alert — wrong sector</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.40s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Product launch — B2C brand</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--red" style="animation-delay:.46s">
+                                            <div class="why__noise-row__dot" style="background:#f3a07a"></div>
+                                            <div class="why__noise-row__text">Award win — unrelated industry</div>
+                                            <span class="why__noise-row__tag">Off-ICP</span>
+                                        </div>
+                                        <div class="why__noise-row why__noise-row--dim" style="animation-delay:.52s">
+                                            <div class="why__noise-row__dot" style="background:#d1d5c5"></div>
+                                            <div class="why__noise-row__text">Webinar invite — broad topic</div>
+                                            <div class="why__noise-row__x"><svg viewBox="0 0 8 8" fill="none"><line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/></svg></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Clean ICP-filtered signals -->
+                            <div class="why__vis-col why__vis-col--custom">
+                                <div class="why__vis-col-hdr">
+                                    <span class="why__vis-col-title">Paioneers</span>
+                                    <span class="why__vis-badge why__vis-badge--live">ICP-Filtered</span>
+                                </div>
+                                <div class="why__signal-track">
+                                    <div class="why__signal-inner">
+                                        <!-- Set 1 -->
+                                        <div class="why__signal-row why__signal-row--top">
+                                            <div class="why__signal-row__avatar" style="background:linear-gradient(135deg,#0F7A99,#5B8DEF)">CS</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">CloudScale — Series B</div>
+                                                <div class="why__signal-row__sub">3 signals · ICP match</div>
+                                            </div>
+                                            <span class="why__signal-row__score">Hot</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#0F7A99">SB</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">New VP RevOps hired</div>
+                                                <div class="why__signal-row__sub">TechFlow · Persona signal</div>
+                                            </div>
+                                            <span class="why__signal-row__score">820</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#A9B8FF;color:#032C2D">N2</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">NIS2 window opening</div>
+                                                <div class="why__signal-row__sub">Industry · Regulatory</div>
+                                            </div>
+                                            <span class="why__signal-row__score">740</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#F37C38">TK</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">Thomas K — Pricing ×3</div>
+                                                <div class="why__signal-row__sub">Lead · Intent signal</div>
+                                            </div>
+                                            <span class="why__signal-row__score">690</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:linear-gradient(135deg,#bba2c0,#A9B8FF)">GF</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">€12M funding — GrowthForce</div>
+                                                <div class="why__signal-row__sub">Account · Funding round</div>
+                                            </div>
+                                            <span class="why__signal-row__score">775</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#032C2D">RH</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">RevOps Head role opened</div>
+                                                <div class="why__signal-row__sub">Persona · Hiring signal</div>
+                                            </div>
+                                            <span class="why__signal-row__score">710</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:linear-gradient(135deg,#0F7A99,#3dba72)">DX</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">DataXact — tech stack shift</div>
+                                                <div class="why__signal-row__sub">Account · CRM migration</div>
+                                            </div>
+                                            <span class="why__signal-row__score">660</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#c89495">MP</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">Marie P — Demo page ×5</div>
+                                                <div class="why__signal-row__sub">Lead · High-intent visit</div>
+                                            </div>
+                                            <span class="why__signal-row__score">640</span>
+                                        </div>
+                                        <!-- Set 2 — duplicate for seamless loop -->
+                                        <div class="why__signal-row why__signal-row--top">
+                                            <div class="why__signal-row__avatar" style="background:linear-gradient(135deg,#0F7A99,#5B8DEF)">CS</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">CloudScale — Series B</div>
+                                                <div class="why__signal-row__sub">3 signals · ICP match</div>
+                                            </div>
+                                            <span class="why__signal-row__score">Hot</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#0F7A99">SB</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">New VP RevOps hired</div>
+                                                <div class="why__signal-row__sub">TechFlow · Persona signal</div>
+                                            </div>
+                                            <span class="why__signal-row__score">820</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#A9B8FF;color:#032C2D">N2</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">NIS2 window opening</div>
+                                                <div class="why__signal-row__sub">Industry · Regulatory</div>
+                                            </div>
+                                            <span class="why__signal-row__score">740</span>
+                                        </div>
+                                        <div class="why__signal-row">
+                                            <div class="why__signal-row__avatar" style="background:#F37C38">TK</div>
+                                            <div class="why__signal-row__info">
+                                                <div class="why__signal-row__name">Thomas K — Pricing ×3</div>
+                                                <div class="why__signal-row__sub">Lead · Intent signal</div>
+                                            </div>
+                                            <span class="why__signal-row__score">690</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════ DELIVERABLES ══════════════════════════ -->
+    <section class="dlv-sec" aria-labelledby="dlv-heading">
+        <div class="dlv-sec__inner">
+
+            <div class="dlv-header">
+                <div>
+                    <div class="dlv-eyebrow reveal">Deliverables</div>
+                    <h2 class="dlv-heading reveal" id="dlv-heading">What You Get</h2>
+                </div>
+                <div class="dlv-header__rule" aria-hidden="true"></div>
+                <div class="dlv-header__count reveal">3 outputs</div>
+            </div>
+
+            <div class="dlv-stack" role="list">
+
+                <!-- Row 01 -->
+                <div class="dlv-row" role="listitem">
+                    <div class="dlv-row__index" aria-hidden="true">
+                        <div class="dlv-row__dot">01</div>
+                    </div>
+                    <div class="dlv-row__content">
+                        <span class="dlv-row__accent" aria-hidden="true"></span>
+                        <div class="dlv-row__label">Foundation</div>
+                        <h4>Documented ICP + Signal Framework</h4>
+                        <p>Complete documentation of your ICP and custom signal definitions mapped across all 4 layers.</p>
+                    </div>
+                    <div class="dlv-row__formats" aria-label="Output formats">
+                        <span class="dlv-row__fmt-label">Delivered as</span>
+                        <span class="dlv-tag">Strategy</span>
+                        <span class="dlv-tag">PDF + Notion</span>
+                    </div>
+                </div>
+
+                <!-- Row 02 -->
+                <div class="dlv-row" role="listitem">
+                    <div class="dlv-row__index" aria-hidden="true">
+                        <div class="dlv-row__dot">02</div>
+                    </div>
+                    <div class="dlv-row__content">
+                        <span class="dlv-row__accent" aria-hidden="true"></span>
+                        <div class="dlv-row__label">Ongoing Intelligence</div>
+                        <h4>Demand Pattern Insights</h4>
+                        <p>Weekly and monthly reports revealing emerging demand patterns and movements before they peak.</p>
+                    </div>
+                    <div class="dlv-row__formats" aria-label="Output formats">
+                        <span class="dlv-row__fmt-label">Cadence</span>
+                        <span class="dlv-tag">Weekly</span>
+                        <span class="dlv-tag">Monthly</span>
+                    </div>
+                </div>
+
+                <!-- Row 03 -->
+                <div class="dlv-row" role="listitem">
+                    <div class="dlv-row__index" aria-hidden="true">
+                        <div class="dlv-row__dot">03</div>
+                    </div>
+                    <div class="dlv-row__content">
+                        <span class="dlv-row__accent" aria-hidden="true"></span>
+                        <div class="dlv-row__label">Action Layer</div>
+                        <h4>Prioritised Focus Areas</h4>
+                        <p>Commercial focus areas ranked by signal strength and ICP fit — scored and ready for immediate action.</p>
+                    </div>
+                    <div class="dlv-row__formats" aria-label="Output formats">
+                        <span class="dlv-row__fmt-label">Ready to use</span>
+                        <span class="dlv-tag">Scored</span>
+                        <span class="dlv-tag">Action-ready</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════ FORM ══════════════════════════ -->
+    <section class="form-sec" id="form" aria-labelledby="form-heading">
+        <div class="form-sec__inner">
+            <div class="form-eyebrow reveal">Free Signal Scan</div>
+            <h2 class="reveal" id="form-heading">Start Your Signal Intelligence Scan</h2>
+            <p class="form-desc reveal">Get a free, workshop-based signal scan delivered within 24 hours. No commitment required.</p>
+
+            <form class="si-form" id="siForm" novalidate aria-label="Signal scan request form">
+                <div class="si-form__row">
+                    <div class="si-form__field" id="field-name">
+                        <label for="si-name">Name <span class="req" aria-label="required">*</span></label>
+                        <input type="text" id="si-name" name="name" placeholder="Your name"
+                            required autocomplete="name" aria-required="true" aria-describedby="err-name">
+                        <span class="si-form__field-error" id="err-name" role="alert">Please enter your name.</span>
+                    </div>
+                    <div class="si-form__field" id="field-company">
+                        <label for="si-company">Company <span class="req" aria-label="required">*</span></label>
+                        <input type="text" id="si-company" name="company" placeholder="Company name"
+                            required autocomplete="organization" aria-required="true" aria-describedby="err-company">
+                        <span class="si-form__field-error" id="err-company" role="alert">Please enter your company name.</span>
+                    </div>
+                </div>
+                <div class="si-form__row">
+                    <div class="si-form__field" id="field-website">
+                        <label for="si-website">Website <span class="req" aria-label="required">*</span></label>
+                        <input type="url" id="si-website" name="website" placeholder="https://yourcompany.com"
+                            required autocomplete="url" aria-required="true" aria-describedby="err-website">
+                        <span class="si-form__field-error" id="err-website" role="alert">Please enter a valid website URL.</span>
+                    </div>
+                    <div class="si-form__field" id="field-email">
+                        <label for="si-email">Email <span class="req" aria-label="required">*</span></label>
+                        <input type="email" id="si-email" name="email" placeholder="you@company.com"
+                            required autocomplete="email" aria-required="true" aria-describedby="err-email">
+                        <span class="si-form__field-error" id="err-email" role="alert">Please enter a valid email address.</span>
+                    </div>
+                </div>
+                <div class="si-form__field si-form__field--opt">
+                    <label for="si-services">Service Description</label>
+                    <textarea id="si-services" name="services" placeholder="Briefly describe your core services and target market..." autocomplete="off"></textarea>
+                </div>
+                <button type="submit" class="si-form__submit" id="siSubmit">Get My Free Scan</button>
+                <p class="si-form__micro">No card required &nbsp;·&nbsp; Workshop-based &nbsp;·&nbsp; Delivered in 24 hours.</p>
+                <div class="si-form__global-error" id="siError" role="alert" aria-live="assertive">
+                    Something went wrong. Please try again or email us at <a href="mailto:info@paioneers.nl" style="color:rgba(255,138,112,.9)">info@paioneers.nl</a>.
+                </div>
+            </form>
+
+            <div class="si-form__success" id="siSuccess" aria-live="polite">
+                <h3>Request Sent</h3>
+                <p>We've received your signal scan request. We'll be in touch within 24 hours to schedule your ICP workshop.</p>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="ftr">
+        <div class="ftr__inner">
+            <div class="ftr__brand">
+                <img src="Ressources/images/logo_white.png" alt="Paioneers logo" width="24" height="24">
+                Paioneers
+            </div>
+            <nav class="ftr__links" aria-label="Footer links">
+                <a href="index.html">Main Site</a>
+                <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="mailto:info@paioneers.nl">Email</a>
+            </nav>
+            <span class="ftr__copy" aria-label="Copyright 2026 Paioneers BV">&copy; 2026 Paioneers BV</span>
+        </div>
+    </footer>
+
+    <script>
+    (function () {
+        'use strict';
+
+        /* ── Header scroll ── */
+        var hdr = document.getElementById('hdr');
+        window.addEventListener('scroll', function () {
+            hdr.classList.toggle('scrolled', window.pageYOffset > 60);
+        }, { passive: true });
+
+        /* ── Scroll reveal ── */
+        var revealEls = document.querySelectorAll('.reveal, .dlv-row');
+        var revealIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                if (e.target.classList.contains('dlv-row')) {
+                    var idx = Array.from(e.target.parentElement.children).indexOf(e.target);
+                    setTimeout(function () { e.target.classList.add('visible'); }, idx * 110);
+                } else {
+                    e.target.classList.add('visible');
+                }
+                revealIO.unobserve(e.target);
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+        revealEls.forEach(function (el) { revealIO.observe(el); });
+
+        /* ── Step stagger ── */
+        var steps = document.querySelectorAll('.step');
+        if (steps.length) {
+            var stepIO = new IntersectionObserver(function (entries) {
+                if (entries.some(function (e) { return e.isIntersecting; })) {
+                    steps.forEach(function (s, i) {
+                        setTimeout(function () { s.classList.add('visible'); }, i * 70);
+                    });
+                    stepIO.disconnect();
+                }
+            }, { threshold: 0.08 });
+            stepIO.observe(steps[0]);
+        }
+
+        /* ── Layer pill switching (unified vis card) ── */
+        var layerPills   = document.querySelectorAll('.layer-pill');
+        var visLayers    = document.querySelectorAll('.vis-layer-panel');
+        var textPanels   = document.querySelectorAll('.layer-text__panel');
+
+        function activateLayer(layer) {
+            /* Update pills */
+            layerPills.forEach(function (p) {
+                var on = p.dataset.layer === layer;
+                p.classList.toggle('active', on);
+                p.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            /* Update vis panels */
+            visLayers.forEach(function (v) {
+                if (v.id === 'vis-' + layer) {
+                    v.classList.add('active');
+                    v.classList.remove('entering');
+                    /* collapse any open rows first */
+                    v.querySelectorAll('.sig-row.expanded').forEach(function (r) {
+                        r.classList.remove('expanded');
+                        r.setAttribute('aria-expanded', 'false');
+                        var det = r.querySelector('.sig-row__detail');
+                        if (det) det.setAttribute('aria-hidden', 'true');
+                    });
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(function () {
+                            v.classList.add('entering');
+                            /* re-trigger row entrance animations */
+                            v.querySelectorAll('.sig-row').forEach(function (r) {
+                                r.style.animation = 'none';
+                                void r.offsetHeight;
+                                r.style.animation = '';
+                            });
+                        });
+                    });
+                } else {
+                    v.classList.remove('active', 'entering');
+                }
+            });
+            /* Update text panels */
+            textPanels.forEach(function (t) {
+                if (t.id === 'ltext-' + layer) {
+                    t.classList.add('active');
+                    t.classList.remove('entering');
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(function () { t.classList.add('entering'); });
+                    });
+                } else {
+                    t.classList.remove('active', 'entering');
+                }
+            });
+        }
+
+        layerPills.forEach(function (p) {
+            p.addEventListener('click', function () { activateLayer(p.dataset.layer); });
+            p.addEventListener('keydown', function (e) {
+                var all = Array.from(layerPills);
+                var idx = all.indexOf(p);
+                if (e.key === 'ArrowRight') { all[(idx + 1) % all.length].focus(); e.preventDefault(); }
+                if (e.key === 'ArrowLeft')  { all[(idx - 1 + all.length) % all.length].focus(); e.preventDefault(); }
+                if (e.key === 'Home')        { all[0].focus(); e.preventDefault(); }
+                if (e.key === 'End')         { all[all.length - 1].focus(); e.preventDefault(); }
+            });
+        });
+
+        /* ── Signal row expand/collapse on click ── */
+        document.querySelectorAll('.vis-layer-panel').forEach(function (panel) {
+            panel.addEventListener('click', function (e) {
+                var row = e.target.closest('.sig-row');
+                if (!row) return;
+                /* Don't expand when the action button itself is clicked */
+                if (e.target.closest('.sig-row__detail-action')) return;
+
+                var isExpanded = row.classList.contains('expanded');
+
+                /* Collapse all rows in all vis panels */
+                document.querySelectorAll('.sig-row.expanded').forEach(function (r) {
+                    r.classList.remove('expanded');
+                    r.setAttribute('aria-expanded', 'false');
+                    var det = r.querySelector('.sig-row__detail');
+                    if (det) det.setAttribute('aria-hidden', 'true');
+                });
+
+                if (!isExpanded) {
+                    row.classList.add('expanded');
+                    row.setAttribute('aria-expanded', 'true');
+                    var detail = row.querySelector('.sig-row__detail');
+                    if (detail) detail.setAttribute('aria-hidden', 'false');
+                }
+            });
+
+            /* Keyboard: space/enter to toggle */
+            panel.addEventListener('keydown', function (e) {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                var row = e.target.closest('.sig-row');
+                if (!row) return;
+                e.preventDefault();
+                row.click();
+            });
+        });
+
+        /* Animate first vis panel on load */
+        setTimeout(function () {
+            var fp = document.getElementById('vis-industry');
+            if (fp) {
+                fp.classList.add('entering');
+                fp.querySelectorAll('.sig-row').forEach(function (r) {
+                    r.style.animation = 'none';
+                    void r.offsetHeight;
+                    r.style.animation = '';
+                });
+            }
+            var ft = document.getElementById('ltext-industry');
+            if (ft) ft.classList.add('entering');
+        }, 60);
+
+        /* ── Why vis: re-trigger row animations on scroll into view ── */
+        (function () {
+            var whyCard = document.querySelector('.why__vis-card');
+            if (!whyCard) return;
+            var triggered = false;
+            var io = new IntersectionObserver(function (entries) {
+                if (entries[0].isIntersecting && !triggered) {
+                    triggered = true;
+                    whyCard.querySelectorAll('.why__signal-row').forEach(function (r, i) {
+                        r.style.animationDelay = (0.08 + i * 0.1) + 's';
+                        r.style.animation = 'none';
+                        r.offsetHeight; /* reflow */
+                        r.style.animation = '';
+                    });
+                    io.disconnect();
+                }
+            }, { threshold: 0.3 });
+            io.observe(whyCard);
+        }());
+
+        /* ── Form: inline validation + submission ── */
+        var form    = document.getElementById('siForm');
+        var submitBtn = document.getElementById('siSubmit');
+        var globalErr = document.getElementById('siError');
+        var success   = document.getElementById('siSuccess');
+
+        if (form) {
+            var fields = {
+                name:    document.getElementById('si-name'),
+                company: document.getElementById('si-company'),
+                website: document.getElementById('si-website'),
+                email:   document.getElementById('si-email')
+            };
+            var fieldWrappers = {
+                name:    document.getElementById('field-name'),
+                company: document.getElementById('field-company'),
+                website: document.getElementById('field-website'),
+                email:   document.getElementById('field-email')
+            };
+
+            /* Validate on blur */
+            Object.keys(fields).forEach(function (key) {
+                fields[key].addEventListener('blur', function () { validateField(key); });
+            });
+
+            function validateField(key) {
+                var val = fields[key].value.trim();
+                var ok  = val.length > 0;
+                if (key === 'email') ok = ok && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                if (key === 'website') ok = ok && (val.startsWith('http://') || val.startsWith('https://'));
+                fieldWrappers[key].classList.toggle('has-error', !ok);
+                return ok;
+            }
+
+            function validateAll() {
+                return Object.keys(fields).map(validateField).every(Boolean);
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                globalErr.classList.remove('visible');
+                if (!validateAll()) {
+                    /* focus first error */
+                    var firstErr = form.querySelector('.has-error input');
+                    if (firstErr) firstErr.focus();
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending…';
+
+                var params = {
+                    email:      fields.email.value.trim(),
+                    reply_to:   fields.email.value.trim(),
+                    website:    fields.website.value.trim(),
+                    source:     'Signal Intelligence Page',
+                    challenges: 'Name: '    + fields.name.value.trim() +
+                                '\nCompany: ' + fields.company.value.trim() +
+                                '\nServices: ' + (document.getElementById('si-services').value.trim() || 'Not specified'),
+                    outcome:    'Signal Intelligence Free Scan Request',
+                    to_email:   'info@paioneers.nl'
+                };
+
+                var timer = setTimeout(showError, 10000);
+
+                try {
+                    emailjs.send('service_ieyl6pb', 'template_595ckqo', params)
+                        .then(function () {
+                            clearTimeout(timer);
+                            form.style.display = 'none';
+                            success.classList.add('visible');
+                        }, function (err) {
+                            clearTimeout(timer);
+                            console.error('EmailJS error:', err);
+                            showError();
+                        });
+                } catch (err) {
+                    clearTimeout(timer);
+                    console.error('EmailJS exception:', err);
+                    showError();
+                }
+
+                function showError() {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Get My Free Scan';
+                    globalErr.classList.add('visible');
+                    globalErr.focus();
+                }
+            });
+        }
+
+    })();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>emailjs.init('F9i7fSIFN92ZRBX-p');</script>
+</body>
+</html>

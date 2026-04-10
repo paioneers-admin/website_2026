@@ -1351,6 +1351,120 @@
             align-self: flex-start;
         }
 
+        .op-services__cta-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .op-services__cta--secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 22px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--color-dark-teal);
+            border: 1px solid rgba(3, 44, 45, 0.25);
+            background: transparent;
+            text-decoration: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .op-services__cta--secondary:hover {
+            border-color: var(--color-teal);
+            color: var(--color-teal);
+        }
+
+        .op-services__cta--secondary svg {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .op-services__cta--secondary:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* ── Signal Pyramid visual ── */
+        .op-signal-pyramid {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 48px 24px;
+        }
+
+        .op-signal-pyramid__tier {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .op-signal-pyramid__bar {
+            height: 44px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .op-signal-pyramid__bar:hover {
+            transform: scale(1.03);
+        }
+
+        .op-signal-pyramid__tier:nth-child(1) .op-signal-pyramid__bar {
+            width: 28%;
+            background: linear-gradient(135deg, #0a3d4e, #0f5c6e);
+        }
+        .op-signal-pyramid__tier:nth-child(2) .op-signal-pyramid__bar {
+            width: 46%;
+            background: linear-gradient(135deg, #0f6e7a, #1a9ca8);
+        }
+        .op-signal-pyramid__tier:nth-child(3) .op-signal-pyramid__bar {
+            width: 68%;
+            background: linear-gradient(135deg, #3dadb8, #5bc4d0);
+        }
+        .op-signal-pyramid__tier:nth-child(4) .op-signal-pyramid__bar {
+            width: 90%;
+            background: linear-gradient(135deg, #4a8fe0, #5b9def);
+        }
+
+        .op-signal-pyramid__label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-dark-teal);
+            white-space: nowrap;
+        }
+
+        .op-signal-pyramid__sublabel {
+            font-size: 12px;
+            color: rgba(3, 44, 45, 0.5);
+            margin-top: 2px;
+        }
+
+        .op-signal-pyramid__title {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-dark-teal);
+            opacity: 0.45;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
         /* ── Video column ── */
         .op-services__video-col {
             display: flex;
@@ -1946,195 +2060,611 @@
         }
 
         /* ============================================
-           APPROACH SECTION — 5 alternating sub-zones
+           APPROACH SECTION — Timeline Redesign
+           ============================================ */
+        /* ============================================
+           HOW IT WORKS — REDESIGNED
            ============================================ */
         .op-approach {
             position: relative;
             overflow: hidden;
+            background: var(--color-dark-teal);
+        }
+
+        /* Dot-grid background pattern */
+        .op-approach::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle, rgba(169, 184, 255, 0.18) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Large ambient glow blobs */
+        .op-approach::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 15% 20%, rgba(15, 122, 153, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 85% 75%, rgba(123, 145, 255, 0.14) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 30% at 50% 50%, rgba(3, 44, 45, 0.6) 0%, transparent 80%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .op-approach__label {
             font-family: var(--font-mono);
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.18em;
             display: block;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
-        /* ── Sub-zone A: Intro (warm gradient) ── */
-        .op-approach__intro {
-            background: linear-gradient(135deg,
-                var(--color-salmon-1) 0%,
-                var(--color-salmon-2) 14%,
-                var(--color-mauve-1) 28%,
-                var(--color-mauve-2) 42%,
-                var(--color-purple-1) 56%,
-                var(--color-purple-2) 70%,
-                var(--color-blue-1) 100%);
-            padding: 120px 0 100px;
+        /* ── Header ── */
+        .op-approach__header {
+            position: relative;
+            padding: 120px 0 80px;
+            text-align: center;
+            z-index: 1;
         }
 
-        .op-approach__intro-inner {
+        .op-approach__header-inner {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 60px;
-            text-align: center;
+            position: relative;
         }
 
-        .op-approach__intro .op-approach__label {
-            color: var(--color-dark-teal);
-            opacity: 0.6;
+        .op-approach__header .op-approach__label {
+            color: var(--color-periwinkle);
+            opacity: 0.8;
         }
 
         .op-approach__headline {
-            font-size: clamp(42px, 5vw, 64px);
+            font-size: clamp(40px, 5vw, 64px);
             font-weight: 300;
-            line-height: 1.08;
-            margin-bottom: 24px;
-            letter-spacing: -0.02em;
-            color: var(--color-dark-teal);
+            line-height: 1.06;
+            margin-bottom: 28px;
+            letter-spacing: -0.025em;
+            color: var(--color-cream);
+        }
+
+        .op-approach__headline em {
+            font-style: italic;
+            color: var(--color-periwinkle);
         }
 
         .op-approach__subheadline {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 300;
-            line-height: 1.6;
-            color: var(--color-dark-teal);
-            opacity: 0.85;
-            max-width: 720px;
+            line-height: 1.65;
+            color: rgba(250, 255, 239, 0.6);
+            max-width: 640px;
             margin: 0 auto;
         }
 
-        /* ── Sub-zone B: Origin Story (dark teal) ── */
-        .op-approach__origin {
-            background: var(--color-dark-teal);
-            color: var(--color-cream);
-            padding: 100px 0;
+        /* ── Steps Grid ── */
+        .op-approach__steps {
+            position: relative;
+            z-index: 1;
+            padding: 0 0 100px;
         }
 
-        .op-approach__origin-inner {
+        .op-approach__steps-inner {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 60px;
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 80px;
-            align-items: center;
         }
 
-        .op-approach__origin .op-approach__label {
+        /* Horizontal connector rail */
+        .op-approach__steps-rail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 0;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .op-approach__steps-rail::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            right: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(169, 184, 255, 0.25) 20%, rgba(169, 184, 255, 0.25) 80%, transparent);
+            transform: translateY(-50%);
+        }
+
+        /* 4-column grid of step cards */
+        .op-approach__cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: rgba(169, 184, 255, 0.08);
+            border: 1px solid rgba(169, 184, 255, 0.1);
+            position: relative;
+        }
+
+        /* Corner accent shapes */
+        .op-approach__cards::before,
+        .op-approach__cards::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            z-index: 2;
+        }
+
+        .op-approach__cards::before {
+            top: -1px;
+            left: -1px;
+            border-top: 2px solid var(--color-periwinkle);
+            border-left: 2px solid var(--color-periwinkle);
+        }
+
+        .op-approach__cards::after {
+            bottom: -1px;
+            right: -1px;
+            border-bottom: 2px solid var(--color-teal);
+            border-right: 2px solid var(--color-teal);
+        }
+
+        /* Individual step card */
+        .op-approach__card {
+            background: rgba(3, 44, 45, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.35s ease;
+        }
+
+        .op-approach__card:hover {
+            background: rgba(15, 122, 153, 0.12);
+        }
+
+        /* Top glow line on hover */
+        .op-approach__card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--color-periwinkle), transparent);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .op-approach__card:hover::before,
+        .op-approach__card.is-active::before {
+            opacity: 1;
+        }
+
+        /* Corner bracket accent inside card */
+        .op-approach__card::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            border-top: 1px solid rgba(169, 184, 255, 0.3);
+            border-right: 1px solid rgba(169, 184, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .op-approach__card:hover::after {
+            opacity: 1;
+        }
+
+        /* Visual area (top mock UI) */
+        .op-approach__card-visual {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(169, 184, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        /* Subtle inner grid on visual */
+        .op-approach__card-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(169, 184, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(169, 184, 255, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            z-index: 0;
+        }
+
+        .op-approach__card-visual-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* Step number badge */
+        .op-approach__card-step {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 3;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--color-periwinkle);
+            opacity: 0.7;
+            background: rgba(3, 44, 45, 0.8);
+            padding: 4px 8px;
+            border: 1px solid rgba(169, 184, 255, 0.15);
+        }
+
+        /* Status dot */
+        .op-approach__card-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 3;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-teal);
+            box-shadow: 0 0 8px rgba(15, 122, 153, 0.8);
+            animation: op-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes op-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Content area (bottom text) */
+        .op-approach__card-content {
+            padding: 28px 28px 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .op-approach__card-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-periwinkle);
+            opacity: 0.55;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .op-approach__card-title {
+            font-size: clamp(17px, 1.6vw, 21px);
+            font-weight: 300;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: var(--color-cream);
+            margin-bottom: 14px;
+        }
+
+        .op-approach__card-text {
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.72;
+            color: rgba(250, 255, 239, 0.5);
+            flex: 1;
+        }
+
+        /* ── Step-specific visual mockups ── */
+
+        /* Step 1: Diagnose — bottleneck audit bars */
+        .op-approach__mock-audit {
+            width: 100%;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .op-approach__mock-audit-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .op-approach__mock-audit-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            color: rgba(250, 255, 239, 0.35);
+            white-space: nowrap;
+            width: 72px;
+            flex-shrink: 0;
+        }
+
+        .op-approach__mock-audit-track {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .op-approach__mock-audit-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .op-fade-in.is-visible .op-approach__mock-audit-fill {
+            width: var(--fill-w, 50%);
+        }
+
+        .op-approach__mock-audit-val {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: rgba(250, 255, 239, 0.5);
+            width: 28px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* Mock header bar for cards */
+        .op-approach__mock-header {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(169, 184, 255, 0.07);
+            z-index: 2;
+        }
+
+        .op-approach__mock-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* Step 2: Install — live signal feed */
+        .op-approach__mock-feed {
+            width: 100%;
+            padding: 52px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .op-approach__mock-feed-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(169, 184, 255, 0.08);
+            border-radius: 3px;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .op-fade-in.is-visible .op-approach__mock-feed-item {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .op-fade-in.is-visible .op-approach__mock-feed-item:nth-child(2) { transition-delay: 0.15s; }
+        .op-fade-in.is-visible .op-approach__mock-feed-item:nth-child(3) { transition-delay: 0.3s; }
+        .op-fade-in.is-visible .op-approach__mock-feed-item:nth-child(4) { transition-delay: 0.45s; }
+
+        .op-approach__mock-feed-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .op-approach__mock-feed-text {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: rgba(250, 255, 239, 0.45);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .op-approach__mock-feed-badge {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Step 3: Automate — workflow nodes */
+        .op-approach__mock-flow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 44px 16px 16px;
+        }
+
+        .op-approach__mock-flow-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Step 4: Compound — chart */
+        .op-approach__mock-chart {
+            width: 100%;
+            padding: 48px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .op-approach__mock-chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            height: 80px;
+        }
+
+        .op-approach__mock-chart-bar {
+            flex: 1;
+            border-radius: 2px 2px 0 0;
+            transform-origin: bottom;
+            transform: scaleY(0);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .op-fade-in.is-visible .op-approach__mock-chart-bar {
+            transform: scaleY(1);
+        }
+
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(2) { transition-delay: 0.06s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(3) { transition-delay: 0.12s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(4) { transition-delay: 0.18s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(5) { transition-delay: 0.24s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(6) { transition-delay: 0.3s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(7) { transition-delay: 0.36s; }
+        .op-fade-in.is-visible .op-approach__mock-chart-bar:nth-child(8) { transition-delay: 0.42s; }
+
+        .op-approach__mock-chart-baseline {
+            height: 1px;
+            background: rgba(169, 184, 255, 0.15);
+            width: 100%;
+        }
+
+        .op-approach__mock-chart-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: rgba(250, 255, 239, 0.3);
+            letter-spacing: 0.08em;
+            text-align: center;
+        }
+
+        /* Stat badge on chart card */
+        .op-approach__mock-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .op-approach__mock-stat-num {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--color-cream);
+            line-height: 1;
+        }
+
+        .op-approach__mock-stat-unit {
+            font-family: var(--font-mono);
+            font-size: 11px;
             color: var(--color-periwinkle);
             opacity: 0.7;
         }
 
-        .op-approach__origin-text {
-            font-size: 19px;
-            font-weight: 300;
-            line-height: 1.7;
-            color: rgba(250, 255, 239, 0.88);
-        }
-
-        .op-approach__origin-visual {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .op-approach__origin-visual svg {
-            width: 100%;
-            max-width: 360px;
-            height: auto;
-        }
-
-        .op-approach__origin-path {
-            stroke-dasharray: 800;
-            stroke-dashoffset: 800;
-            transition: stroke-dashoffset 2s var(--ease-smooth);
-        }
-
-        .op-fade-in.is-visible .op-approach__origin-path {
-            stroke-dashoffset: 0;
-        }
-
-        .op-approach__origin-dot {
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .op-fade-in.is-visible .op-approach__origin-dot {
-            opacity: 1;
-        }
-
-        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(2) { transition-delay: 0.8s; }
-        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(3) { transition-delay: 1.2s; }
-        .op-fade-in.is-visible .op-approach__origin-dot:nth-child(4) { transition-delay: 1.6s; }
-
-        /* ── Sub-zone C: Three Pillars (cream) ── */
-        .op-approach__pillars {
-            background: var(--color-cream);
-            padding: 100px 0;
-        }
-
-        .op-approach__pillars-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 60px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 48px;
-        }
-
-        .op-approach__pillar {
-            position: relative;
-            padding-top: 32px;
-        }
-
-        .op-approach__pillar-accent {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 2px;
-            width: 0;
-            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
-            transition: width 0.6s var(--ease-smooth) 0.2s;
-        }
-
-        .op-fade-in.is-visible .op-approach__pillar-accent {
-            width: 48px;
-        }
-
-        .op-approach__pillar-index {
+        .op-approach__mock-stat-label {
             font-family: var(--font-mono);
-            font-size: 12px;
-            letter-spacing: 0.12em;
+            font-size: 9px;
             text-transform: uppercase;
-            opacity: 0.45;
-            display: block;
-            margin-bottom: 24px;
-            color: var(--color-dark-teal);
+            letter-spacing: 0.1em;
+            color: rgba(250, 255, 239, 0.3);
         }
 
-        .op-approach__pillar-title {
-            font-size: 24px;
-            font-weight: 400;
-            line-height: 1.2;
-            letter-spacing: -0.01em;
-            color: var(--color-dark-teal);
-            margin-bottom: 16px;
+        /* Decorative geometric shapes floating in section */
+        .op-approach__shapes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        .op-approach__pillar-text {
-            font-size: 16px;
-            line-height: 1.65;
-            color: var(--color-dark-teal);
-            opacity: 0.78;
+        .op-approach__shape {
+            position: absolute;
+            opacity: 0.07;
         }
 
-        /* ── Sub-zone E: Toolkit + CTA (cream) ── */
+        /* Hexagon */
+        .op-approach__shape--hex-1 {
+            top: 8%;
+            right: 4%;
+            width: 180px;
+            height: 180px;
+        }
+
+        .op-approach__shape--hex-2 {
+            bottom: 18%;
+            left: 2%;
+            width: 120px;
+            height: 120px;
+            opacity: 0.05;
+        }
+
+        /* Circle ring */
+        .op-approach__shape--ring-1 {
+            top: 40%;
+            left: 8%;
+            width: 280px;
+            height: 280px;
+            opacity: 0.04;
+        }
+
+        .op-approach__shape--ring-2 {
+            bottom: 5%;
+            right: 12%;
+            width: 160px;
+            height: 160px;
+            opacity: 0.06;
+        }
+
+        /* ── Connector dots between cards ── */
+        .op-approach__card-connector {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* ── Toolkit ── */
         .op-approach__toolkit {
-            background: var(--color-cream);
+            background: rgba(0, 0, 0, 0.25);
+            border-top: 1px solid rgba(123, 145, 255, 0.1);
             padding: 100px 0 120px;
+            position: relative;
+            z-index: 1;
         }
 
         .op-approach__toolkit-inner {
@@ -2151,31 +2681,33 @@
         }
 
         .op-approach__toolkit-header .op-approach__label {
-            color: var(--color-dark-teal);
-            opacity: 0.45;
+            color: var(--color-periwinkle);
+            opacity: 0.6;
             margin-bottom: 0;
         }
 
         .op-approach__toolkit-headline {
-            font-size: clamp(28px, 3vw, 36px);
+            font-size: clamp(26px, 2.5vw, 34px);
             font-weight: 300;
             line-height: 1.2;
             letter-spacing: -0.01em;
-            color: var(--color-dark-teal);
-            margin-top: 16px;
-            max-width: 560px;
+            color: var(--color-cream);
+            margin-top: 14px;
+            max-width: 480px;
         }
 
         .op-approach__toolkit .op-approach__label {
-            color: var(--color-dark-teal);
-            opacity: 0.45;
+            color: var(--color-periwinkle);
+            opacity: 0.6;
         }
 
         .op-approach__logo-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 1px;
             margin-bottom: 64px;
+            background: rgba(123, 145, 255, 0.1);
+            border: 1px solid rgba(123, 145, 255, 0.1);
         }
 
         .op-approach__logo-card {
@@ -2183,40 +2715,40 @@
             align-items: center;
             gap: 16px;
             padding: 28px 24px;
-            border: 1px solid rgba(3, 44, 45, 0.1);
-            background: rgba(255, 255, 255, 0.6);
-            transition: all 0.3s ease;
+            background: rgba(3, 44, 45, 0.8);
+            transition: background 0.3s ease;
             position: relative;
+            cursor: default;
         }
 
         .op-approach__logo-card::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--color-teal), var(--color-periwinkle));
-            transition: width 0.4s var(--ease-smooth);
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(123, 145, 255, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .op-approach__logo-card:hover {
-            border-color: rgba(15, 122, 153, 0.25);
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-2px);
+            background: rgba(123, 145, 255, 0.06);
         }
 
         .op-approach__logo-card:hover::after {
-            width: 100%;
+            opacity: 1;
         }
 
         .op-approach__logo-card-icon {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            opacity: 0.85;
         }
 
         .op-approach__logo-card-icon img,
@@ -2230,20 +2762,20 @@
         }
 
         .op-approach__logo-card-name {
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--color-dark-teal);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-cream);
+            opacity: 0.85;
             line-height: 1.2;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .op-approach__logo-card-role {
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--color-dark-teal);
-            opacity: 0.5;
+            letter-spacing: 0.08em;
+            color: rgba(250, 255, 239, 0.35);
         }
 
         .op-approach__toolkit-bottom {
@@ -2251,16 +2783,15 @@
             align-items: center;
             justify-content: space-between;
             padding-top: 48px;
-            border-top: 1px solid rgba(3, 44, 45, 0.1);
+            border-top: 1px solid rgba(123, 145, 255, 0.1);
         }
 
         .op-approach__toolkit-note {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 300;
-            line-height: 1.6;
-            color: var(--color-dark-teal);
-            opacity: 0.7;
-            max-width: 480px;
+            line-height: 1.65;
+            color: rgba(250, 255, 239, 0.45);
+            max-width: 420px;
         }
 
         .op-approach__buttons {
@@ -2273,18 +2804,42 @@
             display: inline-flex;
             align-items: center;
             padding: 16px 32px;
-            border: 1px solid var(--color-dark-teal);
+            border: 1px solid rgba(250, 255, 239, 0.2);
             font-family: var(--font-mono);
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--color-dark-teal);
+            color: rgba(250, 255, 239, 0.65);
             transition: all 0.3s ease;
         }
 
         .op-approach__button:hover {
-            background: var(--color-dark-teal);
+            border-color: var(--color-periwinkle);
             color: var(--color-cream);
+            background: rgba(123, 145, 255, 0.08);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1100px) {
+            .op-approach__cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 680px) {
+            .op-approach__cards {
+                grid-template-columns: 1fr;
+            }
+
+            .op-approach__logo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .op-approach__toolkit-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 32px;
+            }
         }
 
         /* ============================================
@@ -2935,6 +3490,7 @@
             .op-approach__intro-inner { padding: 0 24px; }
             .op-approach__origin-inner { padding: 0 24px; grid-template-columns: 1fr; gap: 48px; }
             .op-approach__pillars-inner { padding: 0 24px; grid-template-columns: 1fr; gap: 40px; }
+            .op-approach__steps-inner { padding: 0 24px; }
             .op-approach__toolkit-inner { padding: 0 24px; }
             .op-approach__logo-grid { grid-template-columns: repeat(2, 1fr); }
             .op-approach__toolkit-header { flex-direction: column; align-items: flex-start; }
@@ -3929,7 +4485,7 @@
                 <div>
                     <ul class="op-stats__list">
                         <li class="op-stats__list-item is-active" data-value="8 hrs" data-index="0">Saved Per Rep, Per Week</li>
-                        <li class="op-stats__list-item" data-value="1000+" data-index="1">Company Enrichment Data Points</li>
+                        <li class="op-stats__list-item" data-value="60+" data-index="1">Company Enrichment Data Points</li>
                         <li class="op-stats__list-item" data-value="50+" data-index="2">Data Points Per Prospect</li>
                         <li class="op-stats__list-item" data-value="4 wks" data-index="3">From Kickoff to System Live</li>
                     </ul>
@@ -4165,7 +4721,7 @@
             <!-- Header -->
             <div class="op-services__header">
                 <div class="op-services__label">Services</div>
-                <div class="op-services__counter">03 Services</div>
+                <div class="op-services__counter">04 Services</div>
             </div>
 
             <!-- Services Overview -->
@@ -4332,7 +4888,7 @@
             <!-- Service 1: Bottleneck Workshop -->
             <div class="op-services__item">
                 <div class="op-services__content">
-                    <div class="op-services__index">01 / 03</div>
+                    <div class="op-services__index">01 / 04</div>
                     <h2>Bottleneck Workshop</h2>
                     <div class="op-services__divider"></div>
                     <p>A half-day diagnostic session that maps your complete sales process, identifies every bottleneck and leakage point, and delivers a prioritised roadmap within one week. If you don't walk out with at least 3 actionable insights, it's free.</p>
@@ -4351,7 +4907,7 @@
             <!-- Service 2: Pipeline Accelerator -->
             <div class="op-services__item">
                 <div class="op-services__content">
-                    <div class="op-services__index">02 / 03</div>
+                    <div class="op-services__index">02 / 04</div>
                     <h2>Pipeline Accelerator</h2>
                     <div class="op-services__divider"></div>
                     <p>A fully automated outbound engine. AI-powered prospect research, hyper-personalised outreach across email and LinkedIn, and multi-channel sequencing — generating qualified meetings without your team writing a single email. 6 meetings guaranteed in 90 days.</p>
@@ -4370,7 +4926,7 @@
             <!-- Service 3: Revenue Conversion Engine -->
             <div class="op-services__item">
                 <div class="op-services__content">
-                    <div class="op-services__index">03 / 03</div>
+                    <div class="op-services__index">03 / 04</div>
                     <h2>Revenue Conversion Engine</h2>
                     <div class="op-services__divider"></div>
                     <p>AI infrastructure that prepares reps before every call, automates CRM updates and follow-ups after every interaction, and monitors your pipeline daily. No deal stalls without someone knowing about it. System live in 4 weeks.</p>
@@ -4386,6 +4942,56 @@
                 </div>
             </div>
 
+            <!-- Service 4: Signal Intelligence -->
+            <div class="op-services__item">
+                <div class="op-services__content">
+                    <div class="op-services__index">04 / 04</div>
+                    <h2>Signal Intelligence</h2>
+                    <div class="op-services__divider"></div>
+                    <p>ICP-driven monitoring infrastructure that continuously tracks your target market across 4 layers — Industry, Account, Persona, Lead — so you see where demand is building before competitors notice.</p>
+                    <div class="op-services__cta-group">
+                        <button type="button" class="op-gradient-cta op-services__cta" data-open-modal data-service="Signal Intelligence"><span>Workshop</span></button>
+                        <a href="signalintelligence.html" class="op-services__cta--secondary">
+                            <span>Learn More</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="op-services__video-col">
+                    <div class="op-signal-pyramid">
+                        <div class="op-signal-pyramid__title">4 Layers of Intelligence</div>
+                        <div class="op-signal-pyramid__tier">
+                            <div class="op-signal-pyramid__bar"></div>
+                            <div>
+                                <div class="op-signal-pyramid__label">Lead</div>
+                                <div class="op-signal-pyramid__sublabel">Individual triggers</div>
+                            </div>
+                        </div>
+                        <div class="op-signal-pyramid__tier">
+                            <div class="op-signal-pyramid__bar"></div>
+                            <div>
+                                <div class="op-signal-pyramid__label">Persona</div>
+                                <div class="op-signal-pyramid__sublabel">Buyer movements</div>
+                            </div>
+                        </div>
+                        <div class="op-signal-pyramid__tier">
+                            <div class="op-signal-pyramid__bar"></div>
+                            <div>
+                                <div class="op-signal-pyramid__label">Account</div>
+                                <div class="op-signal-pyramid__sublabel">Growth signals</div>
+                            </div>
+                        </div>
+                        <div class="op-signal-pyramid__tier">
+                            <div class="op-signal-pyramid__bar"></div>
+                            <div>
+                                <div class="op-signal-pyramid__label">Industry</div>
+                                <div class="op-signal-pyramid__sublabel">Market trends</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Bottom bar -->
             <div class="op-services__bottom">
                 <div class="op-services__loop">Both engines connect through <strong>The Loop</strong> — insights from every closed and lost deal feed back into targeting and messaging. The system gets smarter every cycle.</div>
@@ -4396,77 +5002,248 @@
     <!-- Our Approach -->
     <section class="op-approach" id="approach">
 
-        <!-- Sub-zone A: Intro -->
-        <div class="op-approach__intro">
-            <div class="op-approach__intro-inner">
-                <span class="op-approach__label op-fade-in">Our Approach</span>
-                <h2 class="op-approach__headline op-fade-in">Technical Background. Commercial Execution.</h2>
-                <p class="op-approach__subheadline op-fade-in">Paioneers was built on a simple belief: most AI, data, and IT firms do not lack demand, they spot it too late. We combine buyer signals, account changes, and company data to show who to focus on, when to act, and why it matters.</p>
+        <!-- Floating geometric shapes -->
+        <div class="op-approach__shapes" aria-hidden="true">
+            <!-- Large hexagon top-right -->
+            <svg class="op-approach__shape op-approach__shape--hex-1" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M90 4L172 49V139L90 184L8 139V49L90 4Z" stroke="#A9B8FF" stroke-width="1" fill="none"/>
+                <path d="M90 28L152 63V133L90 168L28 133V63L90 28Z" stroke="#A9B8FF" stroke-width="0.5" fill="none"/>
+            </svg>
+            <!-- Smaller hexagon bottom-left -->
+            <svg class="op-approach__shape op-approach__shape--hex-2" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M60 4L112 33V91L60 120L8 91V33L60 4Z" stroke="#0F7A99" stroke-width="1" fill="none"/>
+            </svg>
+            <!-- Large ring left -->
+            <svg class="op-approach__shape op-approach__shape--ring-1" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="140" cy="140" r="136" stroke="#A9B8FF" stroke-width="0.75"/>
+                <circle cx="140" cy="140" r="100" stroke="#A9B8FF" stroke-width="0.5" stroke-dasharray="4 8"/>
+                <circle cx="140" cy="140" r="60" stroke="#A9B8FF" stroke-width="0.5"/>
+            </svg>
+            <!-- Small ring bottom-right -->
+            <svg class="op-approach__shape op-approach__shape--ring-2" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="80" cy="80" r="76" stroke="#0F7A99" stroke-width="1" stroke-dasharray="3 6"/>
+                <circle cx="80" cy="80" r="50" stroke="#0F7A99" stroke-width="0.5"/>
+                <circle cx="80" cy="80" r="4" fill="#0F7A99" opacity="0.5"/>
+            </svg>
+        </div>
+
+        <!-- Header -->
+        <div class="op-approach__header">
+            <div class="op-approach__header-inner">
+                <span class="op-approach__label op-fade-in">How It Works</span>
+                <h2 class="op-approach__headline op-fade-in">From scattered signals<br>to <em>a pipeline that compounds.</em></h2>
+                <p class="op-approach__subheadline op-fade-in">Most teams have the data. They lack the system to act on it in time. Here is how we change that.</p>
             </div>
         </div>
 
-        <!-- Sub-zone B: Origin Story -->
-        <div class="op-approach__origin">
-            <div class="op-approach__origin-inner">
-                <div class="op-approach__origin-content op-fade-in">
-                    <span class="op-approach__label">The Founders</span>
-                    <p class="op-approach__origin-text">Our founders combine experience from Salesforce, HPE, LinkedIn, and Mercedes Benz with hands on work building commercial systems in growing SMBs. Across those environments, they saw the same problem: the right demand signals were there, but too scattered to act on in time. Paioneers was built to turn those signals into clearer commercial action.</p>
-                </div>
-                <div class="op-approach__origin-visual op-fade-in">
-                    <svg viewBox="0 0 320 280" fill="none">
-                        <!-- Abstract growth path -->
-                        <path class="op-approach__origin-path" d="M20,250 C60,250 80,220 100,200 S140,140 180,120 S240,80 280,30" stroke="url(#approachPathGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                        <!-- Milestone dots -->
-                        <g class="op-approach__origin-dot">
-                            <circle cx="20" cy="250" r="6" fill="#0F7A99" opacity="0.9"/>
-                            <circle cx="20" cy="250" r="12" fill="#0F7A99" opacity="0.15"/>
-                        </g>
-                        <g class="op-approach__origin-dot">
-                            <circle cx="100" cy="200" r="6" fill="#7B91FF" opacity="0.9"/>
-                            <circle cx="100" cy="200" r="12" fill="#7B91FF" opacity="0.15"/>
-                        </g>
-                        <g class="op-approach__origin-dot">
-                            <circle cx="180" cy="120" r="6" fill="#A9B8FF" opacity="0.9"/>
-                            <circle cx="180" cy="120" r="12" fill="#A9B8FF" opacity="0.15"/>
-                        </g>
-                        <g class="op-approach__origin-dot">
-                            <circle cx="280" cy="30" r="8" fill="#F37C38" opacity="0.9"/>
-                            <circle cx="280" cy="30" r="16" fill="#F37C38" opacity="0.15"/>
-                        </g>
-                        <!-- Subtle grid lines -->
-                        <line x1="0" y1="250" x2="320" y2="250" stroke="rgba(250,255,239,0.06)" stroke-width="1"/>
-                        <line x1="0" y1="180" x2="320" y2="180" stroke="rgba(250,255,239,0.04)" stroke-width="1"/>
-                        <line x1="0" y1="110" x2="320" y2="110" stroke="rgba(250,255,239,0.04)" stroke-width="1"/>
-                    </svg>
+        <!-- Step Cards Grid -->
+        <div class="op-approach__steps">
+            <div class="op-approach__steps-inner">
+                <div class="op-approach__cards">
+
+                    <!-- Card 1: Diagnose -->
+                    <div class="op-approach__card op-fade-in">
+                        <div class="op-approach__card-visual">
+                            <div class="op-approach__mock-header" aria-hidden="true">
+                                <span class="op-approach__mock-dot" style="background:#F37C38; opacity:0.7;"></span>
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.5;"></span>
+                                <span class="op-approach__mock-dot" style="background:#0F7A99; opacity:0.4;"></span>
+                            </div>
+                            <span class="op-approach__card-step">Step 01</span>
+                            <span class="op-approach__card-status"></span>
+                            <div class="op-approach__card-visual-inner">
+                                <!-- Bottleneck audit bars -->
+                                <div class="op-approach__mock-audit">
+                                    <div class="op-approach__mock-audit-row">
+                                        <span class="op-approach__mock-audit-label">Signal coverage</span>
+                                        <div class="op-approach__mock-audit-track">
+                                            <div class="op-approach__mock-audit-fill" style="--fill-w: 28%; background: linear-gradient(90deg, #F37C38, #A9B8FF);"></div>
+                                        </div>
+                                        <span class="op-approach__mock-audit-val">28%</span>
+                                    </div>
+                                    <div class="op-approach__mock-audit-row">
+                                        <span class="op-approach__mock-audit-label">Response time</span>
+                                        <div class="op-approach__mock-audit-track">
+                                            <div class="op-approach__mock-audit-fill" style="--fill-w: 42%; background: linear-gradient(90deg, #F37C38, #7B91FF); transition-delay: 0.12s;"></div>
+                                        </div>
+                                        <span class="op-approach__mock-audit-val">4.2d</span>
+                                    </div>
+                                    <div class="op-approach__mock-audit-row">
+                                        <span class="op-approach__mock-audit-label">ICP accuracy</span>
+                                        <div class="op-approach__mock-audit-track">
+                                            <div class="op-approach__mock-audit-fill" style="--fill-w: 55%; background: linear-gradient(90deg, #7B91FF, #A9B8FF); transition-delay: 0.24s;"></div>
+                                        </div>
+                                        <span class="op-approach__mock-audit-val">55%</span>
+                                    </div>
+                                    <div class="op-approach__mock-audit-row">
+                                        <span class="op-approach__mock-audit-label">Follow-up rate</span>
+                                        <div class="op-approach__mock-audit-track">
+                                            <div class="op-approach__mock-audit-fill" style="--fill-w: 31%; background: linear-gradient(90deg, #0F7A99, #7B91FF); transition-delay: 0.36s;"></div>
+                                        </div>
+                                        <span class="op-approach__mock-audit-val">31%</span>
+                                    </div>
+                                    <!-- Decorative horizontal line in visual -->
+                                    <div style="height:1px; background: linear-gradient(90deg, transparent, rgba(169,184,255,0.2), transparent); margin-top:4px;"></div>
+                                    <div style="display:flex; align-items:center; gap:6px; margin-top:4px;">
+                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="#F37C38" stroke-width="0.75" opacity="0.5"/><path d="M5 3v2l1 1" stroke="#F37C38" stroke-width="0.75" opacity="0.5" stroke-linecap="round"/></svg>
+                                        <span style="font-family:var(--font-mono); font-size:8px; color:rgba(250,255,239,0.25); letter-spacing:0.08em;">BOTTLENECK AUDIT OUTPUT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="op-approach__card-content">
+                            <span class="op-approach__card-tag">Diagnose</span>
+                            <h3 class="op-approach__card-title">We map where your pipeline actually breaks</h3>
+                            <p class="op-approach__card-text">The Bottleneck Workshop surfaces the exact points where revenue slows &mdash; missed signals, slow follow-up, wrong accounts getting attention. In half a day, your commercial process becomes a clear diagnosis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Install -->
+                    <div class="op-approach__card op-fade-in" style="transition-delay: 0.1s;">
+                        <div class="op-approach__card-visual">
+                            <div class="op-approach__mock-header" aria-hidden="true">
+                                <span class="op-approach__mock-dot" style="background:#0F7A99; opacity:0.7;"></span>
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.5;"></span>
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.3;"></span>
+                            </div>
+                            <span class="op-approach__card-step">Step 02</span>
+                            <span class="op-approach__card-status" style="background: #A9B8FF; box-shadow: 0 0 8px rgba(169,184,255,0.8);"></span>
+                            <div class="op-approach__card-visual-inner">
+                                <!-- Live signal feed -->
+                                <div class="op-approach__mock-feed">
+                                    <div class="op-approach__mock-feed-item">
+                                        <span class="op-approach__mock-feed-dot" style="background:#A9B8FF;"></span>
+                                        <span class="op-approach__mock-feed-text">Acme Corp &mdash; hiring VP Sales</span>
+                                        <span class="op-approach__mock-feed-badge" style="background:rgba(169,184,255,0.1); color:#A9B8FF;">intent</span>
+                                    </div>
+                                    <div class="op-approach__mock-feed-item">
+                                        <span class="op-approach__mock-feed-dot" style="background:#0F7A99;"></span>
+                                        <span class="op-approach__mock-feed-text">TechFlow &mdash; Series B closed</span>
+                                        <span class="op-approach__mock-feed-badge" style="background:rgba(15,122,153,0.1); color:#0F7A99;">funding</span>
+                                    </div>
+                                    <div class="op-approach__mock-feed-item">
+                                        <span class="op-approach__mock-feed-dot" style="background:#F37C38;"></span>
+                                        <span class="op-approach__mock-feed-text">NovaCo &mdash; tech stack shift</span>
+                                        <span class="op-approach__mock-feed-badge" style="background:rgba(243,124,56,0.1); color:#F37C38;">trigger</span>
+                                    </div>
+                                    <div class="op-approach__mock-feed-item">
+                                        <span class="op-approach__mock-feed-dot" style="background:#A9B8FF; opacity:0.5;"></span>
+                                        <span class="op-approach__mock-feed-text">GridBase &mdash; job change: CRO</span>
+                                        <span class="op-approach__mock-feed-badge" style="background:rgba(169,184,255,0.08); color:rgba(169,184,255,0.5);">signal</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="op-approach__card-content">
+                            <span class="op-approach__card-tag">Install</span>
+                            <h3 class="op-approach__card-title">We build the signal layer your team is missing</h3>
+                            <p class="op-approach__card-text">Buyer intent, job changes, funding events, tech stack shifts &mdash; we connect and enrich the signals that matter. The result: a live feed of accounts showing real buying readiness, not just fit.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Automate -->
+                    <div class="op-approach__card op-fade-in" style="transition-delay: 0.2s;">
+                        <div class="op-approach__card-visual">
+                            <div class="op-approach__mock-header" aria-hidden="true">
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.7;"></span>
+                                <span class="op-approach__mock-dot" style="background:#0F7A99; opacity:0.5;"></span>
+                                <span class="op-approach__mock-dot" style="background:#F37C38; opacity:0.4;"></span>
+                            </div>
+                            <span class="op-approach__card-step">Step 03</span>
+                            <span class="op-approach__card-status" style="animation-delay: 0.5s;"></span>
+                            <div class="op-approach__card-visual-inner">
+                                <!-- Workflow node diagram -->
+                                <div class="op-approach__mock-flow">
+                                    <svg class="op-approach__mock-flow-svg" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <!-- Connecting lines -->
+                                        <line x1="56" y1="40" x2="88" y2="40" stroke="rgba(169,184,255,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <line x1="132" y1="40" x2="164" y2="40" stroke="rgba(169,184,255,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <line x1="110" y1="56" x2="110" y2="78" stroke="rgba(15,122,153,0.3)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <line x1="110" y1="78" x2="60" y2="108" stroke="rgba(15,122,153,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <line x1="110" y1="78" x2="160" y2="108" stroke="rgba(15,122,153,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+                                        <!-- Arrow heads -->
+                                        <path d="M86 37l4 3-4 3" stroke="rgba(169,184,255,0.3)" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M162 37l4 3-4 3" stroke="rgba(169,184,255,0.3)" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <!-- Node 1: Signal in -->
+                                        <rect x="8" y="26" width="48" height="28" rx="3" fill="rgba(15,122,153,0.15)" stroke="rgba(15,122,153,0.4)" stroke-width="0.75"/>
+                                        <text x="32" y="38" font-family="IBM Plex Mono" font-size="6" fill="rgba(250,255,239,0.5)" text-anchor="middle" letter-spacing="0.5">SIGNAL</text>
+                                        <text x="32" y="47" font-family="IBM Plex Mono" font-size="6" fill="rgba(250,255,239,0.35)" text-anchor="middle" letter-spacing="0.5">IN</text>
+                                        <!-- Node 2: AI enrich -->
+                                        <rect x="88" y="22" width="44" height="36" rx="3" fill="rgba(169,184,255,0.12)" stroke="rgba(169,184,255,0.4)" stroke-width="0.75"/>
+                                        <circle cx="110" cy="34" r="5" fill="none" stroke="rgba(169,184,255,0.5)" stroke-width="0.75"/>
+                                        <path d="M107.5 34a2.5 2.5 0 0 1 5 0" stroke="rgba(169,184,255,0.5)" stroke-width="0.75" fill="none"/>
+                                        <text x="110" y="51" font-family="IBM Plex Mono" font-size="6" fill="rgba(169,184,255,0.6)" text-anchor="middle" letter-spacing="0.5">ENRICH</text>
+                                        <!-- Node 3: Outreach -->
+                                        <rect x="164" y="26" width="48" height="28" rx="3" fill="rgba(243,124,56,0.1)" stroke="rgba(243,124,56,0.35)" stroke-width="0.75"/>
+                                        <text x="188" y="38" font-family="IBM Plex Mono" font-size="6" fill="rgba(250,255,239,0.5)" text-anchor="middle" letter-spacing="0.5">OUTREACH</text>
+                                        <text x="188" y="47" font-family="IBM Plex Mono" font-size="6" fill="rgba(243,124,56,0.4)" text-anchor="middle" letter-spacing="0.5">AUTO</text>
+                                        <!-- Node 4: CRM sync -->
+                                        <rect x="36" y="94" width="48" height="26" rx="3" fill="rgba(15,122,153,0.1)" stroke="rgba(15,122,153,0.3)" stroke-width="0.75"/>
+                                        <text x="60" y="109" font-family="IBM Plex Mono" font-size="6" fill="rgba(250,255,239,0.35)" text-anchor="middle" letter-spacing="0.5">CRM SYNC</text>
+                                        <!-- Node 5: Sequence -->
+                                        <rect x="136" y="94" width="48" height="26" rx="3" fill="rgba(169,184,255,0.08)" stroke="rgba(169,184,255,0.25)" stroke-width="0.75"/>
+                                        <text x="160" y="109" font-family="IBM Plex Mono" font-size="6" fill="rgba(250,255,239,0.35)" text-anchor="middle" letter-spacing="0.5">SEQUENCE</text>
+                                        <!-- Animated pulse dot on flow line -->
+                                        <circle cx="110" cy="40" r="2.5" fill="rgba(169,184,255,0.6)">
+                                            <animate attributeName="opacity" values="0.6;0.15;0.6" dur="2s" repeatCount="indefinite"/>
+                                        </circle>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="op-approach__card-content">
+                            <span class="op-approach__card-tag">Automate</span>
+                            <h3 class="op-approach__card-title">We automate the research, prep, and outreach</h3>
+                            <p class="op-approach__card-text">We build workflows that eliminate manual work &mdash; account research, personalised outreach, call prep, follow-up sequences. Your team focuses on conversations. The system handles the rest.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Compound -->
+                    <div class="op-approach__card op-fade-in" style="transition-delay: 0.3s;">
+                        <div class="op-approach__card-visual">
+                            <div class="op-approach__mock-header" aria-hidden="true">
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.7;"></span>
+                                <span class="op-approach__mock-dot" style="background:#A9B8FF; opacity:0.5;"></span>
+                                <span class="op-approach__mock-dot" style="background:#0F7A99; opacity:0.4;"></span>
+                            </div>
+                            <span class="op-approach__card-step">Step 04</span>
+                            <span class="op-approach__card-status" style="background: #A9B8FF; box-shadow: 0 0 8px rgba(169,184,255,0.8); animation-delay: 1s;"></span>
+                            <div class="op-approach__card-visual-inner">
+                                <!-- Compounding chart -->
+                                <div class="op-approach__mock-chart">
+                                    <div class="op-approach__mock-stat">
+                                        <span class="op-approach__mock-stat-num">91</span>
+                                        <span class="op-approach__mock-stat-unit">%</span>
+                                    </div>
+                                    <span class="op-approach__mock-stat-label">ICP accuracy — 90 days in</span>
+                                    <div style="height:8px;"></div>
+                                    <div class="op-approach__mock-chart-bars">
+                                        <div class="op-approach__mock-chart-bar" style="height:20%; background: rgba(169,184,255,0.2);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:28%; background: rgba(169,184,255,0.25);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:38%; background: rgba(169,184,255,0.3);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:50%; background: rgba(169,184,255,0.38);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:62%; background: rgba(169,184,255,0.48);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:74%; background: rgba(169,184,255,0.58);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:84%; background: rgba(169,184,255,0.7);"></div>
+                                        <div class="op-approach__mock-chart-bar" style="height:91%; background: linear-gradient(180deg, #A9B8FF, #0F7A99);"></div>
+                                    </div>
+                                    <div class="op-approach__mock-chart-baseline"></div>
+                                    <div class="op-approach__mock-chart-label">Wk 1 &nbsp;&rarr;&nbsp; Wk 8</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="op-approach__card-content">
+                            <span class="op-approach__card-tag">Compound</span>
+                            <h3 class="op-approach__card-title">Your pipeline becomes predictable and self-improving</h3>
+                            <p class="op-approach__card-text">Every signal captured, every outreach sent, every deal won feeds back into the system. Commercial intelligence sharpens over time. Response rates improve. Pipeline stops being a guessing game.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
-        <!-- Sub-zone C: Three Pillars -->
-        <div class="op-approach__pillars">
-            <div class="op-approach__pillars-inner">
-                <div class="op-approach__pillar op-fade-in">
-                    <div class="op-approach__pillar-accent"></div>
-                    <span class="op-approach__pillar-index">01 / 03</span>
-                    <h3 class="op-approach__pillar-title">We Lived the Problem First</h3>
-                    <p class="op-approach__pillar-text">Years of carrying quota taught us how hard it is to build a predictable flow of sales opportunities when you cannot clearly see where demand is emerging. Everything we build comes from real commercial experience, not theory.</p>
-                </div>
-                <div class="op-approach__pillar op-fade-in" style="transition-delay: 0.15s;">
-                    <div class="op-approach__pillar-accent"></div>
-                    <span class="op-approach__pillar-index">02 / 03</span>
-                    <h3 class="op-approach__pillar-title">We Build Systems, Not Spreadsheets</h3>
-                    <p class="op-approach__pillar-text">We build the systems behind better commercial focus. We help teams see who matters, why now, and what to do next, while reducing the manual work around research, outreach, call preparation, and follow up.</p>
-                </div>
-                <div class="op-approach__pillar op-fade-in" style="transition-delay: 0.3s;">
-                    <div class="op-approach__pillar-accent"></div>
-                    <span class="op-approach__pillar-index">03 / 03</span>
-                    <h3 class="op-approach__pillar-title">Built to Make Demand Actionable</h3>
-                    <p class="op-approach__pillar-text">Seeing demand is only the first step. We turn signals, account data, and context into clear commercial action, so teams know who to focus on, when to engage, and how to create a more predictable flow of sales opportunities.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sub-zone E: Toolkit + CTA -->
+        <!-- Toolkit + CTA -->
         <div class="op-approach__toolkit">
             <div class="op-approach__toolkit-inner">
                 <div class="op-approach__toolkit-header op-fade-in">
@@ -4557,7 +5334,7 @@
                     <!-- Porkbun -->
                     <div class="op-approach__logo-card op-fade-in" style="transition-delay: 0.35s;">
                         <div class="op-approach__logo-card-icon">
-                            <svg fill="#EF6E8E" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.3708 0 .0176 5.3532.0176 11.9824.0176 18.6117 5.3708 24 12 24s11.9824-5.3532 11.9824-11.9824C23.9824 5.3883 18.6292 0 12 0ZM5.832 5.8848c1.0635.2481 2.092.6384 3.0137 1.1347-1.099.5318-1.9866 1.3824-2.6602 2.375-.4254-.5672-.6738-1.2767-.6738-2.0566 0-.5318.1076-.9923.3203-1.4531zm12.336 0c.2127.4254.3203.9213.3203 1.453 0 .78-.2484 1.4895-.6738 2.0567-.6736-.9926-1.5967-1.8432-2.6602-2.375a9.9821 9.9821 0 0 1 3.0137-1.1347zm-6.0723.8105c3.5286.0471 6.3547 2.9198 6.3203 6.457v3.8282c0 .638-.5318 1.1699-1.17 1.1699-.638 0-1.1698-.5318-1.1698-1.17v-.957H7.8516v.957c0 .6382-.5319 1.17-1.17 1.17-.638 0-1.1699-.5318-1.1699-1.17v-3.6503c0-3.5096 2.7307-6.489 6.2403-6.6309.1152-.0044.2299-.0054.3437-.0039zm1.5 3.7988c-.4963 0-.9219.4256-.9219.922 0 .248.0711.4242.213.6015.1417.2127.3536.3546.5663.461-.1418.0708-.3188.1425-.496.1425-.2128 0-.3907.176-.3907.3887s.178.3906.3906.3906h.1778c.6026 0 1.1346-.3553 1.3828-.8516.39-.1418.7092-.3896.9219-.7441.0709-.1064.0337-.2484-.0372-.2129-.1063-.0355-.2123-.034-.2832.0723-.1063.1418-.2485.2826-.4257.3535v-.1426c0-.39-.1409-.7086-.3536-.9922-.1772-.2481-.425-.3887-.7441-.3887zm0 .5313c.2127 0 .3532.1408.3887.3535v.1777c0 .1773-.0346.3543-.1055.4961-.2481-.0709-.4617-.213-.6035-.4257-.0355-.071-.0703-.14-.0703-.211 0-.2392.2063-.3906.3906-.3906z"/></svg>
+                            <svg fill="#EF6E8E" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.3708 0 .0176 5.3532.0176 11.9824.0176 18.6117 5.3708 24 12 24s11.9824-5.3532 11.9824-11.9824C23.9824 5.3883 18.6292 0 12 0ZM5.832 5.8848c1.0635.2481 2.092.6384 3.0137 1.1347-1.099.5318-1.9866 1.3824-2.6602 2.375-.4254-.5672-.6738-1.2767-.6738-2.0566 0-.5318.1076-.9923.3203-1.4531zm12.336 0c.2127.4254.3203.9213.3203 1.453 0 .78-.2484 1.4895-.6738 2.0567-.6736-.9926-1.5967-1.8432-2.6602-2.375a9.9821 9.9821 0 0 1 3.0137-1.1347zm-6.0723.8105c3.5286.0471 6.3547 2.9198 6.3203 6.457v3.8282c0 .638-.5318 1.1699-1.17 1.1699-.638 0-1.1698-.5318-1.1698-1.17v-.957H7.8516v.957c0 .6382-.5319 1.17-1.17 1.17-.638 0-1.1699-.5318-1.1699-1.17v-3.6503c0-3.5096 2.7307-6.489 6.2403-6.6309.1152-.0044.2299-.0054.3437-.0039zm1.5 3.7988c-.4963 0-.9219.4256-.9219.922 0 .248.0711.4242.213.6015.1417.2127.3536.3546.5663.461-.1418.0708-.3188.1425-.496.1425-.2128 0-.3907.176-.3907.3887s.178.3906.3906.3906h.1778c.6026 0 1.1346-.3553 1.3828-.8516.39-.1418.7092-.3896.9219-.7441.0709-.1064.0337-.2484-.0372-.2129-.1063-.0355-.2123-.034-.2832.0723-.1063.1418-.2485.2826-.4257.3535v-.1426c0-.39-.1409-.7086-.3536-.9922-.1772-.2481-.425-.3887-.7441-.3887z"/></svg>
                         </div>
                         <div class="op-approach__logo-card-info">
                             <div class="op-approach__logo-card-name">Porkbun</div>
@@ -5794,6 +6571,7 @@
                 });
             }
         })();
+
     </script>
 
     <!-- EmailJS SDK - Replace YOUR_PUBLIC_KEY with your actual key from emailjs.com -->
