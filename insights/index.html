@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights — GTM Engineering, Signal-Based Targeting & Revenue Systems | Paioneers</title>
+    <meta name="description" content="Operator-grade insights on GTM engineering, signal-based targeting, and revenue system design for B2B companies in the Dutch and Benelux market.">
+    <link rel="canonical" href="https://paioneers.nl/insights/">
+    <meta property="og:title" content="Insights — Paioneers">
+    <meta property="og:description" content="Operator-grade insights on GTM engineering, signal-based targeting, and revenue system design for B2B companies.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://paioneers.nl/insights/">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="../Ressources/images/logoblack.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Paioneers Insights",
+        "description": "Operator-grade insights on GTM engineering, signal-based targeting, and revenue system design.",
+        "url": "https://paioneers.nl/insights/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Paioneers",
+            "url": "https://paioneers.nl"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --cream: #FAFFEF;
+            --dark-teal: #032C2D;
+            --teal: #0F7A99;
+            --periwinkle: #A9B8FF;
+            --orange: #F37C38;
+            --blue: #5B8DEF;
+            --gray: #8fa097;
+            --s1:#d3866c; --s2:#cf8b7d; --s3:#c89495;
+            --s4:#c29baa; --s5:#bba2c0; --s6:#b5aad7; --s7:#aeb2ec;
+            --sans: 'IBM Plex Sans', sans-serif;
+            --mono: 'IBM Plex Mono', monospace;
+            --t-xs: 11px; --t-sm: 13px; --t-md: 16px; --t-lg: 20px;
+            --t-xl: clamp(28px, 3.5vw, 44px);
+            --t-2xl: clamp(36px, 5vw, 64px);
+            --t-3xl: clamp(48px, 6.5vw, 80px);
+            --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+            --sp-5: 40px; --sp-6: 48px; --sp-7: 56px; --sp-8: 64px;
+            --sp-10: 80px; --sp-12: 96px; --sp-15: 120px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--sans);
+            background: var(--cream);
+            color: var(--dark-teal);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ─── Header ─── */
+        .hdr {
+            position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            padding: var(--sp-4) 60px;
+            transition: background .35s var(--ease), padding .35s var(--ease), box-shadow .35s var(--ease);
+        }
+        .hdr.scrolled {
+            background: rgba(250,255,239,0.94);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            padding: var(--sp-2) 60px;
+            box-shadow: 0 1px 0 rgba(3,44,45,.08);
+        }
+        .hdr__inner {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .hdr__logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: var(--t-md); font-weight: 600; color: var(--dark-teal);
+            letter-spacing: -0.01em;
+        }
+        .hdr__logo img { width: 32px; height: 32px; }
+        .hdr__nav { display: flex; align-items: center; gap: var(--sp-5); }
+        .hdr__link {
+            font-size: var(--t-sm); color: var(--dark-teal);
+            opacity: .6; transition: opacity .2s var(--ease);
+        }
+        .hdr__link:hover { opacity: 1; }
+        .hdr__link.is-active { opacity: 1; }
+        .hdr__cta {
+            padding: 9px 20px;
+            border: 1px solid rgba(3,44,45,.7);
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em; color: var(--dark-teal);
+            border-radius: var(--r-sm);
+            transition: background .25s var(--ease), color .25s var(--ease);
+        }
+        .hdr__cta:hover { background: var(--dark-teal); color: var(--cream); }
+
+        /* Mobile hamburger */
+        .hdr__hamburger {
+            display: none; flex-direction: column; gap: 5px; padding: 8px; cursor: pointer;
+        }
+        .hdr__hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-teal); transition: all .3s ease; }
+
+        /* ─── Breadcrumb ─── */
+        .breadcrumb {
+            max-width: 1280px; margin: 0 auto;
+            padding: var(--sp-15) 60px var(--sp-3);
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em;
+            color: var(--gray);
+        }
+        .breadcrumb a { color: var(--teal); transition: opacity .2s; }
+        .breadcrumb a:hover { opacity: .7; }
+        .breadcrumb span { margin: 0 6px; }
+
+        /* ─── Page Hero ─── */
+        .page-hero {
+            max-width: 1280px; margin: 0 auto;
+            padding: var(--sp-6) 60px var(--sp-10);
+            position: relative;
+        }
+        .page-hero__kicker {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--dark-teal); opacity: .6;
+            margin-bottom: var(--sp-3);
+        }
+        .page-hero__kicker::before {
+            content: '';
+            width: 40px; height: 1.5px;
+            background: linear-gradient(90deg, var(--teal), var(--periwinkle));
+        }
+        .page-hero__kicker::after {
+            content: '';
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--orange);
+            box-shadow: 0 0 8px rgba(243,124,56,.5);
+        }
+        .page-hero h1 {
+            font-size: var(--t-2xl); font-weight: 200;
+            line-height: 1.08; letter-spacing: -0.035em;
+            margin-bottom: var(--sp-3);
+        }
+        .page-hero__lead {
+            font-size: var(--t-lg); font-weight: 300;
+            line-height: 1.7; max-width: 720px;
+            color: rgba(3,44,45,.62);
+        }
+
+        /* ─── Filter tabs ─── */
+        .filter-bar {
+            max-width: 1280px; margin: 0 auto;
+            padding: 0 60px var(--sp-6);
+            display: flex; gap: var(--sp-2); flex-wrap: wrap;
+            border-bottom: 1px solid rgba(3,44,45,.08);
+        }
+        .filter-bar__tab {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em;
+            padding: 8px 16px; border-radius: 100px;
+            border: 1px solid rgba(3,44,45,.15);
+            color: var(--dark-teal); opacity: .6;
+            transition: all .25s var(--ease);
+            cursor: pointer;
+        }
+        .filter-bar__tab:hover { opacity: 1; border-color: rgba(3,44,45,.3); }
+        .filter-bar__tab.is-active {
+            opacity: 1; background: var(--dark-teal); color: var(--cream);
+            border-color: var(--dark-teal);
+        }
+
+        /* ─── Article Grid ─── */
+        .article-grid {
+            max-width: 1280px; margin: 0 auto;
+            padding: var(--sp-8) 60px var(--sp-15);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: var(--sp-5);
+        }
+
+        .article-card {
+            background: rgba(255,255,255,.55);
+            border: 1px solid rgba(3,44,45,.07);
+            border-radius: var(--r-md);
+            padding: var(--sp-5);
+            backdrop-filter: blur(4px);
+            transition: all .35s var(--spring);
+            display: flex; flex-direction: column;
+        }
+        .article-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,.85);
+            box-shadow: 0 8px 32px rgba(3,44,45,.08);
+        }
+
+        .article-card__tag {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--teal); margin-bottom: var(--sp-2);
+        }
+        .article-card__tag--research { color: var(--orange); }
+        .article-card__tag--category { color: var(--periwinkle); }
+
+        .article-card__title {
+            font-size: var(--t-lg); font-weight: 300;
+            line-height: 1.3; letter-spacing: -0.02em;
+            margin-bottom: var(--sp-2);
+            flex-grow: 1;
+        }
+        .article-card__excerpt {
+            font-size: var(--t-md); font-weight: 300;
+            line-height: 1.6; color: rgba(3,44,45,.6);
+            margin-bottom: var(--sp-3);
+        }
+        .article-card__meta {
+            display: flex; align-items: center; gap: var(--sp-2);
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: var(--gray);
+            padding-top: var(--sp-3);
+            border-top: 1px solid rgba(3,44,45,.06);
+        }
+        .article-card__author {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .article-card__avatar {
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--dark-teal);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 10px; color: var(--cream); font-weight: 500;
+        }
+        .article-card__dot { color: rgba(3,44,45,.2); }
+
+        /* ─── Featured card (first) ─── */
+        .article-card--featured {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--sp-6);
+            padding: var(--sp-6);
+            background:
+                linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)) padding-box,
+                linear-gradient(90deg, var(--teal), var(--periwinkle), var(--orange)) border-box;
+            border: 1.5px solid transparent;
+        }
+        .article-card--featured .article-card__title {
+            font-size: var(--t-xl); font-weight: 200;
+        }
+        .article-card--featured .article-card__excerpt {
+            font-size: 18px;
+        }
+
+        .article-card--featured-visual {
+            background: var(--dark-teal);
+            border-radius: var(--r-sm);
+            min-height: 220px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .article-card--featured-visual::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(15,122,153,.3) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(169,184,255,.2) 0%, transparent 60%);
+        }
+        .article-card--featured-visual__label {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            color: rgba(250,255,239,.5);
+            position: relative; z-index: 1;
+        }
+
+        /* ─── Featured EDP Visual ─── */
+        .featured-edp-visual {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .fedp-badge {
+            position: absolute; top: 16px; left: 16px;
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: rgba(250,255,239,.45);
+            z-index: 4;
+        }
+        .fedp-center {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center; z-index: 3;
+        }
+        .fedp-center__number {
+            font-size: clamp(48px, 7vw, 72px); font-weight: 200;
+            line-height: 1;
+            background: linear-gradient(135deg, #0F7A99 0%, #A9B8FF 50%, #F37C38 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .fedp-center__label {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: rgba(250,255,239,.35);
+            margin-top: 4px; line-height: 1.5;
+        }
+        .fedp-points {
+            position: absolute; inset: 0; z-index: 2;
+        }
+        .fedp-point {
+            position: absolute;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .fedp-point__index {
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .08em; opacity: .4;
+            color: var(--cream);
+        }
+        .fedp-point__text {
+            font-size: 10px; font-weight: 300;
+            color: rgba(250,255,239,.7);
+            white-space: nowrap;
+        }
+        /* Position each point */
+        .fedp-point--1 { top: 12%;  left: 6%; }
+        .fedp-point--2 { top: 28%;  right: 6%; }
+        .fedp-point--3 { top: 48%;  left: 4%; }
+        .fedp-point--4 { bottom: 30%; right: 6%; }
+        .fedp-point--5 { bottom: 14%; left: 6%; }
+        .fedp-point--6 { top: 68%;  right: 8%; }
+        .fedp-point--7 { bottom: 10%; right: 10%; }
+
+        /* Decorative rings */
+        .fedp-ring {
+            position: absolute; border-radius: 50%;
+            border: 1px solid rgba(250,255,239,.04);
+            pointer-events: none; z-index: 1;
+        }
+        .fedp-ring--1 { width: 140px; height: 140px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
+        .fedp-ring--2 { width: 220px; height: 220px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
+
+        /* ─── CTA strip ─── */
+        .cta-strip {
+            background: var(--dark-teal);
+            padding: var(--sp-10) 60px;
+        }
+        .cta-strip__inner {
+            max-width: 1280px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: var(--sp-6);
+        }
+        .cta-strip h2 {
+            font-size: var(--t-xl); font-weight: 200;
+            color: var(--cream); letter-spacing: -0.03em;
+        }
+        .cta-strip__btn {
+            padding: 14px 32px;
+            font-family: var(--mono); font-size: var(--t-sm);
+            text-transform: uppercase; letter-spacing: .15em;
+            background: var(--cream); color: var(--dark-teal);
+            border-radius: var(--r-sm);
+            transition: all .25s var(--ease);
+            white-space: nowrap;
+        }
+        .cta-strip__btn:hover { background: #fff; }
+
+        /* ─── Footer ─── */
+        .site-footer {
+            background: var(--dark-teal);
+            color: var(--cream);
+            padding: var(--sp-10) 60px var(--sp-6);
+        }
+        .site-footer__inner {
+            max-width: 1280px; margin: 0 auto;
+        }
+        .site-footer__top {
+            display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+            gap: var(--sp-8);
+            padding-bottom: var(--sp-6);
+            border-bottom: 1px solid rgba(250,255,239,.1);
+            margin-bottom: var(--sp-4);
+        }
+        .site-footer__brand {
+            display: flex; align-items: center; gap: 10px;
+            font-size: var(--t-md); font-weight: 600;
+            margin-bottom: var(--sp-3);
+        }
+        .site-footer__brand img { width: 32px; height: 32px; }
+        .site-footer__address {
+            font-style: normal; font-size: var(--t-sm); font-weight: 300;
+            line-height: 1.8; opacity: .6;
+        }
+        .site-footer__links h4 {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .12em;
+            margin-bottom: var(--sp-3); opacity: .4;
+        }
+        .site-footer__links a {
+            display: block; font-size: var(--t-sm); font-weight: 300;
+            line-height: 2.2; opacity: .6;
+            transition: opacity .2s;
+        }
+        .site-footer__links a:hover { opacity: 1; }
+        .site-footer__bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: var(--t-xs); opacity: .4;
+        }
+        .site-footer__social { display: flex; gap: var(--sp-3); }
+        .site-footer__social a { opacity: .6; transition: opacity .2s; }
+        .site-footer__social a:hover { opacity: 1; }
+
+        /* ─── Glows ─── */
+        .glow {
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: -1;
+        }
+        .glow--teal {
+            top: -10%; right: -5%; width: 720px; height: 720px;
+            background: radial-gradient(circle, rgba(15,122,153,.12) 0%, transparent 65%);
+        }
+        .glow--peri {
+            bottom: -15%; left: -8%; width: 560px; height: 560px;
+            background: radial-gradient(circle, rgba(169,184,255,.1) 0%, transparent 65%);
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 900px) {
+            .hdr__nav { display: none; }
+            .hdr__hamburger { display: flex; }
+            .breadcrumb, .page-hero, .filter-bar, .article-grid { padding-left: 24px; padding-right: 24px; }
+            .article-grid { grid-template-columns: 1fr; }
+            .article-card--featured { grid-template-columns: 1fr; }
+            .article-card--featured-visual { min-height: 160px; }
+            .cta-strip { padding: var(--sp-8) 24px; }
+            .cta-strip__inner { flex-direction: column; text-align: center; }
+            .site-footer { padding: var(--sp-8) 24px var(--sp-4); }
+            .site-footer__top { grid-template-columns: 1fr; gap: var(--sp-6); }
+        }
+
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: clamp(28px, 7vw, 44px); }
+            .filter-bar { gap: var(--sp-1); }
+            .filter-bar__tab { font-size: 9px; padding: 6px 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow glow--teal" aria-hidden="true"></div>
+    <div class="glow glow--peri" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="hdr" id="header">
+        <div class="hdr__inner">
+            <a href="../" class="hdr__logo">
+                <img src="../Ressources/images/logo_black1.svg" alt="Paioneers" width="32" height="32">
+                Paioneers
+            </a>
+            <nav class="hdr__nav">
+                <a href="../insights/" class="hdr__link is-active">Insights</a>
+                <a href="../research/" class="hdr__link">Research</a>
+                <a href="../gtm-engineering/" class="hdr__link">GTM Engineering</a>
+                <a href="../#services" class="hdr__link">Services</a>
+                <a href="../#cta" class="hdr__cta">Book a Workshop</a>
+            </nav>
+            <button class="hdr__hamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a>
+        <span>/</span>
+        Insights
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero__kicker">Insights</div>
+        <h1>GTM engineering, from the operator's seat</h1>
+        <p class="page-hero__lead">Research-led thinking on signal-based targeting, revenue system design, and go-to-market execution in the Dutch and Benelux B2B market. Written by operators, not commentators.</p>
+    </section>
+
+    <!-- Filter -->
+    <div class="filter-bar" role="tablist">
+        <button class="filter-bar__tab is-active" role="tab" data-filter="all">All</button>
+        <button class="filter-bar__tab" role="tab" data-filter="manufacturing">Manufacturing</button>
+        <button class="filter-bar__tab" role="tab" data-filter="consultancy">IT / AI Consultancy</button>
+        <button class="filter-bar__tab" role="tab" data-filter="category">GTM Engineering</button>
+        <button class="filter-bar__tab" role="tab" data-filter="signal">Signal Targeting</button>
+    </div>
+
+    <!-- Article Grid -->
+    <section class="article-grid">
+
+        <!-- Featured -->
+        <a href="../insights/7-existential-data-points-dutch-manufacturing/" class="article-card article-card--featured" data-category="manufacturing" style="text-decoration:none;color:inherit;">
+            <div>
+                <div class="article-card__tag">Research &middot; Manufacturing</div>
+                <h2 class="article-card__title">The 7 existential data points shaping Dutch high-tech manufacturing</h2>
+                <p class="article-card__excerpt">Single-customer concentration, engineer time-to-fill above 6 months, unquotable order books. The signals that separate survivors from distressed assets in Dutch HTSM — and how to detect them before the balance sheet does.</p>
+                <div class="article-card__meta">
+                    <div class="article-card__author">
+                        <div class="article-card__avatar">NL</div>
+                        Niek van Leeuwen
+                    </div>
+                    <span class="article-card__dot">&middot;</span>
+                    <span>12 min read</span>
+                </div>
+            </div>
+            <div class="article-card--featured-visual">
+                <div class="featured-edp-visual" aria-hidden="true">
+                    <!-- Flagship badge -->
+                    <div class="fedp-badge">Flagship Research</div>
+                    <!-- Central label -->
+                    <div class="fedp-center">
+                        <div class="fedp-center__number">7</div>
+                        <div class="fedp-center__label">Existential<br>Data Points</div>
+                    </div>
+                    <!-- Data point pills arranged in a radial-like layout -->
+                    <div class="fedp-points">
+                        <div class="fedp-point fedp-point--1">
+                            <span class="fedp-point__index">01</span>
+                            <span class="fedp-point__text">Customer concentration</span>
+                        </div>
+                        <div class="fedp-point fedp-point--2">
+                            <span class="fedp-point__index">02</span>
+                            <span class="fedp-point__text">Engineer fill time</span>
+                        </div>
+                        <div class="fedp-point fedp-point--3">
+                            <span class="fedp-point__index">03</span>
+                            <span class="fedp-point__text">Order book visibility</span>
+                        </div>
+                        <div class="fedp-point fedp-point--4">
+                            <span class="fedp-point__index">04</span>
+                            <span class="fedp-point__text">NIS2 exposure</span>
+                        </div>
+                        <div class="fedp-point fedp-point--5">
+                            <span class="fedp-point__index">05</span>
+                            <span class="fedp-point__text">PE ownership signals</span>
+                        </div>
+                        <div class="fedp-point fedp-point--6">
+                            <span class="fedp-point__index">06</span>
+                            <span class="fedp-point__text">Succession trigger</span>
+                        </div>
+                        <div class="fedp-point fedp-point--7">
+                            <span class="fedp-point__index">07</span>
+                            <span class="fedp-point__text">Margin under compression</span>
+                        </div>
+                    </div>
+                    <!-- Decorative rings -->
+                    <div class="fedp-ring fedp-ring--1"></div>
+                    <div class="fedp-ring fedp-ring--2"></div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card: Consultancy squeeze -->
+        <a href="../insights/dutch-consultancy-squeeze-7-metrics/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Research &middot; Consultancy</div>
+            <h3 class="article-card__title">The Dutch consultancy squeeze and the 7 metrics that matter now</h3>
+            <p class="article-card__excerpt">Wet DBA, EU AI Act, partner-tier changes — the structural forces compressing margins for Dutch IT, data, and AI consultancies between 50 and 300 FTE.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>10 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: ASML suppliers -->
+        <a href="../insights/asml-dependent-suppliers-gtm-playbook/" class="article-card" data-category="manufacturing" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Manufacturing</div>
+            <h3 class="article-card__title">Why ASML-dependent suppliers need a new GTM playbook</h3>
+            <p class="article-card__excerpt">When your anchor customer's China revenue drops from 49% to 20%, your addressable market changes overnight. What that means for tier-2 diversification.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>8 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: GTM engineering -->
+        <article class="article-card" data-category="category">
+            <div class="article-card__tag article-card__tag--category">Category</div>
+            <h3 class="article-card__title">What GTM engineering actually means in practice</h3>
+            <p class="article-card__excerpt">Not RevOps. Not sales ops. Not another outbound agency. GTM engineering is the systems layer that connects data, workflow, tooling, and execution into a single commercial engine.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>7 min read</span>
+            </div>
+        </article>
+
+        <!-- Card: Wet DBA -->
+        <a href="../insights/wet-dba-gtm-problem/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Consultancy</div>
+            <h3 class="article-card__title">Why Wet DBA is now a GTM problem</h3>
+            <p class="article-card__excerpt">The enforcement wave forces Dutch detacheerders and consultancies to restructure contractor relationships. The commercial fallout is larger than the compliance cost.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>8 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Succession signal -->
+        <a href="../insights/succession-sales-signal-dutch-industrial-smes/" class="article-card" data-category="manufacturing" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Manufacturing</div>
+            <h3 class="article-card__title">Succession is a sales signal in Dutch industrial SMEs</h3>
+            <p class="article-card__excerpt">Founder over 62, no successor identified, no professional CFO. That combination triggers ERP modernisation, data-room preparation, and a 3-year countdown to exit.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>6 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Signal-based targeting -->
+        <a href="../insights/signal-based-targeting-beats-generic-outbound/" class="article-card" data-category="signal" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag article-card__tag--research">Signal</div>
+            <h3 class="article-card__title">Why signal-based targeting beats generic outbound</h3>
+            <p class="article-card__excerpt">Intent data tells you who is browsing. Signal intelligence tells you who is breaking. The difference determines whether your pipeline converts or stalls.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>7 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: EU AI Act -->
+        <a href="../insights/eu-ai-act-dutch-ai-consultancies/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Consultancy</div>
+            <h3 class="article-card__title">The EU AI Act will split Dutch AI consultancies into winners and casualties</h3>
+            <p class="article-card__excerpt">High-risk classification, conformity assessments, mandatory documentation. Firms without a compliance practice will lose enterprise contracts by 2027.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>9 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Cluster pain phases -->
+        <a href="../insights/brainport-twente-randstad-different-pain-phases/" class="article-card" data-category="manufacturing" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Manufacturing</div>
+            <h3 class="article-card__title">Brainport, Twente, and Randstad-Zuid are not in the same pain phase</h3>
+            <p class="article-card__excerpt">Brainport is restructuring post-export-controls. Twente is pivoting to defense. Randstad-Zuid is chasing offshore-wind milestones. One campaign won't reach all three.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>8 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Compliance trigger -->
+        <a href="../insights/compliance-pressure-commercial-trigger-manufacturing/" class="article-card" data-category="manufacturing" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Manufacturing</div>
+            <h3 class="article-card__title">Compliance pressure is becoming a commercial trigger</h3>
+            <p class="article-card__excerpt">NIS2, CSRD Scope 3, and the EU Machinery Regulation are turning compliance gaps into approved-vendor risk for Dutch suppliers.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>8 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Valley of death -->
+        <a href="../insights/valley-of-death-50-300-fte-consultancy/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Consultancy</div>
+            <h3 class="article-card__title">The valley of death between 50 and 300 FTE</h3>
+            <p class="article-card__excerpt">Too large for boutique pricing. Too small for real scale advantages. Why the Dutch consultancy middle market keeps getting squeezed.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>8 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Partner tier -->
+        <a href="../insights/partner-tier-commercial-intelligence/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">
+            <div class="article-card__tag">Consultancy</div>
+            <h3 class="article-card__title">Partner-tier changes belong in your commercial intelligence model</h3>
+            <p class="article-card__excerpt">Microsoft, AWS, and Databricks badge changes are pipeline signals. They should be monitored like commercial events, not marketing trivia.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>7 min read</span>
+            </div>
+        </a>
+
+        <!-- Card: Revenue teams -->
+        <article class="article-card" data-category="category">
+            <div class="article-card__tag article-card__tag--category">Point of View</div>
+            <h3 class="article-card__title">Revenue teams waste time because the system is wrong, not because reps are lazy</h3>
+            <p class="article-card__excerpt">The problem is never effort. It's the architecture underneath — bad data, disconnected tools, no signal layer, and a CRM that records history instead of driving action.</p>
+            <div class="article-card__meta">
+                <div class="article-card__author">
+                    <div class="article-card__avatar">NL</div>
+                    Niek van Leeuwen
+                </div>
+                <span class="article-card__dot">&middot;</span>
+                <span>5 min read</span>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- CTA Strip -->
+    <section class="cta-strip">
+        <div class="cta-strip__inner">
+            <h2>Want the system behind these insights?</h2>
+            <a href="../#cta" class="cta-strip__btn">Book a Workshop</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__top">
+                <div>
+                    <div class="site-footer__brand">
+                        <img src="../Ressources/images/logo_white.png" alt="Paioneers" width="32" height="32">
+                        Paioneers
+                    </div>
+                    <address class="site-footer__address">
+                        Meander 877<br>
+                        1181WN Amstelveen, Netherlands<br><br>
+                        <a href="tel:+31646492246" style="color: var(--cream);">+31 (0) 646492246</a><br>
+                        <a href="mailto:info@paioneers.nl" style="color: var(--cream);">info@paioneers.nl</a>
+                    </address>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Explore</h4>
+                    <a href="../insights/">Insights</a>
+                    <a href="../research/">Research</a>
+                    <a href="../gtm-engineering/">GTM Engineering</a>
+                    <a href="../signal-based-targeting/">Signal-Based Targeting</a>
+                    <a href="../authors/niek-van-leeuwen/">About Niek</a>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Company</h4>
+                    <a href="../#services">Services</a>
+                    <a href="../#approach">About</a>
+                    <a href="../#cta">Contact</a>
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </div>
+            <div class="site-footer__bottom">
+                <span>&copy; 2026 Paioneers BV. All Rights Reserved</span>
+                <div class="site-footer__social">
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:info@paioneers.nl">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* Header scroll */
+        (function() {
+            const hdr = document.getElementById('header');
+            let lastY = 0;
+            window.addEventListener('scroll', function() {
+                const y = window.pageYOffset;
+                hdr.classList.toggle('scrolled', y > 40);
+                lastY = y;
+            }, { passive: true });
+        })();
+
+        /* Filter tabs */
+        (function() {
+            const tabs = document.querySelectorAll('.filter-bar__tab');
+            const cards = document.querySelectorAll('.article-card');
+            tabs.forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(function(t) { t.classList.remove('is-active'); });
+                    tab.classList.add('is-active');
+                    const filter = tab.getAttribute('data-filter');
+                    cards.forEach(function(card) {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = '';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        })();
+    </script>
+
+</body>
+</html>

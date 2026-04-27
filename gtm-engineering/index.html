@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Engineering — Go-to-Market Systems for Revenue Growth | Paioneers</title>
+    <meta name="description" content="GTM engineering is the systems layer that connects data, workflow, tooling, targeting, and execution into a single commercial engine. Not RevOps. Not sales ops. Not another outbound agency.">
+    <link rel="canonical" href="https://paioneers.nl/gtm-engineering/">
+    <meta property="og:title" content="GTM Engineering — Paioneers">
+    <meta property="og:description" content="The systems layer that connects data, workflow, tooling, targeting, and execution into a single commercial engine.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://paioneers.nl/gtm-engineering/">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="../Ressources/images/logoblack.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "GTM Engineering: The systems layer underneath revenue growth",
+        "description": "GTM engineering connects data, workflow, tooling, targeting, and execution into a single commercial engine.",
+        "url": "https://paioneers.nl/gtm-engineering/",
+        "author": {
+            "@type": "Person",
+            "name": "Niek van Leeuwen",
+            "url": "https://paioneers.nl/authors/niek-van-leeuwen/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Paioneers",
+            "url": "https://paioneers.nl"
+        },
+        "datePublished": "2026-04-01",
+        "dateModified": "2026-04-23"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is GTM engineering?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "GTM engineering is the discipline of designing, building, and operating the systems layer that connects data, workflow, tooling, targeting, and execution into a single commercial engine. It sits between strategy and sales execution — the infrastructure that makes revenue repeatable."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does GTM engineering differ from RevOps?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "RevOps typically reports on pipeline and optimises existing tools. GTM engineering builds the system itself — the data architecture, signal models, workflow automation, and execution infrastructure. RevOps asks 'how is the pipeline performing?' GTM engineering asks 'why does this pipeline exist and is the architecture correct?'"
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What does a GTM engineering system include?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A complete GTM engineering system includes five layers: a data layer (enrichment, signal detection, market intelligence), a targeting layer (ICP models, signal scoring, segment prioritisation), a workflow layer (automated sequences, routing, handoffs), a tooling layer (CRM, outreach, enrichment platforms), and an execution layer (campaigns, outbound, conversion tracking)."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --cream: #FAFFEF; --dark-teal: #032C2D; --teal: #0F7A99;
+            --periwinkle: #A9B8FF; --orange: #F37C38; --blue: #5B8DEF; --gray: #8fa097;
+            --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+            --t-xs: 11px; --t-sm: 13px; --t-md: 16px; --t-lg: 20px;
+            --t-xl: clamp(28px, 3.5vw, 44px); --t-2xl: clamp(36px, 5vw, 64px);
+            --t-3xl: clamp(48px, 6.5vw, 80px);
+            --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+            --sp-5: 40px; --sp-6: 48px; --sp-8: 64px; --sp-10: 80px; --sp-12: 96px; --sp-15: 120px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1); --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--sans); background: var(--cream); color: var(--dark-teal); line-height: 1.5; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        img { max-width: 100%; display: block; }
+
+        .hdr { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: var(--sp-4) 60px; transition: background .35s var(--ease), padding .35s var(--ease), box-shadow .35s var(--ease); }
+        .hdr.scrolled { background: rgba(250,255,239,0.94); backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6); padding: var(--sp-2) 60px; box-shadow: 0 1px 0 rgba(3,44,45,.08); }
+        .hdr__inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .hdr__logo { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; color: var(--dark-teal); letter-spacing: -0.01em; }
+        .hdr__logo img { width: 32px; height: 32px; }
+        .hdr__nav { display: flex; align-items: center; gap: var(--sp-5); }
+        .hdr__link { font-size: var(--t-sm); color: var(--dark-teal); opacity: .6; transition: opacity .2s var(--ease); }
+        .hdr__link:hover { opacity: 1; }
+        .hdr__link.is-active { opacity: 1; }
+        .hdr__cta { padding: 9px 20px; border: 1px solid rgba(3,44,45,.7); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--dark-teal); border-radius: var(--r-sm); transition: background .25s var(--ease), color .25s var(--ease); }
+        .hdr__cta:hover { background: var(--dark-teal); color: var(--cream); }
+        .hdr__hamburger { display: none; flex-direction: column; gap: 5px; padding: 8px; cursor: pointer; }
+        .hdr__hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-teal); }
+
+        .breadcrumb { max-width: 1280px; margin: 0 auto; padding: var(--sp-15) 60px var(--sp-3); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--gray); }
+        .breadcrumb a { color: var(--teal); transition: opacity .2s; }
+        .breadcrumb a:hover { opacity: .7; }
+        .breadcrumb span { margin: 0 6px; }
+
+        /* ─── Pillar Hero ─── */
+        .pillar-hero {
+            max-width: 1280px; margin: 0 auto;
+            padding: var(--sp-6) 60px var(--sp-12);
+        }
+        .pillar-hero__kicker {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .14em;
+            color: var(--dark-teal); opacity: .6; margin-bottom: var(--sp-3);
+        }
+        .pillar-hero__kicker::before { content: ''; width: 40px; height: 1.5px; background: linear-gradient(90deg, var(--teal), var(--periwinkle)); }
+        .pillar-hero__kicker::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px rgba(243,124,56,.5); }
+        .pillar-hero h1 {
+            font-size: var(--t-2xl); font-weight: 200; line-height: 1.08; letter-spacing: -0.04em;
+            margin-bottom: var(--sp-4); max-width: 800px;
+        }
+        .pillar-hero h1 em {
+            font-style: normal;
+            background: linear-gradient(115deg, var(--teal), var(--periwinkle), var(--orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .pillar-hero__lead {
+            font-size: 20px; font-weight: 300; line-height: 1.8;
+            color: rgba(3,44,45,.62); max-width: 720px;
+            margin-bottom: var(--sp-5);
+        }
+        .pillar-hero__meta {
+            display: flex; gap: var(--sp-3); align-items: center;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .1em; color: var(--gray);
+        }
+        .pillar-hero__meta a { color: var(--teal); }
+
+        /* ─── Content sections ─── */
+        .content { max-width: 800px; margin: 0 auto; padding: 0 60px; }
+        .content h2 {
+            font-size: var(--t-xl); font-weight: 200; line-height: 1.15;
+            letter-spacing: -0.03em; margin: var(--sp-10) 0 var(--sp-4);
+        }
+        .content h3 {
+            font-size: var(--t-lg); font-weight: 400;
+            margin: var(--sp-6) 0 var(--sp-2);
+        }
+        .content p {
+            font-size: var(--t-md); font-weight: 300; line-height: 1.7;
+            color: rgba(3,44,45,.72); margin-bottom: var(--sp-3);
+        }
+        .content p strong { font-weight: 500; color: var(--dark-teal); }
+
+        /* ─── Framework block ─── */
+        .framework {
+            background:
+                linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)) padding-box,
+                linear-gradient(90deg, var(--teal), var(--periwinkle), var(--orange)) border-box;
+            border: 1.5px solid transparent; border-radius: var(--r-lg);
+            padding: var(--sp-6); margin: var(--sp-6) 0;
+        }
+        .framework__label {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--teal); margin-bottom: var(--sp-3);
+        }
+        .framework h3 {
+            font-size: var(--t-lg); font-weight: 300; margin: 0 0 var(--sp-4);
+        }
+        .framework__layers {
+            display: flex; flex-direction: column; gap: var(--sp-2);
+        }
+        .framework__layer {
+            display: grid; grid-template-columns: 48px 1fr;
+            gap: var(--sp-3); align-items: start;
+            padding: var(--sp-3);
+            background: rgba(3,44,45,.03);
+            border-radius: var(--r-sm);
+        }
+        .framework__layer-num {
+            width: 48px; height: 48px; border-radius: var(--r-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--mono); font-size: var(--t-sm); font-weight: 600;
+            color: var(--cream);
+        }
+        .framework__layer-num--1 { background: var(--teal); }
+        .framework__layer-num--2 { background: var(--periwinkle); color: var(--dark-teal); }
+        .framework__layer-num--3 { background: var(--blue); }
+        .framework__layer-num--4 { background: #bba2c0; }
+        .framework__layer-num--5 { background: var(--orange); }
+        .framework__layer-title {
+            font-size: var(--t-md); font-weight: 500; margin-bottom: 2px;
+        }
+        .framework__layer-desc {
+            font-size: var(--t-sm); font-weight: 300; line-height: 1.6;
+            color: rgba(3,44,45,.6);
+        }
+
+        /* ─── Operator note ─── */
+        .operator-note {
+            border-left: 3px solid var(--orange);
+            padding: var(--sp-3) var(--sp-4);
+            margin: var(--sp-5) 0;
+            background: rgba(243,124,56,.04);
+            border-radius: 0 var(--r-sm) var(--r-sm) 0;
+        }
+        .operator-note__label {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--orange); margin-bottom: var(--sp-1);
+        }
+        .operator-note p {
+            font-size: var(--t-md); font-weight: 300; line-height: 1.7;
+            color: rgba(3,44,45,.72); margin: 0;
+        }
+
+        /* ─── Comparison table ─── */
+        .compare-table {
+            width: 100%; border-collapse: collapse;
+            margin: var(--sp-5) 0;
+            font-size: var(--t-sm);
+        }
+        .compare-table th {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .12em;
+            text-align: left; padding: var(--sp-2) var(--sp-3);
+            border-bottom: 2px solid rgba(3,44,45,.12);
+            color: var(--gray);
+        }
+        .compare-table td {
+            padding: var(--sp-2) var(--sp-3);
+            border-bottom: 1px solid rgba(3,44,45,.06);
+            font-weight: 300; line-height: 1.6;
+            color: rgba(3,44,45,.72);
+        }
+        .compare-table td:first-child { font-weight: 400; color: var(--dark-teal); }
+        .compare-table tr:last-child td { border-bottom: none; }
+
+        /* ─── Dark section ─── */
+        .dark-section {
+            background: var(--dark-teal); color: var(--cream);
+            padding: var(--sp-12) 60px; margin: var(--sp-10) 0;
+        }
+        .dark-section__inner { max-width: 800px; margin: 0 auto; }
+        .dark-section__kicker {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            opacity: .4; margin-bottom: var(--sp-3);
+        }
+        .dark-section h2 {
+            font-size: var(--t-xl); font-weight: 200; letter-spacing: -0.03em;
+            margin-bottom: var(--sp-5);
+        }
+        .dark-section__grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4);
+        }
+        .dark-section__card {
+            background: rgba(250,255,239,.06);
+            border: 1px solid rgba(250,255,239,.08);
+            border-radius: var(--r-md); padding: var(--sp-4);
+        }
+        .dark-section__card h3 {
+            font-size: var(--t-md); font-weight: 400; margin-bottom: var(--sp-1);
+        }
+        .dark-section__card p {
+            font-size: var(--t-sm); font-weight: 300; line-height: 1.7; opacity: .6;
+        }
+
+        /* ─── CTA section ─── */
+        .pillar-cta {
+            max-width: 800px; margin: 0 auto;
+            padding: var(--sp-10) 60px var(--sp-15);
+        }
+        .pillar-cta__box {
+            background:
+                linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)) padding-box,
+                linear-gradient(90deg, var(--teal), var(--periwinkle), var(--orange)) border-box;
+            border: 1.5px solid transparent; border-radius: var(--r-lg);
+            padding: var(--sp-8); text-align: center;
+        }
+        .pillar-cta h2 { font-size: var(--t-xl); font-weight: 200; letter-spacing: -0.03em; margin-bottom: var(--sp-2); }
+        .pillar-cta p { font-size: var(--t-md); font-weight: 300; color: rgba(3,44,45,.6); margin-bottom: var(--sp-4); max-width: 520px; margin-left: auto; margin-right: auto; }
+        .pillar-cta__btn {
+            display: inline-block; padding: 14px 32px;
+            font-family: var(--mono); font-size: var(--t-sm);
+            text-transform: uppercase; letter-spacing: .15em;
+            background: var(--dark-teal); color: var(--cream);
+            border-radius: var(--r-sm); transition: background .25s var(--ease);
+        }
+        .pillar-cta__btn:hover { background: #054547; }
+
+        /* ─── Footer ─── */
+        .site-footer { background: var(--dark-teal); color: var(--cream); padding: var(--sp-10) 60px var(--sp-6); }
+        .site-footer__inner { max-width: 1280px; margin: 0 auto; }
+        .site-footer__top { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--sp-8); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(250,255,239,.1); margin-bottom: var(--sp-4); }
+        .site-footer__brand { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; margin-bottom: var(--sp-3); }
+        .site-footer__brand img { width: 32px; height: 32px; }
+        .site-footer__address { font-style: normal; font-size: var(--t-sm); font-weight: 300; line-height: 1.8; opacity: .6; }
+        .site-footer__links h4 { font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--sp-3); opacity: .4; }
+        .site-footer__links a { display: block; font-size: var(--t-sm); font-weight: 300; line-height: 2.2; opacity: .6; transition: opacity .2s; }
+        .site-footer__links a:hover { opacity: 1; }
+        .site-footer__bottom { display: flex; justify-content: space-between; align-items: center; font-size: var(--t-xs); opacity: .4; }
+        .site-footer__social { display: flex; gap: var(--sp-3); }
+        .site-footer__social a { opacity: .6; transition: opacity .2s; }
+        .site-footer__social a:hover { opacity: 1; }
+
+        .glow { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; }
+        .glow--teal { top: -10%; right: -5%; width: 720px; height: 720px; background: radial-gradient(circle, rgba(15,122,153,.12) 0%, transparent 65%); }
+        .glow--peri { bottom: -15%; left: -8%; width: 560px; height: 560px; background: radial-gradient(circle, rgba(169,184,255,.1) 0%, transparent 65%); }
+
+        @media (max-width: 900px) {
+            .hdr__nav { display: none; }
+            .hdr__hamburger { display: flex; }
+            .breadcrumb, .pillar-hero, .content, .pillar-cta { padding-left: 24px; padding-right: 24px; }
+            .dark-section { padding: var(--sp-8) 24px; }
+            .dark-section__grid { grid-template-columns: 1fr; }
+            .framework__layer { grid-template-columns: 40px 1fr; }
+            .framework__layer-num { width: 40px; height: 40px; font-size: 10px; }
+            .site-footer { padding: var(--sp-8) 24px var(--sp-4); }
+            .site-footer__top { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow glow--teal" aria-hidden="true"></div>
+    <div class="glow glow--peri" aria-hidden="true"></div>
+
+    <header class="hdr" id="header">
+        <div class="hdr__inner">
+            <a href="../" class="hdr__logo">
+                <img src="../Ressources/images/logo_black1.svg" alt="Paioneers" width="32" height="32">
+                Paioneers
+            </a>
+            <nav class="hdr__nav">
+                <a href="../insights/" class="hdr__link">Insights</a>
+                <a href="../research/" class="hdr__link">Research</a>
+                <a href="../gtm-engineering/" class="hdr__link is-active">GTM Engineering</a>
+                <a href="../#services" class="hdr__link">Services</a>
+                <a href="../#cta" class="hdr__cta">Book a Workshop</a>
+            </nav>
+            <button class="hdr__hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a><span>/</span>GTM Engineering
+    </nav>
+
+    <section class="pillar-hero">
+        <div class="pillar-hero__kicker">Category Definition</div>
+        <h1>GTM engineering is the <em>systems layer</em> underneath revenue growth</h1>
+        <p class="pillar-hero__lead">Not RevOps. Not sales ops. Not another outbound agency. GTM engineering is the discipline of building the commercial infrastructure that makes revenue repeatable — data architecture, signal models, workflow automation, and execution systems, designed as one machine.</p>
+        <div class="pillar-hero__meta">
+            <span>By <a href="../authors/niek-van-leeuwen/">Niek van Leeuwen</a></span>
+            <span>&middot;</span>
+            <span>15 min read</span>
+            <span>&middot;</span>
+            <span>Updated April 2026</span>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <article class="content">
+
+        <h2>What GTM engineering is</h2>
+        <p>Most B2B companies have a CRM, an outreach tool, maybe an enrichment subscription. They call that a "tech stack" and assume the job is done. It is not. The tools exist in isolation. Data flows in but does not flow through. Targeting is manual. Execution depends on individual effort rather than system design.</p>
+        <p><strong>GTM engineering treats the entire go-to-market motion as a system.</strong> Not a collection of tools. Not a process someone documents in Notion. A system — with inputs, transformations, outputs, and feedback loops. The same way a manufacturing line has stations, handoffs, quality gates, and throughput metrics, a GTM system has data layers, signal models, workflow engines, and conversion tracking.</p>
+        <p>The difference between a company that "does outbound" and a company that runs GTM engineering is the difference between a workshop and a factory. Both make things. One scales.</p>
+
+        <h2>How it differs from what you already have</h2>
+
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Sales Ops / RevOps</th>
+                    <th>GTM Engineering</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Primary question</td>
+                    <td>How is the pipeline performing?</td>
+                    <td>Is the architecture correct?</td>
+                </tr>
+                <tr>
+                    <td>Scope</td>
+                    <td>Reporting, forecasting, tool admin</td>
+                    <td>Data, targeting, workflow, execution as one system</td>
+                </tr>
+                <tr>
+                    <td>Data orientation</td>
+                    <td>Retrospective — what happened</td>
+                    <td>Prospective — what is about to happen</td>
+                </tr>
+                <tr>
+                    <td>Signal model</td>
+                    <td>Intent data (who is browsing)</td>
+                    <td>Existential signals (who is breaking)</td>
+                </tr>
+                <tr>
+                    <td>Output</td>
+                    <td>Dashboards, reports, clean CRM</td>
+                    <td>Running system that generates qualified pipeline</td>
+                </tr>
+                <tr>
+                    <td>Ownership</td>
+                    <td>Sits inside sales or marketing</td>
+                    <td>Sits between — connects both to data and execution</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="operator-note">
+            <div class="operator-note__label">Operator note</div>
+            <p>RevOps is necessary but insufficient. You need someone watching the dashboard. You also need someone designing the machine that produces the numbers on the dashboard. Those are different jobs.</p>
+        </div>
+
+        <h2>The five layers of a GTM system</h2>
+        <p>A complete GTM engineering system has five layers. Each does one job. Together they form the infrastructure that turns market intelligence into booked meetings and closed deals.</p>
+
+    </article>
+
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 60px;">
+        <div class="framework">
+            <div class="framework__label">The GTM Engineering Stack</div>
+            <h3>Five layers, one system</h3>
+            <div class="framework__layers">
+                <div class="framework__layer">
+                    <div class="framework__layer-num framework__layer-num--1">01</div>
+                    <div>
+                        <div class="framework__layer-title">Data Layer</div>
+                        <div class="framework__layer-desc">Enrichment, signal detection, market intelligence. The raw material. Sources include LinkedIn patterns, KvK filings, hiring velocity, regulatory triggers, and customer press releases.</div>
+                    </div>
+                </div>
+                <div class="framework__layer">
+                    <div class="framework__layer-num framework__layer-num--2">02</div>
+                    <div>
+                        <div class="framework__layer-title">Targeting Layer</div>
+                        <div class="framework__layer-desc">ICP models, signal scoring, segment prioritisation. Turns raw data into ranked prospect lists with urgency scores attached. This is where existential data points become commercially actionable.</div>
+                    </div>
+                </div>
+                <div class="framework__layer">
+                    <div class="framework__layer-num framework__layer-num--3">03</div>
+                    <div>
+                        <div class="framework__layer-title">Workflow Layer</div>
+                        <div class="framework__layer-desc">Automated sequences, routing, handoffs, enrichment triggers. The logic that moves a prospect from "detected" to "engaged" without manual intervention at every step.</div>
+                    </div>
+                </div>
+                <div class="framework__layer">
+                    <div class="framework__layer-num framework__layer-num--4">04</div>
+                    <div>
+                        <div class="framework__layer-title">Tooling Layer</div>
+                        <div class="framework__layer-desc">CRM, outreach platform, enrichment services, analytics. Selected for API depth and compounding returns, not feature count. Clay, Salesforce, HubSpot, Instantly — tools serve the system, not the other way around.</div>
+                    </div>
+                </div>
+                <div class="framework__layer">
+                    <div class="framework__layer-num framework__layer-num--5">05</div>
+                    <div>
+                        <div class="framework__layer-title">Execution Layer</div>
+                        <div class="framework__layer-desc">Campaigns, outbound sequences, conversion tracking, feedback loops. Where the system meets the market. Measured by pipeline generated, not emails sent.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <article class="content">
+
+        <h2>Typical failure modes</h2>
+        <p>GTM systems break in predictable ways. Recognising the pattern is the first step toward fixing it.</p>
+
+        <h3>Tool-first thinking</h3>
+        <p>The company buys a tool, configures it in isolation, and wonders why pipeline did not improve. Tools are layer 4 of 5. Without layers 1-3, the tool has nothing meaningful to process.</p>
+
+        <h3>Manual targeting</h3>
+        <p>A sales rep builds a list by scrolling LinkedIn for 90 minutes. That list has no signal scoring, no urgency ranking, no connection to the company's research. It is a random sample dressed up as prospecting.</p>
+
+        <h3>Reporting without architecture</h3>
+        <p>RevOps builds a dashboard showing pipeline by stage. The dashboard is accurate. The pipeline is bad. Nobody asks whether the targeting model, the signal definitions, or the workflow architecture are wrong — because those questions live in engineering, not operations.</p>
+
+        <h3>Campaign-level thinking</h3>
+        <p>Each outbound push is designed as a standalone campaign with its own list, messaging, and timing. Nothing compounds. The company runs 12 campaigns per year and learns nothing structurally from any of them.</p>
+
+        <div class="operator-note">
+            <div class="operator-note__label">Operator note</div>
+            <p>The single most common failure mode we see: companies with €200K+ in annual tooling spend and zero signal architecture. They have the instruments. They do not have the score.</p>
+        </div>
+
+        <h2>How Paioneers approaches GTM engineering</h2>
+        <p>We build the system, not just the strategy deck. That means three phases of work, each producing a running output — not a document that lives in a shared drive.</p>
+
+    </article>
+
+    <!-- Dark section: approach -->
+    <section class="dark-section">
+        <div class="dark-section__inner">
+            <div class="dark-section__kicker">Our Process</div>
+            <h2>Three phases, each produces a running system</h2>
+            <div class="dark-section__grid">
+                <div class="dark-section__card">
+                    <h3>Bottleneck Workshop</h3>
+                    <p>Half-day diagnostic. Maps the current sales process, identifies where pipeline leaks, and produces a prioritised roadmap. If you do not walk away with 3+ actionable insights, it is free.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>Pipeline Accelerator</h3>
+                    <p>Builds the data layer, signal models, and targeting architecture. Connects enrichment, scoring, and CRM into a single flow. Delivers a running targeting system, not a strategy document.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>Revenue Conversion Engine</h3>
+                    <p>Full-stack GTM implementation. Workflow automation, outbound sequences, conversion tracking, feedback loops. The complete system — operating, measured, and improving.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>The Loop</h3>
+                    <p>Ongoing optimisation. Weekly signal reviews, targeting refinements, workflow adjustments. GTM engineering is not a project — it is an operating function.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <article class="content">
+        <h2>Who needs GTM engineering</h2>
+        <p>GTM engineering is most valuable for B2B companies where the sales cycle is complex, the market is finite, and the cost of a missed signal is high. In the Dutch and Benelux context, that means:</p>
+        <p><strong>Industrial suppliers and manufacturers</strong> (10-200 FTE) navigating ASML dependency, NIS2 compliance, and succession transitions. The signals are detectable. The question is whether anyone is looking.</p>
+        <p><strong>IT, data, and AI consultancies</strong> (50-300 FTE) facing Wet DBA enforcement, EU AI Act compliance, and partner-tier restructuring. The structural squeeze compresses margins. GTM engineering helps you find the prospects where timing makes your offer essential, not optional.</p>
+        <p><strong>B2B SaaS and services companies</strong> expanding into the Benelux. A regional market with language, regulation, and buying-culture differences that generic outbound cannot navigate.</p>
+    </article>
+
+    <!-- CTA -->
+    <section class="pillar-cta">
+        <div class="pillar-cta__box">
+            <h2>Ready to build the system?</h2>
+            <p>The Bottleneck Workshop maps your sales process in half a day and gives you a prioritised roadmap within a week.</p>
+            <a href="../#cta" class="pillar-cta__btn">Book a Workshop</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__top">
+                <div>
+                    <div class="site-footer__brand">
+                        <img src="../Ressources/images/logo_white.png" alt="Paioneers" width="32" height="32">
+                        Paioneers
+                    </div>
+                    <address class="site-footer__address">
+                        Meander 877<br>1181WN Amstelveen, Netherlands<br><br>
+                        <a href="tel:+31646492246" style="color:var(--cream)">+31 (0) 646492246</a><br>
+                        <a href="mailto:info@paioneers.nl" style="color:var(--cream)">info@paioneers.nl</a>
+                    </address>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Explore</h4>
+                    <a href="../insights/">Insights</a>
+                    <a href="../research/">Research</a>
+                    <a href="../gtm-engineering/">GTM Engineering</a>
+                    <a href="../signal-based-targeting/">Signal-Based Targeting</a>
+                    <a href="../authors/niek-van-leeuwen/">About Niek</a>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Company</h4>
+                    <a href="../#services">Services</a>
+                    <a href="../#approach">About</a>
+                    <a href="../#cta">Contact</a>
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </div>
+            <div class="site-footer__bottom">
+                <span>&copy; 2026 Paioneers BV. All Rights Reserved</span>
+                <div class="site-footer__social">
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:info@paioneers.nl">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const hdr = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                hdr.classList.toggle('scrolled', window.pageYOffset > 40);
+            }, { passive: true });
+        })();
+    </script>
+
+</body>
+</html>

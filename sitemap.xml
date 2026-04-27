@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://paioneers.nl/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Hub Pages -->
+    <url>
+        <loc>https://paioneers.nl/insights/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/research/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Pillar Pages -->
+    <url>
+        <loc>https://paioneers.nl/gtm-engineering/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/signal-based-targeting/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Author -->
+    <url>
+        <loc>https://paioneers.nl/authors/niek-van-leeuwen/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Research Pages -->
+    <url>
+        <loc>https://paioneers.nl/research/dutch-it-data-ai-consultancy-squeeze/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/research/dutch-high-tech-manufacturing-existential-data-points/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Insights — Track B: Dutch IT/Data/AI Consultancies -->
+    <url>
+        <loc>https://paioneers.nl/insights/dutch-consultancy-squeeze-7-metrics/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/wet-dba-gtm-problem/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/eu-ai-act-dutch-ai-consultancies/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/valley-of-death-50-300-fte-consultancy/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/partner-tier-commercial-intelligence/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Insights — Track A: Dutch Manufacturing -->
+    <url>
+        <loc>https://paioneers.nl/insights/7-existential-data-points-dutch-manufacturing/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/asml-dependent-suppliers-gtm-playbook/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/succession-sales-signal-dutch-industrial-smes/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/compliance-pressure-commercial-trigger-manufacturing/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/brainport-twente-randstad-different-pain-phases/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Insights — Track C: Category Building -->
+    <url>
+        <loc>https://paioneers.nl/insights/what-gtm-engineering-means-in-practice/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/signal-based-targeting-vs-generic-outbound/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/research-led-prospecting-vs-list-building/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/insights/revenue-system-not-rep-performance/</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Signal Intelligence -->
+    <url>
+        <loc>https://paioneers.nl/signalintelligence.html</loc>
+        <lastmod>2026-04-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+</urlset>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research — Market Intelligence & GTM Targeting Frameworks | Paioneers</title>
+    <meta name="description" content="Flagship research on Dutch B2B markets: existential data points in high-tech manufacturing and the IT/AI consultancy squeeze. Data-driven GTM targeting frameworks.">
+    <link rel="canonical" href="https://paioneers.nl/research/">
+    <meta property="og:title" content="Research — Paioneers">
+    <meta property="og:description" content="Flagship research on Dutch B2B markets. Data-driven GTM targeting frameworks built from real market intelligence.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://paioneers.nl/research/">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="../Ressources/images/logoblack.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Paioneers Research",
+        "description": "Flagship research on Dutch B2B markets and GTM targeting frameworks.",
+        "url": "https://paioneers.nl/research/",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Paioneers",
+            "url": "https://paioneers.nl"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --cream: #FAFFEF; --dark-teal: #032C2D; --teal: #0F7A99;
+            --periwinkle: #A9B8FF; --orange: #F37C38; --blue: #5B8DEF; --gray: #8fa097;
+            --s1:#d3866c; --s2:#cf8b7d; --s3:#c89495; --s4:#c29baa;
+            --s5:#bba2c0; --s6:#b5aad7; --s7:#aeb2ec;
+            --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+            --t-xs: 11px; --t-sm: 13px; --t-md: 16px; --t-lg: 20px;
+            --t-xl: clamp(28px, 3.5vw, 44px); --t-2xl: clamp(36px, 5vw, 64px);
+            --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+            --sp-5: 40px; --sp-6: 48px; --sp-8: 64px; --sp-10: 80px;
+            --sp-12: 96px; --sp-15: 120px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1); --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--sans); background: var(--cream); color: var(--dark-teal); line-height: 1.5; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        img { max-width: 100%; display: block; }
+
+        /* ─── Header ─── */
+        .hdr { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: var(--sp-4) 60px; transition: background .35s var(--ease), padding .35s var(--ease), box-shadow .35s var(--ease); }
+        .hdr.scrolled { background: rgba(250,255,239,0.94); backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6); padding: var(--sp-2) 60px; box-shadow: 0 1px 0 rgba(3,44,45,.08); }
+        .hdr__inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .hdr__logo { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; color: var(--dark-teal); letter-spacing: -0.01em; }
+        .hdr__logo img { width: 32px; height: 32px; }
+        .hdr__nav { display: flex; align-items: center; gap: var(--sp-5); }
+        .hdr__link { font-size: var(--t-sm); color: var(--dark-teal); opacity: .6; transition: opacity .2s var(--ease); }
+        .hdr__link:hover { opacity: 1; }
+        .hdr__link.is-active { opacity: 1; }
+        .hdr__cta { padding: 9px 20px; border: 1px solid rgba(3,44,45,.7); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--dark-teal); border-radius: var(--r-sm); transition: background .25s var(--ease), color .25s var(--ease); }
+        .hdr__cta:hover { background: var(--dark-teal); color: var(--cream); }
+        .hdr__hamburger { display: none; flex-direction: column; gap: 5px; padding: 8px; cursor: pointer; }
+        .hdr__hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-teal); }
+
+        /* ─── Breadcrumb ─── */
+        .breadcrumb { max-width: 1280px; margin: 0 auto; padding: var(--sp-15) 60px var(--sp-3); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--gray); }
+        .breadcrumb a { color: var(--teal); transition: opacity .2s; }
+        .breadcrumb a:hover { opacity: .7; }
+        .breadcrumb span { margin: 0 6px; }
+
+        /* ─── Page Hero ─── */
+        .page-hero { max-width: 1280px; margin: 0 auto; padding: var(--sp-6) 60px var(--sp-10); }
+        .page-hero__kicker {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .14em;
+            color: var(--dark-teal); opacity: .6; margin-bottom: var(--sp-3);
+        }
+        .page-hero__kicker::before { content: ''; width: 40px; height: 1.5px; background: linear-gradient(90deg, var(--orange), var(--periwinkle)); }
+        .page-hero__kicker::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px rgba(243,124,56,.5); }
+        .page-hero h1 { font-size: var(--t-2xl); font-weight: 200; line-height: 1.08; letter-spacing: -0.035em; margin-bottom: var(--sp-3); }
+        .page-hero__lead { font-size: var(--t-lg); font-weight: 300; line-height: 1.7; max-width: 720px; color: rgba(3,44,45,.62); }
+
+        /* ─── Research Cards ─── */
+        .research-grid {
+            max-width: 1280px; margin: 0 auto;
+            padding: var(--sp-4) 60px var(--sp-15);
+            display: flex; flex-direction: column; gap: var(--sp-6);
+        }
+
+        .research-card {
+            display: grid; grid-template-columns: 1fr 1.4fr;
+            background: rgba(255,255,255,.55);
+            border: 1px solid rgba(3,44,45,.07);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            transition: all .35s var(--spring);
+        }
+        .research-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,.85);
+            box-shadow: 0 8px 32px rgba(3,44,45,.08);
+        }
+
+        /* ─── Research Card Diagrams ─── */
+        .rc-diagram {
+            position: relative; z-index: 2;
+            flex: 1;
+            display: flex; flex-direction: column; gap: 10px;
+            margin-bottom: var(--sp-4);
+        }
+        .rc-diagram__title {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: rgba(250,255,239,.3);
+            margin-bottom: 4px;
+        }
+        /* Manufacturing: cluster row + EDP list */
+        .rc-diagram__cluster-row {
+            display: flex; gap: 6px;
+        }
+        .rc-diagram__cluster {
+            flex: 1;
+            border-radius: 6px;
+            padding: 8px 10px;
+            border: 1px solid rgba(250,255,239,.08);
+        }
+        .rc-diagram__cluster--teal  { background: rgba(15,122,153,.18); }
+        .rc-diagram__cluster--peri  { background: rgba(169,184,255,.12); }
+        .rc-diagram__cluster--orange{ background: rgba(243,124,56,.14); }
+        .rc-diagram__cluster-name {
+            font-size: 10px; font-weight: 500;
+            color: rgba(250,255,239,.8);
+            margin-bottom: 2px;
+        }
+        .rc-diagram__cluster-tag {
+            font-family: var(--mono); font-size: 8px;
+            text-transform: uppercase; letter-spacing: .1em;
+            color: rgba(250,255,239,.35);
+        }
+        .rc-diagram__edp-list {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .rc-diagram__edp {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 10px; font-weight: 300;
+            color: rgba(250,255,239,.65);
+            padding: 5px 8px;
+            background: rgba(250,255,239,.04);
+            border-radius: 4px;
+            border-left: 2px solid rgba(15,122,153,.5);
+        }
+        .rc-diagram__edp--muted {
+            opacity: .45;
+            border-left-color: rgba(250,255,239,.15);
+        }
+        .rc-diagram__edp-n {
+            font-family: var(--mono); font-size: 8px;
+            color: rgba(15,122,153,.8); min-width: 18px;
+        }
+        .rc-diagram__edp-threshold {
+            margin-left: auto;
+            font-family: var(--mono); font-size: 8px;
+            color: rgba(243,124,56,.7);
+        }
+        /* Consultancy: force stack + segment row */
+        .rc-diagram__force-stack {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .rc-diagram__force {
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .rc-diagram__force-label {
+            font-size: 10px; font-weight: 300;
+            color: rgba(250,255,239,.65);
+        }
+        .rc-diagram__force-bar {
+            height: 4px; border-radius: 2px;
+        }
+        .rc-diagram__force--red   .rc-diagram__force-bar { background: linear-gradient(90deg, rgba(192,57,43,.8), rgba(192,57,43,.3)); }
+        .rc-diagram__force--orange .rc-diagram__force-bar { background: linear-gradient(90deg, rgba(243,124,56,.9), rgba(243,124,56,.3)); }
+        .rc-diagram__force--peri  .rc-diagram__force-bar { background: linear-gradient(90deg, rgba(169,184,255,.9), rgba(169,184,255,.3)); }
+        .rc-diagram__segment-row {
+            display: flex; gap: 5px; flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .rc-diagram__seg {
+            font-family: var(--mono); font-size: 8px;
+            text-transform: uppercase; letter-spacing: .08em;
+            padding: 4px 8px;
+            border: 1px solid rgba(250,255,239,.12);
+            border-radius: 100px;
+            color: rgba(250,255,239,.5);
+        }
+
+        .research-card__visual {
+            background: var(--dark-teal);
+            padding: var(--sp-6);
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden; min-height: 320px;
+        }
+        .research-card__visual::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(15,122,153,.25) 0%, transparent 55%),
+                        radial-gradient(circle at 80% 70%, rgba(169,184,255,.15) 0%, transparent 55%),
+                        radial-gradient(circle at 50% 90%, rgba(243,124,56,.08) 0%, transparent 40%);
+        }
+        .research-card__visual--alt::before {
+            background: radial-gradient(circle at 70% 20%, rgba(243,124,56,.2) 0%, transparent 55%),
+                        radial-gradient(circle at 20% 80%, rgba(91,141,239,.15) 0%, transparent 55%),
+                        radial-gradient(circle at 50% 50%, rgba(169,184,255,.1) 0%, transparent 40%);
+        }
+
+        .research-card__badge {
+            position: relative; z-index: 1;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--cream); opacity: .5;
+        }
+        .research-card__visual-stats {
+            position: relative; z-index: 1;
+            display: flex; gap: var(--sp-4);
+        }
+        .research-card__stat {
+            text-align: center;
+        }
+        .research-card__stat-number {
+            font-size: clamp(28px, 3vw, 36px); font-weight: 200;
+            color: var(--cream);
+            background: linear-gradient(115deg, var(--teal), var(--periwinkle), var(--orange));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .research-card__stat-label {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .12em;
+            color: rgba(250,255,239,.4);
+        }
+
+        .research-card__content {
+            padding: var(--sp-6);
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .research-card__tag {
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .14em;
+            color: var(--teal); margin-bottom: var(--sp-2);
+        }
+        .research-card__tag--alt { color: var(--orange); }
+        .research-card__title {
+            font-size: var(--t-xl); font-weight: 200;
+            line-height: 1.15; letter-spacing: -0.03em;
+            margin-bottom: var(--sp-3);
+        }
+        .research-card__desc {
+            font-size: var(--t-md); font-weight: 300;
+            line-height: 1.7; color: rgba(3,44,45,.6);
+            margin-bottom: var(--sp-4);
+        }
+        .research-card__topics {
+            display: flex; flex-wrap: wrap; gap: var(--sp-1);
+            margin-bottom: var(--sp-4);
+        }
+        .research-card__topic {
+            font-family: var(--mono); font-size: 9px;
+            text-transform: uppercase; letter-spacing: .1em;
+            padding: 4px 10px; border-radius: 100px;
+            border: 1px solid rgba(3,44,45,.12);
+            color: var(--dark-teal); opacity: .6;
+        }
+        .research-card__actions {
+            display: flex; gap: var(--sp-2); align-items: center;
+        }
+        .research-card__btn {
+            padding: 12px 28px;
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .12em;
+            background: var(--dark-teal); color: var(--cream);
+            border-radius: var(--r-sm);
+            transition: background .25s var(--ease);
+        }
+        .research-card__btn:hover { background: #054547; }
+        .research-card__btn--outline {
+            background: transparent; color: var(--dark-teal);
+            border: 1px solid rgba(3,44,45,.2);
+        }
+        .research-card__btn--outline:hover { background: rgba(3,44,45,.05); }
+
+        .research-card__meta {
+            margin-top: var(--sp-3); padding-top: var(--sp-3);
+            border-top: 1px solid rgba(3,44,45,.06);
+            display: flex; align-items: center; gap: var(--sp-2);
+            font-family: var(--mono); font-size: 10px;
+            text-transform: uppercase; letter-spacing: .1em; color: var(--gray);
+        }
+
+        /* ─── Methodology section ─── */
+        .method {
+            background: var(--dark-teal); color: var(--cream);
+            padding: var(--sp-12) 60px;
+        }
+        .method__inner {
+            max-width: 1280px; margin: 0 auto;
+        }
+        .method__kicker {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            opacity: .4; margin-bottom: var(--sp-3);
+        }
+        .method h2 {
+            font-size: var(--t-xl); font-weight: 200;
+            letter-spacing: -0.03em; margin-bottom: var(--sp-6);
+            max-width: 680px;
+        }
+        .method__grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: var(--sp-4);
+        }
+        .method__card {
+            background: rgba(250,255,239,.06);
+            border: 1px solid rgba(250,255,239,.08);
+            border-radius: var(--r-md);
+            padding: var(--sp-5);
+        }
+        .method__card-number {
+            font-family: var(--mono); font-size: var(--t-xs);
+            text-transform: uppercase; letter-spacing: .14em;
+            margin-bottom: var(--sp-2);
+            background: linear-gradient(90deg, var(--teal), var(--periwinkle));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .method__card h3 {
+            font-size: var(--t-lg); font-weight: 300;
+            margin-bottom: var(--sp-2);
+        }
+        .method__card p {
+            font-size: var(--t-sm); font-weight: 300;
+            line-height: 1.7; opacity: .6;
+        }
+
+        /* ─── CTA ─── */
+        .cta-strip { background: var(--cream); padding: var(--sp-10) 60px; }
+        .cta-strip__inner {
+            max-width: 1280px; margin: 0 auto;
+            background:
+                linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)) padding-box,
+                linear-gradient(90deg, var(--teal), var(--periwinkle), var(--orange)) border-box;
+            border: 1.5px solid transparent; border-radius: var(--r-lg);
+            padding: var(--sp-8); text-align: center;
+        }
+        .cta-strip h2 { font-size: var(--t-xl); font-weight: 200; letter-spacing: -0.03em; margin-bottom: var(--sp-2); }
+        .cta-strip p { font-size: var(--t-md); font-weight: 300; color: rgba(3,44,45,.6); margin-bottom: var(--sp-4); max-width: 560px; margin-left: auto; margin-right: auto; }
+        .cta-strip__btn { display: inline-block; padding: 14px 32px; font-family: var(--mono); font-size: var(--t-sm); text-transform: uppercase; letter-spacing: .15em; background: var(--dark-teal); color: var(--cream); border-radius: var(--r-sm); transition: background .25s var(--ease); }
+        .cta-strip__btn:hover { background: #054547; }
+
+        /* ─── Footer ─── */
+        .site-footer { background: var(--dark-teal); color: var(--cream); padding: var(--sp-10) 60px var(--sp-6); }
+        .site-footer__inner { max-width: 1280px; margin: 0 auto; }
+        .site-footer__top { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--sp-8); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(250,255,239,.1); margin-bottom: var(--sp-4); }
+        .site-footer__brand { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; margin-bottom: var(--sp-3); }
+        .site-footer__brand img { width: 32px; height: 32px; }
+        .site-footer__address { font-style: normal; font-size: var(--t-sm); font-weight: 300; line-height: 1.8; opacity: .6; }
+        .site-footer__links h4 { font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--sp-3); opacity: .4; }
+        .site-footer__links a { display: block; font-size: var(--t-sm); font-weight: 300; line-height: 2.2; opacity: .6; transition: opacity .2s; }
+        .site-footer__links a:hover { opacity: 1; }
+        .site-footer__bottom { display: flex; justify-content: space-between; align-items: center; font-size: var(--t-xs); opacity: .4; }
+        .site-footer__social { display: flex; gap: var(--sp-3); }
+        .site-footer__social a { opacity: .6; transition: opacity .2s; }
+        .site-footer__social a:hover { opacity: 1; }
+
+        /* ─── Glows ─── */
+        .glow { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; }
+        .glow--teal { top: -10%; right: -5%; width: 720px; height: 720px; background: radial-gradient(circle, rgba(15,122,153,.12) 0%, transparent 65%); }
+        .glow--peri { bottom: -15%; left: -8%; width: 560px; height: 560px; background: radial-gradient(circle, rgba(169,184,255,.1) 0%, transparent 65%); }
+
+        @media (max-width: 900px) {
+            .hdr__nav { display: none; }
+            .hdr__hamburger { display: flex; }
+            .breadcrumb, .page-hero, .research-grid { padding-left: 24px; padding-right: 24px; }
+            .research-card { grid-template-columns: 1fr; }
+            .research-card__visual { min-height: 200px; }
+            .method { padding: var(--sp-8) 24px; }
+            .method__grid { grid-template-columns: 1fr; }
+            .cta-strip { padding: var(--sp-8) 24px; }
+            .site-footer { padding: var(--sp-8) 24px var(--sp-4); }
+            .site-footer__top { grid-template-columns: 1fr; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow glow--teal" aria-hidden="true"></div>
+    <div class="glow glow--peri" aria-hidden="true"></div>
+
+    <header class="hdr" id="header">
+        <div class="hdr__inner">
+            <a href="../" class="hdr__logo">
+                <img src="../Ressources/images/logo_black1.svg" alt="Paioneers" width="32" height="32">
+                Paioneers
+            </a>
+            <nav class="hdr__nav">
+                <a href="../insights/" class="hdr__link">Insights</a>
+                <a href="../research/" class="hdr__link is-active">Research</a>
+                <a href="../gtm-engineering/" class="hdr__link">GTM Engineering</a>
+                <a href="../#services" class="hdr__link">Services</a>
+                <a href="../#cta" class="hdr__cta">Book a Workshop</a>
+            </nav>
+            <button class="hdr__hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a><span>/</span>Research
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero__kicker">Research Library</div>
+        <h1>Market intelligence that drives targeting</h1>
+        <p class="page-hero__lead">Flagship research on Dutch B2B verticals. Each report maps the existential data points, buying triggers, and signal patterns that separate high-urgency prospects from noise.</p>
+    </section>
+
+    <section class="research-grid">
+
+        <!-- Report 1: Manufacturing -->
+        <article class="research-card">
+            <div class="research-card__visual">
+                <div class="research-card__badge">Flagship Report</div>
+                <!-- Rich visual: EDP framework diagram -->
+                <div class="rc-diagram rc-diagram--manufacturing" aria-hidden="true">
+                    <div class="rc-diagram__title">GTM Targeting Framework</div>
+                    <div class="rc-diagram__cluster-row">
+                        <div class="rc-diagram__cluster rc-diagram__cluster--teal">
+                            <div class="rc-diagram__cluster-name">Brainport</div>
+                            <div class="rc-diagram__cluster-tag">Restructuring</div>
+                        </div>
+                        <div class="rc-diagram__cluster rc-diagram__cluster--peri">
+                            <div class="rc-diagram__cluster-name">Twente</div>
+                            <div class="rc-diagram__cluster-tag">Defense pivot</div>
+                        </div>
+                        <div class="rc-diagram__cluster rc-diagram__cluster--orange">
+                            <div class="rc-diagram__cluster-name">Randstad-Zuid</div>
+                            <div class="rc-diagram__cluster-tag">Offshore wind</div>
+                        </div>
+                    </div>
+                    <div class="rc-diagram__edp-list">
+                        <div class="rc-diagram__edp"><span class="rc-diagram__edp-n">01</span><span>Single-customer concentration</span><span class="rc-diagram__edp-threshold">&gt;40%</span></div>
+                        <div class="rc-diagram__edp"><span class="rc-diagram__edp-n">02</span><span>Engineer time-to-fill</span><span class="rc-diagram__edp-threshold">&gt;6 mo</span></div>
+                        <div class="rc-diagram__edp"><span class="rc-diagram__edp-n">03</span><span>Order book visibility</span><span class="rc-diagram__edp-threshold">&lt;3 mo</span></div>
+                        <div class="rc-diagram__edp"><span class="rc-diagram__edp-n">04</span><span>NIS2 / regulatory exposure</span><span class="rc-diagram__edp-threshold">Active</span></div>
+                        <div class="rc-diagram__edp rc-diagram__edp--muted"><span class="rc-diagram__edp-n">+3</span><span>more triggers</span><span class="rc-diagram__edp-threshold"></span></div>
+                    </div>
+                </div>
+                <div class="research-card__visual-stats">
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">7</div>
+                        <div class="research-card__stat-label">EDPs</div>
+                    </div>
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">3</div>
+                        <div class="research-card__stat-label">Clusters</div>
+                    </div>
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">6</div>
+                        <div class="research-card__stat-label">Segments</div>
+                    </div>
+                </div>
+            </div>
+            <div class="research-card__content">
+                <div class="research-card__tag">Manufacturing &middot; GTM Framework</div>
+                <h2 class="research-card__title">Existential data points in Dutch high-tech manufacturing</h2>
+                <p class="research-card__desc">A GTM targeting framework for the 10-200 FTE supplier sector sitting at the intersection of a structural labor crunch, ASML-driven cycles, and a regulatory tsunami. Seven existential data points that separate survivors from distressed assets.</p>
+                <div class="research-card__topics">
+                    <span class="research-card__topic">Brainport</span>
+                    <span class="research-card__topic">Twente</span>
+                    <span class="research-card__topic">Randstad-Zuid</span>
+                    <span class="research-card__topic">NIS2</span>
+                    <span class="research-card__topic">ASML Supply Chain</span>
+                    <span class="research-card__topic">PE Roll-ups</span>
+                </div>
+                <div class="research-card__actions">
+                    <a href="../research/dutch-high-tech-manufacturing-existential-data-points/" class="research-card__btn">Read Online</a>
+                    <a href="../Ressources/documents/Existential%20data%20points%20in%20Dutch%20high-tech%20manufacturing-%20A%20GTM%20targeting%20framework.pdf" class="research-card__btn research-card__btn--outline" target="_blank">Download PDF</a>
+                </div>
+                <div class="research-card__meta">
+                    <span>By Niek van Leeuwen</span>
+                    <span>&middot;</span>
+                    <span>14 pages</span>
+                    <span>&middot;</span>
+                    <span>2026</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Report 2: Consultancy -->
+        <article class="research-card">
+            <div class="research-card__visual research-card__visual--alt">
+                <div class="research-card__badge">Flagship Report</div>
+                <!-- Rich visual: pressure forces diagram -->
+                <div class="rc-diagram rc-diagram--consultancy" aria-hidden="true">
+                    <div class="rc-diagram__title">Market Pressure Map</div>
+                    <div class="rc-diagram__force-stack">
+                        <div class="rc-diagram__force rc-diagram__force--red">
+                            <div class="rc-diagram__force-label">Wet DBA enforcement</div>
+                            <div class="rc-diagram__force-bar" style="width:88%"></div>
+                        </div>
+                        <div class="rc-diagram__force rc-diagram__force--orange">
+                            <div class="rc-diagram__force-label">EU AI Act compliance</div>
+                            <div class="rc-diagram__force-bar" style="width:72%"></div>
+                        </div>
+                        <div class="rc-diagram__force rc-diagram__force--peri">
+                            <div class="rc-diagram__force-label">Partner-tier restructuring</div>
+                            <div class="rc-diagram__force-bar" style="width:61%"></div>
+                        </div>
+                    </div>
+                    <div class="rc-diagram__segment-row">
+                        <div class="rc-diagram__seg">Detacheerders</div>
+                        <div class="rc-diagram__seg">AI Boutiques</div>
+                        <div class="rc-diagram__seg">PE-Backed</div>
+                        <div class="rc-diagram__seg">Regulated</div>
+                    </div>
+                </div>
+                <div class="research-card__visual-stats">
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">7</div>
+                        <div class="research-card__stat-label">Metrics</div>
+                    </div>
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">4</div>
+                        <div class="research-card__stat-label">Segments</div>
+                    </div>
+                    <div class="research-card__stat">
+                        <div class="research-card__stat-number">3</div>
+                        <div class="research-card__stat-label">Forces</div>
+                    </div>
+                </div>
+            </div>
+            <div class="research-card__content">
+                <div class="research-card__tag research-card__tag--alt">IT / AI Consultancy &middot; Market Analysis</div>
+                <h2 class="research-card__title">The Dutch IT, data, and AI consultancy squeeze</h2>
+                <p class="research-card__desc">Why 2026 is structurally different for Dutch IT and AI consultancies. Wet DBA enforcement, EU AI Act compliance, partner-tier restructuring, and margin compression between 50 and 300 FTE. Seven metrics that become existential.</p>
+                <div class="research-card__topics">
+                    <span class="research-card__topic">Wet DBA</span>
+                    <span class="research-card__topic">EU AI Act</span>
+                    <span class="research-card__topic">Detacheerders</span>
+                    <span class="research-card__topic">PE-Backed</span>
+                    <span class="research-card__topic">AI Boutiques</span>
+                    <span class="research-card__topic">Regulated</span>
+                </div>
+                <div class="research-card__actions">
+                    <a href="../research/dutch-it-data-ai-consultancy-squeeze/" class="research-card__btn">Read Online</a>
+                    <a href="../Ressources/documents/Dutch%20IT%20Data%20AI%20Consultancy%20Squeeze.pdf" class="research-card__btn research-card__btn--outline" target="_blank">Download PDF</a>
+                </div>
+                <div class="research-card__meta">
+                    <span>By Niek van Leeuwen</span>
+                    <span>&middot;</span>
+                    <span>16 pages</span>
+                    <span>&middot;</span>
+                    <span>2026</span>
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- Methodology -->
+    <section class="method">
+        <div class="method__inner">
+            <div class="method__kicker">Our Research Methodology</div>
+            <h2>Signal-led market intelligence, not desk research</h2>
+            <div class="method__grid">
+                <div class="method__card">
+                    <div class="method__card-number">01</div>
+                    <h3>Source triangulation</h3>
+                    <p>KvK filings, LinkedIn hiring patterns, UWV labor data, export-license statistics, consortium rosters, earnings transcripts, and customer press releases. Multiple independent signals per thesis.</p>
+                </div>
+                <div class="method__card">
+                    <div class="method__card-number">02</div>
+                    <h3>EDP identification</h3>
+                    <p>Existential Data Points are the metrics that flip from operational annoyance to balance-sheet event. We identify the thresholds where a data point becomes commercially actionable.</p>
+                </div>
+                <div class="method__card">
+                    <div class="method__card-number">03</div>
+                    <h3>GTM operationalisation</h3>
+                    <p>Every finding maps to a detection method, an urgency logic, and a commercial entry point. Research without a GTM application stays on the shelf.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-strip">
+        <div class="cta-strip__inner">
+            <h2>Want custom market intelligence for your vertical?</h2>
+            <p>We build research-led targeting frameworks for B2B companies entering or expanding in the Dutch and Benelux market.</p>
+            <a href="../#cta" class="cta-strip__btn">Book a Workshop</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__top">
+                <div>
+                    <div class="site-footer__brand">
+                        <img src="../Ressources/images/logo_white.png" alt="Paioneers" width="32" height="32">
+                        Paioneers
+                    </div>
+                    <address class="site-footer__address">
+                        Meander 877<br>1181WN Amstelveen, Netherlands<br><br>
+                        <a href="tel:+31646492246" style="color:var(--cream)">+31 (0) 646492246</a><br>
+                        <a href="mailto:info@paioneers.nl" style="color:var(--cream)">info@paioneers.nl</a>
+                    </address>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Explore</h4>
+                    <a href="../insights/">Insights</a>
+                    <a href="../research/">Research</a>
+                    <a href="../gtm-engineering/">GTM Engineering</a>
+                    <a href="../signal-based-targeting/">Signal-Based Targeting</a>
+                    <a href="../authors/niek-van-leeuwen/">About Niek</a>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Company</h4>
+                    <a href="../#services">Services</a>
+                    <a href="../#approach">About</a>
+                    <a href="../#cta">Contact</a>
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </div>
+            <div class="site-footer__bottom">
+                <span>&copy; 2026 Paioneers BV. All Rights Reserved</span>
+                <div class="site-footer__social">
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:info@paioneers.nl">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const hdr = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                hdr.classList.toggle('scrolled', window.pageYOffset > 40);
+            }, { passive: true });
+        })();
+    </script>
+
+</body>
+</html>

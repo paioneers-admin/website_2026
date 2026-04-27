@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal-Based Targeting — From Intent Data to Existential Signals | Paioneers</title>
+    <meta name="description" content="Signal-based targeting detects operational triggers that predict buying urgency — not who is browsing, but who is breaking. A methodology for B2B GTM teams.">
+    <link rel="canonical" href="https://paioneers.nl/signal-based-targeting/">
+    <meta property="og:title" content="Signal-Based Targeting — Paioneers">
+    <meta property="og:description" content="Detect the operational triggers that predict buying urgency. Not who is browsing, but who is breaking.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://paioneers.nl/signal-based-targeting/">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="icon" type="image/png" href="../Ressources/images/logoblack.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Signal-Based Targeting: From intent data to existential signals",
+        "description": "Signal-based targeting detects operational triggers that predict buying urgency in B2B markets.",
+        "url": "https://paioneers.nl/signal-based-targeting/",
+        "author": { "@type": "Person", "name": "Niek van Leeuwen", "url": "https://paioneers.nl/authors/niek-van-leeuwen/" },
+        "publisher": { "@type": "Organization", "name": "Paioneers", "url": "https://paioneers.nl" },
+        "datePublished": "2026-04-01",
+        "dateModified": "2026-04-23"
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is signal-based targeting?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Signal-based targeting is a B2B prospecting methodology that detects operational triggers — hiring patterns, compliance deadlines, ownership transitions, customer concentration shifts — to identify companies where a purchase decision has moved from optional to essential. Unlike intent data, which tracks browsing behaviour, signal-based targeting tracks business-critical events." }
+            },
+            {
+                "@type": "Question",
+                "name": "How does signal-based targeting differ from intent data?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Intent data tells you who is researching a topic. Signal-based targeting tells you who is experiencing an operational trigger that makes a purchase decision urgent. Intent is informational. Signals are existential. A company browsing 'NIS2 compliance' has intent. A company that just received a compliance questionnaire from their largest customer has a signal." }
+            },
+            {
+                "@type": "Question",
+                "name": "What are existential data points (EDPs)?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Existential Data Points are the specific metrics that flip from operational annoyance to balance-sheet event. Examples include single-customer revenue concentration above 40%, engineering time-to-fill above 6 months, or unquotable order-book percentage above 20%. EDPs are detectable through public filings, LinkedIn patterns, hiring data, and regulatory triggers." }
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --cream: #FAFFEF; --dark-teal: #032C2D; --teal: #0F7A99;
+            --periwinkle: #A9B8FF; --orange: #F37C38; --blue: #5B8DEF; --gray: #8fa097;
+            --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+            --t-xs: 11px; --t-sm: 13px; --t-md: 16px; --t-lg: 20px;
+            --t-xl: clamp(28px, 3.5vw, 44px); --t-2xl: clamp(36px, 5vw, 64px);
+            --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+            --sp-5: 40px; --sp-6: 48px; --sp-8: 64px; --sp-10: 80px; --sp-12: 96px; --sp-15: 120px;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1); --spring: cubic-bezier(0.16, 1, 0.3, 1);
+            --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-xl: 28px;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--sans); background: var(--cream); color: var(--dark-teal); line-height: 1.5; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        img { max-width: 100%; display: block; }
+
+        .hdr { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: var(--sp-4) 60px; transition: background .35s var(--ease), padding .35s var(--ease), box-shadow .35s var(--ease); }
+        .hdr.scrolled { background: rgba(250,255,239,0.94); backdrop-filter: blur(20px) saturate(1.6); -webkit-backdrop-filter: blur(20px) saturate(1.6); padding: var(--sp-2) 60px; box-shadow: 0 1px 0 rgba(3,44,45,.08); }
+        .hdr__inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .hdr__logo { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; color: var(--dark-teal); letter-spacing: -0.01em; }
+        .hdr__logo img { width: 32px; height: 32px; }
+        .hdr__nav { display: flex; align-items: center; gap: var(--sp-5); }
+        .hdr__link { font-size: var(--t-sm); color: var(--dark-teal); opacity: .6; transition: opacity .2s var(--ease); }
+        .hdr__link:hover { opacity: 1; }
+        .hdr__link.is-active { opacity: 1; }
+        .hdr__cta { padding: 9px 20px; border: 1px solid rgba(3,44,45,.7); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--dark-teal); border-radius: var(--r-sm); transition: background .25s var(--ease), color .25s var(--ease); }
+        .hdr__cta:hover { background: var(--dark-teal); color: var(--cream); }
+        .hdr__hamburger { display: none; flex-direction: column; gap: 5px; padding: 8px; cursor: pointer; }
+        .hdr__hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-teal); }
+
+        .breadcrumb { max-width: 1280px; margin: 0 auto; padding: var(--sp-15) 60px var(--sp-3); font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--gray); }
+        .breadcrumb a { color: var(--teal); }
+        .breadcrumb a:hover { opacity: .7; }
+        .breadcrumb span { margin: 0 6px; }
+
+        .pillar-hero { max-width: 1280px; margin: 0 auto; padding: var(--sp-6) 60px var(--sp-12); }
+        .pillar-hero__kicker { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .14em; color: var(--dark-teal); opacity: .6; margin-bottom: var(--sp-3); }
+        .pillar-hero__kicker::before { content: ''; width: 40px; height: 1.5px; background: linear-gradient(90deg, var(--orange), var(--periwinkle)); }
+        .pillar-hero__kicker::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 8px rgba(243,124,56,.5); }
+        .pillar-hero h1 { font-size: var(--t-2xl); font-weight: 200; line-height: 1.08; letter-spacing: -0.04em; margin-bottom: var(--sp-4); max-width: 800px; }
+        .pillar-hero h1 em { font-style: normal; background: linear-gradient(115deg, var(--orange), var(--periwinkle), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .pillar-hero__lead { font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(3,44,45,.62); max-width: 720px; margin-bottom: var(--sp-5); }
+        .pillar-hero__meta { display: flex; gap: var(--sp-3); align-items: center; font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--gray); }
+        .pillar-hero__meta a { color: var(--teal); }
+
+        .content { max-width: 800px; margin: 0 auto; padding: 0 60px; }
+        .content h2 { font-size: var(--t-xl); font-weight: 200; line-height: 1.15; letter-spacing: -0.03em; margin: var(--sp-10) 0 var(--sp-4); }
+        .content h3 { font-size: var(--t-lg); font-weight: 400; margin: var(--sp-6) 0 var(--sp-2); }
+        .content p { font-size: var(--t-md); font-weight: 300; line-height: 1.7; color: rgba(3,44,45,.72); margin-bottom: var(--sp-3); }
+        .content p strong { font-weight: 500; color: var(--dark-teal); }
+
+        /* Signal box */
+        .signal-box {
+            background: rgba(15,122,153,.04);
+            border: 1px solid rgba(15,122,153,.12);
+            border-radius: var(--r-md);
+            padding: var(--sp-5); margin: var(--sp-5) 0;
+        }
+        .signal-box__label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--teal); margin-bottom: var(--sp-3); }
+        .signal-box__list { display: flex; flex-direction: column; gap: var(--sp-2); }
+        .signal-box__item { display: grid; grid-template-columns: 8px 1fr; gap: var(--sp-2); align-items: start; }
+        .signal-box__dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; }
+        .signal-box__dot--industry { background: var(--orange); }
+        .signal-box__dot--account { background: var(--teal); }
+        .signal-box__dot--persona { background: var(--periwinkle); }
+        .signal-box__dot--lead { background: var(--blue); }
+        .signal-box__text { font-size: var(--t-sm); font-weight: 300; line-height: 1.6; color: rgba(3,44,45,.72); }
+        .signal-box__text strong { font-weight: 500; color: var(--dark-teal); }
+
+        /* Threshold table */
+        .threshold-table { width: 100%; border-collapse: collapse; margin: var(--sp-5) 0; font-size: var(--t-sm); }
+        .threshold-table th { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .12em; text-align: left; padding: var(--sp-2) var(--sp-3); border-bottom: 2px solid rgba(3,44,45,.12); color: var(--gray); }
+        .threshold-table td { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid rgba(3,44,45,.06); font-weight: 300; line-height: 1.6; color: rgba(3,44,45,.72); }
+        .threshold-table td:first-child { font-weight: 400; color: var(--dark-teal); }
+        .threshold-table .healthy { color: var(--teal); font-weight: 500; }
+        .threshold-table .warning { color: var(--orange); font-weight: 500; }
+        .threshold-table .danger { color: #c0392b; font-weight: 500; }
+
+        .operator-note { border-left: 3px solid var(--orange); padding: var(--sp-3) var(--sp-4); margin: var(--sp-5) 0; background: rgba(243,124,56,.04); border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+        .operator-note__label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--orange); margin-bottom: var(--sp-1); }
+        .operator-note p { font-size: var(--t-md); font-weight: 300; line-height: 1.7; color: rgba(3,44,45,.72); margin: 0; }
+
+        /* Commercial box */
+        .commercial-box { background: var(--dark-teal); color: var(--cream); border-radius: var(--r-lg); padding: var(--sp-6); margin: var(--sp-6) 0; }
+        .commercial-box__label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .14em; opacity: .4; margin-bottom: var(--sp-3); }
+        .commercial-box h3 { font-size: var(--t-lg); font-weight: 300; margin-bottom: var(--sp-3); }
+        .commercial-box p { font-size: var(--t-md); font-weight: 300; line-height: 1.7; opacity: .7; margin-bottom: var(--sp-2); }
+        .commercial-box p:last-child { margin-bottom: 0; }
+
+        /* Dark section */
+        .dark-section { background: var(--dark-teal); color: var(--cream); padding: var(--sp-12) 60px; margin: var(--sp-10) 0; }
+        .dark-section__inner { max-width: 800px; margin: 0 auto; }
+        .dark-section__kicker { font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .14em; opacity: .4; margin-bottom: var(--sp-3); }
+        .dark-section h2 { font-size: var(--t-xl); font-weight: 200; letter-spacing: -0.03em; margin-bottom: var(--sp-4); }
+        .dark-section p { font-size: var(--t-md); font-weight: 300; line-height: 1.7; opacity: .7; margin-bottom: var(--sp-3); }
+        .dark-section__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-top: var(--sp-5); }
+        .dark-section__card { background: rgba(250,255,239,.06); border: 1px solid rgba(250,255,239,.08); border-radius: var(--r-md); padding: var(--sp-4); }
+        .dark-section__card h3 { font-size: var(--t-md); font-weight: 400; margin-bottom: var(--sp-1); }
+        .dark-section__card p { font-size: var(--t-sm); opacity: .6; margin: 0; }
+
+        .pillar-cta { max-width: 800px; margin: 0 auto; padding: var(--sp-10) 60px var(--sp-15); }
+        .pillar-cta__box { background: linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)) padding-box, linear-gradient(90deg, var(--orange), var(--periwinkle), var(--teal)) border-box; border: 1.5px solid transparent; border-radius: var(--r-lg); padding: var(--sp-8); text-align: center; }
+        .pillar-cta h2 { font-size: var(--t-xl); font-weight: 200; letter-spacing: -0.03em; margin-bottom: var(--sp-2); }
+        .pillar-cta p { font-size: var(--t-md); font-weight: 300; color: rgba(3,44,45,.6); margin-bottom: var(--sp-4); max-width: 520px; margin-left: auto; margin-right: auto; }
+        .pillar-cta__btn { display: inline-block; padding: 14px 32px; font-family: var(--mono); font-size: var(--t-sm); text-transform: uppercase; letter-spacing: .15em; background: var(--dark-teal); color: var(--cream); border-radius: var(--r-sm); transition: background .25s var(--ease); }
+        .pillar-cta__btn:hover { background: #054547; }
+
+        .site-footer { background: var(--dark-teal); color: var(--cream); padding: var(--sp-10) 60px var(--sp-6); }
+        .site-footer__inner { max-width: 1280px; margin: 0 auto; }
+        .site-footer__top { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--sp-8); padding-bottom: var(--sp-6); border-bottom: 1px solid rgba(250,255,239,.1); margin-bottom: var(--sp-4); }
+        .site-footer__brand { display: flex; align-items: center; gap: 10px; font-size: var(--t-md); font-weight: 600; margin-bottom: var(--sp-3); }
+        .site-footer__brand img { width: 32px; height: 32px; }
+        .site-footer__address { font-style: normal; font-size: var(--t-sm); font-weight: 300; line-height: 1.8; opacity: .6; }
+        .site-footer__links h4 { font-family: var(--mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: .12em; margin-bottom: var(--sp-3); opacity: .4; }
+        .site-footer__links a { display: block; font-size: var(--t-sm); font-weight: 300; line-height: 2.2; opacity: .6; transition: opacity .2s; }
+        .site-footer__links a:hover { opacity: 1; }
+        .site-footer__bottom { display: flex; justify-content: space-between; align-items: center; font-size: var(--t-xs); opacity: .4; }
+        .site-footer__social { display: flex; gap: var(--sp-3); }
+        .site-footer__social a { opacity: .6; transition: opacity .2s; }
+        .site-footer__social a:hover { opacity: 1; }
+
+        .glow { position: fixed; border-radius: 50%; pointer-events: none; z-index: -1; }
+        .glow--teal { top: -10%; right: -5%; width: 720px; height: 720px; background: radial-gradient(circle, rgba(15,122,153,.12) 0%, transparent 65%); }
+        .glow--peri { bottom: -15%; left: -8%; width: 560px; height: 560px; background: radial-gradient(circle, rgba(169,184,255,.1) 0%, transparent 65%); }
+        .glow--orange { top: 40%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(243,124,56,.06) 0%, transparent 65%); }
+
+        @media (max-width: 900px) {
+            .hdr__nav { display: none; } .hdr__hamburger { display: flex; }
+            .breadcrumb, .pillar-hero, .content, .pillar-cta { padding-left: 24px; padding-right: 24px; }
+            .dark-section { padding: var(--sp-8) 24px; }
+            .dark-section__grid { grid-template-columns: 1fr; }
+            .site-footer { padding: var(--sp-8) 24px var(--sp-4); }
+            .site-footer__top { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow glow--teal" aria-hidden="true"></div>
+    <div class="glow glow--peri" aria-hidden="true"></div>
+    <div class="glow glow--orange" aria-hidden="true"></div>
+
+    <header class="hdr" id="header">
+        <div class="hdr__inner">
+            <a href="../" class="hdr__logo">
+                <img src="../Ressources/images/logo_black1.svg" alt="Paioneers" width="32" height="32">
+                Paioneers
+            </a>
+            <nav class="hdr__nav">
+                <a href="../insights/" class="hdr__link">Insights</a>
+                <a href="../research/" class="hdr__link">Research</a>
+                <a href="../gtm-engineering/" class="hdr__link">GTM Engineering</a>
+                <a href="../#services" class="hdr__link">Services</a>
+                <a href="../#cta" class="hdr__cta">Book a Workshop</a>
+            </nav>
+            <button class="hdr__hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a><span>/</span>Signal-Based Targeting
+    </nav>
+
+    <section class="pillar-hero">
+        <div class="pillar-hero__kicker">Methodology</div>
+        <h1>Signal-based targeting: detect who is <em>breaking</em>, not who is browsing</h1>
+        <p class="pillar-hero__lead">Intent data tells you who is researching a topic. Signal intelligence tells you who is experiencing an operational trigger that makes a purchase decision urgent. The difference determines whether your pipeline converts or stalls.</p>
+        <div class="pillar-hero__meta">
+            <span>By <a href="../authors/niek-van-leeuwen/">Niek van Leeuwen</a></span>
+            <span>&middot;</span>
+            <span>12 min read</span>
+            <span>&middot;</span>
+            <span>Updated April 2026</span>
+        </div>
+    </section>
+
+    <article class="content">
+
+        <h2>What a signal is</h2>
+        <p>In the Paioneers framework, a signal is an externally observable event or metric that indicates a company has crossed a threshold where a specific problem has moved from optional to urgent. Not "they might need this." Rather: "they cannot avoid this."</p>
+        <p><strong>A signal has three properties:</strong> it is observable from outside the company, it has a threshold that distinguishes noise from urgency, and it connects to a commercial consequence that the prospect already feels.</p>
+        <p>A company posting a job for a mechatronic engineer is activity. That same company still posting the same role 9 months later — with LinkedIn headcount flat despite revenue growth — is a signal. The first is noise. The second tells you their NPI cycles are extending, their backlog is not converting, and their margin is compressing.</p>
+
+        <h2>Intent vs. signal: why the distinction matters</h2>
+        <p>The B2B industry has spent a decade investing in intent data platforms. The premise is sound: if a company is researching a topic, they might be in-market. The problem is precision.</p>
+        <p>Intent data tells you a company visited a page about "NIS2 compliance." Signal intelligence tells you that same company just received a compliance questionnaire from ASML, their largest customer, and they have no ISO 27001 certification, no security officer on LinkedIn, and their NIS2 threshold activates in Q2 2026.</p>
+        <p>One is informational interest. The other is a business-critical event with a deadline.</p>
+
+        <div class="operator-note">
+            <div class="operator-note__label">Operator note</div>
+            <p>We are not anti-intent. Intent data is a useful input layer. The mistake is treating it as the targeting layer. Intent tells you direction. Signals tell you urgency. You need both, but urgency converts.</p>
+        </div>
+
+        <h2>The four signal layers</h2>
+        <p>Paioneers organises signals into four layers, each operating at a different level of specificity. Together they form a complete detection model.</p>
+
+    </article>
+
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 60px;">
+        <div class="signal-box">
+            <div class="signal-box__label">Signal Architecture — 4 Layers</div>
+            <div class="signal-box__list">
+                <div class="signal-box__item">
+                    <div class="signal-box__dot signal-box__dot--industry"></div>
+                    <div class="signal-box__text"><strong>Industry signals</strong> — Regulatory changes, export controls, market structure shifts, technology disruption. These create the macro conditions where buying urgency emerges. NIS2 enforcement, Wet DBA wave, EU AI Act activation.</div>
+                </div>
+                <div class="signal-box__item">
+                    <div class="signal-box__dot signal-box__dot--account"></div>
+                    <div class="signal-box__text"><strong>Account signals</strong> — Company-specific events: hiring patterns, leadership changes, funding rounds, M&A activity, customer concentration shifts, compliance actions. Observable through LinkedIn, KvK filings, press releases, and consortium rosters.</div>
+                </div>
+                <div class="signal-box__item">
+                    <div class="signal-box__dot signal-box__dot--persona"></div>
+                    <div class="signal-box__text"><strong>Persona signals</strong> — Decision-maker movements: new CTO hire, interim CFO appointment, CISO role creation, founder age markers, advisory-firm engagement. These indicate internal readiness or urgency for change.</div>
+                </div>
+                <div class="signal-box__item">
+                    <div class="signal-box__dot signal-box__dot--lead"></div>
+                    <div class="signal-box__text"><strong>Lead signals</strong> — Direct engagement indicators: website visits, content downloads, email responses, event attendance. The traditional intent layer, valuable when combined with the three layers above.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <article class="content">
+
+        <h2>Existential Data Points: where signals become commercial</h2>
+        <p>An Existential Data Point (EDP) is a signal that has crossed the threshold from operational annoyance to balance-sheet event. It is the metric where "we should probably look into this" becomes "we cannot afford to wait."</p>
+        <p>From our research on the Dutch high-tech manufacturing sector, seven EDPs consistently separate healthy companies from those heading toward distress:</p>
+
+        <table class="threshold-table">
+            <thead>
+                <tr>
+                    <th>EDP</th>
+                    <th>Healthy</th>
+                    <th>Warning</th>
+                    <th>Existential</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Single-customer revenue share</td>
+                    <td class="healthy">&lt;25%</td>
+                    <td class="warning">25-40%</td>
+                    <td class="danger">&gt;40%</td>
+                </tr>
+                <tr>
+                    <td>Engineer time-to-fill</td>
+                    <td class="healthy">&lt;3 months</td>
+                    <td class="warning">3-6 months</td>
+                    <td class="danger">&gt;6 months</td>
+                </tr>
+                <tr>
+                    <td>Unquotable order-book %</td>
+                    <td class="healthy">&lt;10%</td>
+                    <td class="warning">10-20%</td>
+                    <td class="danger">&gt;20%</td>
+                </tr>
+                <tr>
+                    <td>Export-license exposure</td>
+                    <td class="healthy">&lt;8%</td>
+                    <td class="warning">8-15%</td>
+                    <td class="danger">&gt;15%</td>
+                </tr>
+                <tr>
+                    <td>Compliance-cascade count</td>
+                    <td class="healthy">0-1</td>
+                    <td class="warning">2-3</td>
+                    <td class="danger">4+</td>
+                </tr>
+                <tr>
+                    <td>AI-substitutable revenue %</td>
+                    <td class="healthy">&lt;15%</td>
+                    <td class="warning">15-30%</td>
+                    <td class="danger">&gt;30%</td>
+                </tr>
+                <tr>
+                    <td>Succession readiness</td>
+                    <td class="healthy">Successor + CFO</td>
+                    <td class="warning">Founder &gt;58</td>
+                    <td class="danger">Founder &gt;62, no plan</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>The thresholds are not arbitrary. They come from triangulating KvK filings, UWV labor data, ASML earnings transcripts, industry benchmarks from Link magazine and FME, and pattern analysis across hundreds of Dutch industrial SMEs.</p>
+
+        <div class="commercial-box">
+            <div class="commercial-box__label">What this means commercially</div>
+            <h3>Signals compress sales cycles</h3>
+            <p>When you reach a company experiencing an existential data point, the conversation is different. You are not creating awareness. You are not educating. You are offering a solution to a problem they already feel in their P&L.</p>
+            <p>In our research, companies above the existential threshold on 2+ EDPs have sales cycles 40-60% shorter than companies below all thresholds. The urgency is already there. The GTM system's job is to detect it and arrive first.</p>
+        </div>
+
+        <h2>Detection methods: where signals are visible</h2>
+        <p>Every EDP in the framework has a set of externally observable detection methods. The signals are public — the skill is in knowing where to look and how to combine them.</p>
+
+        <h3>Public data sources</h3>
+        <p><strong>KvK jaarrekeningen</strong> — Revenue concentration visible in customer disclosures. Late filings (&gt;12 months) are a distress signal. New auditor appointments indicate transaction preparation.</p>
+        <p><strong>LinkedIn patterns</strong> — Headcount trajectory vs. revenue growth. Job ad persistence (&gt;90 days). CISO/Security Officer/ESG Manager postings signal compliance urgency. Interim CFO appointments signal capital events.</p>
+        <p><strong>UWV labor data</strong> — Regional vacancy density, "zeer grote krapte" classifications, sector-specific time-to-fill benchmarks.</p>
+        <p><strong>Consortium and mission rosters</strong> — Brainport Industries Asia mission participants, PhotonDelta membership, GROW consortium, ChipTech Twente. These reveal strategic direction and peer-group positioning.</p>
+        <p><strong>Earnings transcripts</strong> — ASML, BESI, ASMI quarterly calls naming supplier constraints, booking drops, or geographic shifts that cascade to tier-2/3 suppliers.</p>
+
+    </article>
+
+    <!-- Dark section: examples -->
+    <section class="dark-section">
+        <div class="dark-section__inner">
+            <div class="dark-section__kicker">Signal Examples from Our Research</div>
+            <h2>Dutch market signals in practice</h2>
+            <p>These are not hypotheticals. They are detection patterns from our two flagship reports on Dutch manufacturing and IT/AI consultancy markets.</p>
+            <div class="dark-section__grid">
+                <div class="dark-section__card">
+                    <h3>ASML-captive tier-2</h3>
+                    <p>Customer logos dominating case studies + Brainport Asia mission attendance + flat LinkedIn headcount = concentration risk + capacity constraint. Sales cycle: capacity planning, MES/APS, diversification advisory.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>Succession-pain family SME</h3>
+                    <p>Founder age 62+ (KvK) + interim CFO posting + BDO/Grant Thornton advisory engagement + ERP &gt;15 years old. Sales cycle: data-room preparation, ERP modernisation, operational professionalization.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>PE-platform in year 2</h3>
+                    <p>Acquisition announcement 18-24 months ago + commercial excellence job posting + CRM migration RFP on TenderNed. Sales cycle: 100-day plan execution, GTM build, pre-exit data-room.</p>
+                </div>
+                <div class="dark-section__card">
+                    <h3>Consultancy facing Wet DBA</h3>
+                    <p>High detacheerder ratio visible in job mix + contractor-heavy project teams + no employment law specialist on LinkedIn. Sales cycle: contractor restructuring, margin protection, positioning advisory.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <article class="content">
+        <h2>How Paioneers operationalises signal-based targeting</h2>
+        <p>Research without a GTM application stays on the shelf. Every signal model we build connects to three operational outputs:</p>
+        <p><strong>A scored prospect list</strong> — ranked by signal density and urgency, updated continuously as new data comes in. Not a static spreadsheet. A living system.</p>
+        <p><strong>Timing intelligence</strong> — when to reach out based on the signal lifecycle. Some triggers (compliance deadlines) have fixed timing. Others (succession events) have variable timing but observable acceleration points.</p>
+        <p><strong>Entry-point messaging</strong> — what to say based on which EDP is active. A company hitting the customer-concentration threshold needs a different conversation than one hitting the compliance cascade. The signal determines the message.</p>
+    </article>
+
+    <section class="pillar-cta">
+        <div class="pillar-cta__box">
+            <h2>Want signal-based targeting for your market?</h2>
+            <p>We build detection models tailored to your vertical, your ICP, and the signals that matter in your specific market.</p>
+            <a href="../#cta" class="pillar-cta__btn">Book a Workshop</a>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__top">
+                <div>
+                    <div class="site-footer__brand">
+                        <img src="../Ressources/images/logo_white.png" alt="Paioneers" width="32" height="32">
+                        Paioneers
+                    </div>
+                    <address class="site-footer__address">
+                        Meander 877<br>1181WN Amstelveen, Netherlands<br><br>
+                        <a href="tel:+31646492246" style="color:var(--cream)">+31 (0) 646492246</a><br>
+                        <a href="mailto:info@paioneers.nl" style="color:var(--cream)">info@paioneers.nl</a>
+                    </address>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Explore</h4>
+                    <a href="../insights/">Insights</a>
+                    <a href="../research/">Research</a>
+                    <a href="../gtm-engineering/">GTM Engineering</a>
+                    <a href="../signal-based-targeting/">Signal-Based Targeting</a>
+                    <a href="../authors/niek-van-leeuwen/">About Niek</a>
+                </div>
+                <div class="site-footer__links">
+                    <h4>Company</h4>
+                    <a href="../#services">Services</a>
+                    <a href="../#approach">About</a>
+                    <a href="../#cta">Contact</a>
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+            </div>
+            <div class="site-footer__bottom">
+                <span>&copy; 2026 Paioneers BV. All Rights Reserved</span>
+                <div class="site-footer__social">
+                    <a href="https://www.linkedin.com/company/paioneers/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:info@paioneers.nl">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            const hdr = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                hdr.classList.toggle('scrolled', window.pageYOffset > 40);
+            }, { passive: true });
+        })();
+    </script>
+
+</body>
+</html>
