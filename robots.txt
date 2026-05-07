@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://paioneers.nl/sitemap.xml
