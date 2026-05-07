@@ -288,71 +288,136 @@
             position: relative; z-index: 1;
         }
 
-        /* ─── Featured EDP Visual ─── */
+        /* ─── Featured EDP Visual (redesigned) ─── */
         .featured-edp-visual {
             position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; flex-direction: column;
+            padding: 20px 22px 18px;
             overflow: hidden;
+            gap: 0;
+        }
+        /* Ambient glow layers */
+        .featured-edp-visual::after {
+            content: '';
+            position: absolute; inset: 0; pointer-events: none;
+            background:
+                radial-gradient(ellipse 60% 50% at 20% 80%, rgba(15,122,153,.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 20%, rgba(169,184,255,.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 30% at 50% 50%, rgba(243,124,56,.06) 0%, transparent 70%);
+        }
+        /* Header row */
+        .fedp-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px; position: relative; z-index: 2;
         }
         .fedp-badge {
-            position: absolute; top: 16px; left: 16px;
-            font-family: var(--mono); font-size: 9px;
-            text-transform: uppercase; letter-spacing: .14em;
-            color: rgba(250,255,239,.45);
-            z-index: 4;
+            font-family: var(--mono); font-size: 8.5px;
+            text-transform: uppercase; letter-spacing: .16em;
+            color: rgba(250,255,239,.35);
         }
+        .fedp-live {
+            display: flex; align-items: center; gap: 5px;
+            font-family: var(--mono); font-size: 8px;
+            letter-spacing: .1em; color: rgba(250,255,239,.3);
+        }
+        .fedp-live__dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 6px rgba(74,222,128,.7);
+            animation: fedp-pulse 2s ease-in-out infinite;
+        }
+        @keyframes fedp-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .4; transform: scale(.75); }
+        }
+        /* Main body: center + grid */
+        .fedp-body {
+            display: flex; align-items: center; gap: 16px;
+            flex: 1; position: relative; z-index: 2;
+        }
+        /* Center hero */
         .fedp-center {
-            position: absolute; left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center; z-index: 3;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; flex-shrink: 0;
+            width: 90px;
         }
         .fedp-center__number {
-            font-size: clamp(48px, 7vw, 72px); font-weight: 200;
+            font-size: clamp(52px, 5.5vw, 70px); font-weight: 200;
             line-height: 1;
-            background: linear-gradient(135deg, #0F7A99 0%, #A9B8FF 50%, #F37C38 100%);
+            background: linear-gradient(145deg, #0F7A99 0%, #A9B8FF 55%, #F37C38 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
+            background-clip: text; letter-spacing: -.03em;
         }
         .fedp-center__label {
-            font-family: var(--mono); font-size: 9px;
-            text-transform: uppercase; letter-spacing: .14em;
-            color: rgba(250,255,239,.35);
-            margin-top: 4px; line-height: 1.5;
+            font-family: var(--mono); font-size: 7.5px;
+            text-transform: uppercase; letter-spacing: .16em;
+            color: rgba(250,255,239,.28);
+            margin-top: 5px; line-height: 1.6; text-align: center;
         }
+        .fedp-center__divider {
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(250,255,239,.08), transparent);
+            flex-shrink: 0; align-self: stretch; margin: 0 4px;
+        }
+        /* Points grid */
         .fedp-points {
-            position: absolute; inset: 0; z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px 14px;
+            flex: 1;
         }
         .fedp-point {
-            position: absolute;
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: flex-start; gap: 7px;
+            padding: 7px 9px;
+            background: rgba(250,255,239,.04);
+            border: 1px solid rgba(250,255,239,.06);
+            border-radius: 5px;
+            transition: background .2s, border-color .2s;
+            position: relative; overflow: hidden;
+        }
+        .fedp-point::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            opacity: 0; transition: opacity .2s;
+        }
+        .fedp-point--1::before { background: var(--s1); }
+        .fedp-point--2::before { background: var(--s2); }
+        .fedp-point--3::before { background: var(--s3); }
+        .fedp-point--4::before { background: var(--s4); }
+        .fedp-point--5::before { background: var(--s5); }
+        .fedp-point--6::before { background: var(--s6); }
+        .fedp-point--7::before { background: var(--s7); }
+        .article-card--featured:hover .fedp-point::before { opacity: 1; }
+        .article-card--featured:hover .fedp-point {
+            background: rgba(250,255,239,.06);
+            border-color: rgba(250,255,239,.1);
         }
         .fedp-point__index {
-            font-family: var(--mono); font-size: 8px;
-            letter-spacing: .08em; opacity: .4;
-            color: var(--cream);
+            font-family: var(--mono); font-size: 7.5px;
+            letter-spacing: .06em; color: rgba(250,255,239,.25);
+            line-height: 1.3; flex-shrink: 0; padding-top: 1px;
         }
         .fedp-point__text {
-            font-size: 10px; font-weight: 300;
-            color: rgba(250,255,239,.7);
-            white-space: nowrap;
+            font-size: 10.5px; font-weight: 300; line-height: 1.3;
+            color: rgba(250,255,239,.72); letter-spacing: .01em;
         }
-        /* Position each point */
-        .fedp-point--1 { top: 12%;  left: 6%; }
-        .fedp-point--2 { top: 28%;  right: 6%; }
-        .fedp-point--3 { top: 48%;  left: 4%; }
-        .fedp-point--4 { bottom: 30%; right: 6%; }
-        .fedp-point--5 { bottom: 14%; left: 6%; }
-        .fedp-point--6 { top: 68%;  right: 8%; }
-        .fedp-point--7 { bottom: 10%; right: 10%; }
-
-        /* Decorative rings */
-        .fedp-ring {
-            position: absolute; border-radius: 50%;
-            border: 1px solid rgba(250,255,239,.04);
-            pointer-events: none; z-index: 1;
+        /* 7th point spans full width */
+        .fedp-point--7 {
+            grid-column: 1 / -1;
         }
-        .fedp-ring--1 { width: 140px; height: 140px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
-        .fedp-ring--2 { width: 220px; height: 220px; left: 50%; top: 50%; transform: translate(-50%,-50%); }
+        /* Decorative scan line */
+        .fedp-scanline {
+            position: absolute; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(15,122,153,.4), rgba(169,184,255,.3), transparent);
+            animation: fedp-scan 4s linear infinite;
+            z-index: 1; pointer-events: none;
+        }
+        @keyframes fedp-scan {
+            0%   { top: 0%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
 
         /* ─── CTA strip ─── */
         .cta-strip {
@@ -530,47 +595,53 @@
             </div>
             <div class="article-card--featured-visual">
                 <div class="featured-edp-visual" aria-hidden="true">
-                    <!-- Flagship badge -->
-                    <div class="fedp-badge">Flagship Research</div>
-                    <!-- Central label -->
-                    <div class="fedp-center">
-                        <div class="fedp-center__number">7</div>
-                        <div class="fedp-center__label">Existential<br>Data Points</div>
-                    </div>
-                    <!-- Data point pills arranged in a radial-like layout -->
-                    <div class="fedp-points">
-                        <div class="fedp-point fedp-point--1">
-                            <span class="fedp-point__index">01</span>
-                            <span class="fedp-point__text">Customer concentration</span>
-                        </div>
-                        <div class="fedp-point fedp-point--2">
-                            <span class="fedp-point__index">02</span>
-                            <span class="fedp-point__text">Engineer fill time</span>
-                        </div>
-                        <div class="fedp-point fedp-point--3">
-                            <span class="fedp-point__index">03</span>
-                            <span class="fedp-point__text">Order book visibility</span>
-                        </div>
-                        <div class="fedp-point fedp-point--4">
-                            <span class="fedp-point__index">04</span>
-                            <span class="fedp-point__text">NIS2 exposure</span>
-                        </div>
-                        <div class="fedp-point fedp-point--5">
-                            <span class="fedp-point__index">05</span>
-                            <span class="fedp-point__text">PE ownership signals</span>
-                        </div>
-                        <div class="fedp-point fedp-point--6">
-                            <span class="fedp-point__index">06</span>
-                            <span class="fedp-point__text">Succession trigger</span>
-                        </div>
-                        <div class="fedp-point fedp-point--7">
-                            <span class="fedp-point__index">07</span>
-                            <span class="fedp-point__text">Margin under compression</span>
+                    <div class="fedp-scanline"></div>
+                    <!-- Header -->
+                    <div class="fedp-header">
+                        <div class="fedp-badge">Flagship Research · Dutch HTSM</div>
+                        <div class="fedp-live">
+                            <div class="fedp-live__dot"></div>
+                            Live signals
                         </div>
                     </div>
-                    <!-- Decorative rings -->
-                    <div class="fedp-ring fedp-ring--1"></div>
-                    <div class="fedp-ring fedp-ring--2"></div>
+                    <!-- Body: center stat + point grid -->
+                    <div class="fedp-body">
+                        <div class="fedp-center">
+                            <div class="fedp-center__number">7</div>
+                            <div class="fedp-center__label">Existential<br>Data Points</div>
+                        </div>
+                        <div class="fedp-center__divider"></div>
+                        <div class="fedp-points">
+                            <div class="fedp-point fedp-point--1">
+                                <span class="fedp-point__index">01</span>
+                                <span class="fedp-point__text">Customer concentration</span>
+                            </div>
+                            <div class="fedp-point fedp-point--2">
+                                <span class="fedp-point__index">02</span>
+                                <span class="fedp-point__text">Engineer fill time</span>
+                            </div>
+                            <div class="fedp-point fedp-point--3">
+                                <span class="fedp-point__index">03</span>
+                                <span class="fedp-point__text">Order book visibility</span>
+                            </div>
+                            <div class="fedp-point fedp-point--4">
+                                <span class="fedp-point__index">04</span>
+                                <span class="fedp-point__text">NIS2 exposure</span>
+                            </div>
+                            <div class="fedp-point fedp-point--5">
+                                <span class="fedp-point__index">05</span>
+                                <span class="fedp-point__text">PE ownership signals</span>
+                            </div>
+                            <div class="fedp-point fedp-point--6">
+                                <span class="fedp-point__index">06</span>
+                                <span class="fedp-point__text">Succession trigger</span>
+                            </div>
+                            <div class="fedp-point fedp-point--7">
+                                <span class="fedp-point__index">07</span>
+                                <span class="fedp-point__text">Margin under compression</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </a>
@@ -606,7 +677,7 @@
         </a>
 
         <!-- Card: GTM engineering -->
-        <article class="article-card" data-category="category">
+        <a href="../gtm-engineering/" class="article-card" data-category="category" style="text-decoration:none;color:inherit;">
             <div class="article-card__tag article-card__tag--category">Category</div>
             <h3 class="article-card__title">What GTM engineering actually means in practice</h3>
             <p class="article-card__excerpt">Not RevOps. Not sales ops. Not another outbound agency. GTM engineering is the systems layer that connects data, workflow, tooling, and execution into a single commercial engine.</p>
@@ -618,7 +689,7 @@
                 <span class="article-card__dot">&middot;</span>
                 <span>7 min read</span>
             </div>
-        </article>
+        </a>
 
         <!-- Card: Wet DBA -->
         <a href="../insights/wet-dba-gtm-problem/" class="article-card" data-category="consultancy" style="text-decoration:none;color:inherit;">

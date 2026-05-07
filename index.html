@@ -3,43 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paioneers - AI-Powered Revenue Systems for Sales Teams</title>
-    <meta name="description" content="Paioneers builds GTM engineering systems — signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies in the Dutch and Benelux market.">
+    <title>Paioneers — GTM Engineering & Revenue Systems for B2B in NL/Benelux</title>
+    <meta name="description" content="Paioneers builds GTM engineering systems — signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies in the Netherlands and Benelux.">
     <link rel="canonical" href="https://paioneers.nl/">
+
+    <!-- Geo / locale -->
+    <meta name="geo.region" content="NL-NH">
+    <meta name="geo.placename" content="Amstelveen, Noord-Holland, Netherlands">
+    <meta name="geo.position" content="52.3008;4.8639">
+    <meta name="ICBM" content="52.3008, 4.8639">
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Paioneers — GTM Engineering Systems for Revenue Growth">
-    <meta property="og:description" content="Signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies.">
+    <meta property="og:description" content="Signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies in the Netherlands and Benelux.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://paioneers.nl/">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://cdn.jsdelivr.net https://cdn.prod.website-files.com; media-src 'self'; connect-src 'self' https://api.emailjs.com;">
+    <meta property="og:site_name" content="Paioneers">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="nl_NL">
+    <meta property="og:image" content="https://paioneers.nl/Ressources/images/logo_white.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Paioneers — GTM Engineering Systems for Revenue Growth">
+    <meta name="twitter:description" content="Signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies.">
+    <meta name="twitter:image" content="https://paioneers.nl/Ressources/images/logo_white.png">
+
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Paioneers",
-        "url": "https://paioneers.nl",
-        "description": "GTM engineering systems — signal-based targeting, research-led prospecting, and AI-powered revenue infrastructure for B2B companies.",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Meander 877",
-            "addressLocality": "Amstelveen",
-            "postalCode": "1181WN",
-            "addressCountry": "NL"
-        },
-        "telephone": "+31646492246",
-        "email": "info@paioneers.nl",
-        "sameAs": ["https://www.linkedin.com/company/paioneers/"],
-        "founder": {
-            "@type": "Person",
-            "name": "Niek van Leeuwen",
-            "jobTitle": "GTM Engineer",
-            "sameAs": "https://linkedin.com/in/niek-vanleeuwen"
-        },
-        "knowsAbout": ["GTM Engineering", "Signal-Based Targeting", "Revenue Systems", "B2B Sales Automation", "Market Intelligence", "Dutch Manufacturing", "Benelux B2B"]
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://paioneers.nl/#organization",
+                "name": "Paioneers",
+                "legalName": "Paioneers BV",
+                "url": "https://paioneers.nl/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://paioneers.nl/Ressources/images/logoblack.png"
+                },
+                "image": "https://paioneers.nl/Ressources/images/logo_white.png",
+                "description": "AI-powered GTM engineering consultancy. Signal-based targeting, research-led prospecting, and revenue system design for B2B companies in the Netherlands and Benelux.",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Meander 877",
+                    "addressLocality": "Amstelveen",
+                    "addressRegion": "Noord-Holland",
+                    "postalCode": "1181WN",
+                    "addressCountry": "NL"
+                },
+                "telephone": "+31646492246",
+                "email": "info@paioneers.nl",
+                "sameAs": ["https://www.linkedin.com/company/paioneers/"],
+                "founder": [
+                    {
+                        "@type": "Person",
+                        "name": "Bart Beentjes",
+                        "jobTitle": "Co-founder, Sales",
+                        "sameAs": "https://www.linkedin.com/in/bartbeentjes/"
+                    },
+                    {
+                        "@type": "Person",
+                        "name": "Dimitri Skarlatopoulos",
+                        "jobTitle": "Co-founder, RevOps",
+                        "sameAs": "https://www.linkedin.com/in/dimitri-skarlatopoulos/"
+                    },
+                    {
+                        "@type": "Person",
+                        "name": "Niek van Leeuwen",
+                        "jobTitle": "Co-founder, GTM Engineer",
+                        "sameAs": "https://linkedin.com/in/niek-vanleeuwen"
+                    }
+                ],
+                "areaServed": [
+                    { "@type": "Country", "name": "Netherlands" },
+                    { "@type": "Country", "name": "Belgium" },
+                    { "@type": "Country", "name": "Luxembourg" },
+                    { "@type": "Country", "name": "Germany" }
+                ],
+                "knowsAbout": ["GTM Engineering", "Signal-Based Targeting", "Revenue Systems", "B2B Sales Automation", "Market Intelligence", "Clay Enrichment", "Outbound Engineering", "RevOps", "Dutch Manufacturing", "Benelux B2B", "AI Consultancy"]
+            },
+            {
+                "@type": "ProfessionalService",
+                "@id": "https://paioneers.nl/#localbusiness",
+                "name": "Paioneers",
+                "url": "https://paioneers.nl/",
+                "telephone": "+31646492246",
+                "email": "info@paioneers.nl",
+                "image": "https://paioneers.nl/Ressources/images/logo_white.png",
+                "priceRange": "€€€",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Meander 877",
+                    "addressLocality": "Amstelveen",
+                    "addressRegion": "Noord-Holland",
+                    "postalCode": "1181WN",
+                    "addressCountry": "NL"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 52.3008,
+                    "longitude": 4.8639
+                },
+                "areaServed": [
+                    { "@type": "Country", "name": "Netherlands" },
+                    { "@type": "Country", "name": "Belgium" },
+                    { "@type": "Country", "name": "Luxembourg" }
+                ]
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://paioneers.nl/#website",
+                "url": "https://paioneers.nl/",
+                "name": "Paioneers",
+                "publisher": { "@id": "https://paioneers.nl/#organization" },
+                "inLanguage": "en"
+            }
+        ]
     }
     </script>
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <link rel="icon" type="image/png" href="Ressources/images/logoblack.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,6 +135,9 @@
     <link rel="preload" href="Ressources/videos/animation_header_slow.mp4" as="video" type="video/mp4">
 
     <style>
+        /* Accessibility utility */
+        .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
         /* ============================================
            CSS VARIABLES & RESET
            ============================================ */
@@ -1424,77 +1512,524 @@
 
         /* ── Signal Pyramid visual ── */
         .op-signal-pyramid {
+            --signal-active: #f37c38;
+            position: relative;
             width: 100%;
-            max-width: 420px;
+            max-width: 540px;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            padding: 48px 24px;
+            padding: 26px;
+            border-radius: 30px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 15% 18%, rgba(243, 124, 56, 0.18), transparent 28%),
+                radial-gradient(circle at 84% 12%, rgba(169, 184, 255, 0.26), transparent 28%),
+                radial-gradient(circle at 78% 82%, rgba(15, 122, 153, 0.24), transparent 32%),
+                linear-gradient(155deg, #041719 0%, #072f35 44%, #0a2346 100%);
+            border: 1px solid rgba(169, 184, 255, 0.16);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -40px 80px rgba(0, 0, 0, 0.14),
+                0 28px 90px rgba(3, 44, 45, 0.28);
         }
 
-        .op-signal-pyramid__tier {
+        .op-signal-pyramid::before,
+        .op-signal-pyramid::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .op-signal-pyramid::before {
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 100% 68px, 68px 100%;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 100%);
+            opacity: 0.26;
+        }
+
+        .op-signal-pyramid::after {
+            inset: 1px;
+            border-radius: 29px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 18%);
+        }
+
+        .op-signal-pyramid__header {
+            position: relative;
+            z-index: 2;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            justify-content: space-between;
             gap: 16px;
-            width: 100%;
+            margin-bottom: 16px;
         }
 
-        .op-signal-pyramid__bar {
-            height: 44px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .op-signal-pyramid__bar:hover {
-            transform: scale(1.03);
-        }
-
-        .op-signal-pyramid__tier:nth-child(1) .op-signal-pyramid__bar {
-            width: 28%;
-            background: linear-gradient(135deg, #0a3d4e, #0f5c6e);
-        }
-        .op-signal-pyramid__tier:nth-child(2) .op-signal-pyramid__bar {
-            width: 46%;
-            background: linear-gradient(135deg, #0f6e7a, #1a9ca8);
-        }
-        .op-signal-pyramid__tier:nth-child(3) .op-signal-pyramid__bar {
-            width: 68%;
-            background: linear-gradient(135deg, #3dadb8, #5bc4d0);
-        }
-        .op-signal-pyramid__tier:nth-child(4) .op-signal-pyramid__bar {
-            width: 90%;
-            background: linear-gradient(135deg, #4a8fe0, #5b9def);
-        }
-
-        .op-signal-pyramid__label {
+        .op-signal-pyramid__eyebrow {
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--color-dark-teal);
-            white-space: nowrap;
-        }
-
-        .op-signal-pyramid__sublabel {
-            font-size: 12px;
-            color: rgba(3, 44, 45, 0.5);
-            margin-top: 2px;
+            letter-spacing: 0.18em;
+            color: rgba(250, 255, 239, 0.48);
+            margin-bottom: 10px;
         }
 
         .op-signal-pyramid__title {
+            font-size: 25px;
+            font-weight: 300;
+            line-height: 1.04;
+            letter-spacing: -0.03em;
+            color: var(--color-cream);
+            margin: 0;
+            max-width: 240px;
+        }
+
+        .op-signal-pyramid__status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 9px;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--color-dark-teal);
-            opacity: 0.45;
-            margin-bottom: 20px;
+            color: rgba(250, 255, 239, 0.8);
+            white-space: nowrap;
+        }
+
+        .op-signal-pyramid__status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #5ef0a7;
+            box-shadow: 0 0 12px rgba(94, 240, 167, 0.9);
+            animation: op-pulse 2.5s ease-in-out infinite;
+        }
+
+        .op-signal-pyramid__scene {
+            position: relative;
+            z-index: 1;
+            height: 430px;
+            border-radius: 26px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at center, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015) 42%, rgba(0, 0, 0, 0.14) 100%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                inset 0 -28px 48px rgba(0, 0, 0, 0.12);
+        }
+
+        .op-signal-pyramid__scene::before {
+            content: "";
+            position: absolute;
+            inset: 14% 14%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(15, 122, 153, 0.14), transparent 68%);
+            filter: blur(14px);
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        .op-signal-pyramid__mesh {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .op-signal-pyramid__mesh-ring {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1;
+        }
+
+        .op-signal-pyramid__mesh-ring--outer {
+            stroke-dasharray: 4 10;
+            opacity: 0.55;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: op-signal-spin 34s linear infinite;
+        }
+
+        .op-signal-pyramid__mesh-ring--mid {
+            stroke: rgba(169, 184, 255, 0.18);
+            stroke-dasharray: 2 8;
+            opacity: 0.8;
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: op-signal-spin-reverse 24s linear infinite;
+        }
+
+        .op-signal-pyramid__mesh-ring--inner {
+            stroke: rgba(94, 240, 167, 0.16);
+            opacity: 0.9;
+        }
+
+        .op-signal-pyramid__mesh-line {
+            fill: none;
+            stroke-width: 1.4;
+            opacity: 0.72;
+        }
+
+        .op-signal-pyramid__mesh-point {
+            stroke: rgba(255, 255, 255, 0.65);
+            stroke-width: 1;
+        }
+
+        .op-signal-pyramid__mesh-point--industry { fill: #f37c38; }
+        .op-signal-pyramid__mesh-point--account { fill: #a9b8ff; }
+        .op-signal-pyramid__mesh-point--persona { fill: #4fc7d4; }
+        .op-signal-pyramid__mesh-point--lead { fill: #5b9def; }
+
+        .op-signal-pyramid__mesh-blip {
+            filter: drop-shadow(0 0 10px currentColor);
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: op-signal-blip 2.8s ease-in-out infinite;
+        }
+
+        .op-signal-pyramid__mesh-blip--1 { fill: #f37c38; color: #f37c38; animation-delay: -0.2s; }  /* Industry */
+        .op-signal-pyramid__mesh-blip--2 { fill: #4fc7d4; color: #4fc7d4; animation-delay: -1.4s; }  /* Persona  */
+        .op-signal-pyramid__mesh-blip--3 { fill: #a9b8ff; color: #a9b8ff; animation-delay: -2.2s; }  /* Account  */
+        .op-signal-pyramid__mesh-blip--4 { fill: #5b9def; color: #5b9def; animation-delay: -0.8s; }  /* Lead     */
+
+        .op-signal-pyramid__beam {
+            position: absolute;
+            inset: 13% 13%;
+            border-radius: 50%;
+            background: conic-gradient(from 140deg, transparent 0deg, color-mix(in srgb, var(--signal-active) 26%, transparent) 54deg, rgba(169, 184, 255, 0.22) 82deg, transparent 110deg);
+            mask-image: radial-gradient(circle at center, transparent 34%, #000 35%, #000 72%, transparent 73%);
+            -webkit-mask-image: radial-gradient(circle at center, transparent 34%, #000 35%, #000 72%, transparent 73%);
+            opacity: 0.8;
+            animation: op-signal-spin 12s linear infinite;
+            pointer-events: none;
+        }
+
+        .op-signal-pyramid__core {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 164px;
+            height: 164px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 30%, rgba(250, 255, 239, 0.24), rgba(250, 255, 239, 0.05) 24%, transparent 25%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)),
+                rgba(3, 44, 45, 0.48);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -18px 28px rgba(0, 0, 0, 0.12),
+                0 0 0 18px rgba(255, 255, 255, 0.02),
+                0 0 42px rgba(15, 122, 153, 0.22);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            z-index: 2;
+        }
+
+        .op-signal-pyramid__core::before {
+            content: "";
+            position: absolute;
+            inset: -18px;
+            border-radius: 50%;
+            border: 1px solid color-mix(in srgb, var(--signal-active) 18%, rgba(255, 255, 255, 0.04));
+            animation: op-core-pulse 3.6s ease-in-out infinite;
+        }
+
+        .op-signal-pyramid__core-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.48);
+            margin-bottom: 8px;
+        }
+
+        .op-signal-pyramid__core-value {
+            font-size: 42px;
+            line-height: 0.92;
+            font-weight: 300;
+            letter-spacing: -0.04em;
+            color: var(--color-cream);
+            margin-bottom: 8px;
+        }
+
+        .op-signal-pyramid__core-copy {
+            max-width: 110px;
+            font-size: 12px;
+            line-height: 1.35;
+            color: rgba(250, 255, 239, 0.58);
+        }
+
+        .op-signal-pyramid__marker {
+            --marker-accent: #f37c38;
+            position: absolute;
+            z-index: 3;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 10px 24px rgba(0, 0, 0, 0.14);
+            color: rgba(250, 255, 239, 0.72);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease, color 0.28s ease;
+            cursor: pointer;
+            animation: op-signal-float 7s ease-in-out infinite;
+            animation-delay: var(--float-delay, 0s);
+        }
+
+        .op-signal-pyramid__marker:hover,
+        .op-signal-pyramid__marker:focus-visible {
+            color: var(--color-cream);
+            border-color: color-mix(in srgb, var(--marker-accent) 20%, rgba(255, 255, 255, 0.08));
+            background: color-mix(in srgb, var(--marker-accent) 7%, rgba(255, 255, 255, 0.03));
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 6px 16px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .op-signal-pyramid__marker.is-active {
+            color: var(--color-cream);
+            border-color: color-mix(in srgb, var(--marker-accent) 34%, rgba(255, 255, 255, 0.08));
+            background: color-mix(in srgb, var(--marker-accent) 14%, rgba(255, 255, 255, 0.06));
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.07),
+                0 14px 28px rgba(0, 0, 0, 0.18),
+                0 0 0 1px color-mix(in srgb, var(--marker-accent) 22%, transparent);
+            transform: translateY(-3px);
+        }
+
+        .op-signal-pyramid__marker-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--marker-accent);
+            box-shadow: 0 0 14px color-mix(in srgb, var(--marker-accent) 72%, transparent);
+            flex-shrink: 0;
+        }
+
+        .op-signal-pyramid__marker-label {
+            white-space: nowrap;
+        }
+
+        .op-signal-pyramid__marker--industry {
+            top: 40px;
+            left: 34px;
+            --marker-accent: #f37c38;
+            --float-delay: -0.4s;
+        }
+
+        .op-signal-pyramid__marker--persona {
+            top: 70px;
+            right: 32px;
+            --marker-accent: #4fc7d4;
+            --float-delay: -2.2s;
+        }
+
+        .op-signal-pyramid__marker--account {
+            left: 42px;
+            bottom: 142px;
+            --marker-accent: #a9b8ff;
+            --float-delay: -1.4s;
+        }
+
+        .op-signal-pyramid__marker--lead {
+            right: 46px;
+            bottom: 132px;
+            --marker-accent: #5b9def;
+            --float-delay: -3s;
+        }
+
+        .op-signal-pyramid__detail {
+            position: absolute;
+            z-index: 3;
+            width: min(100%, 356px);
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%) translateY(6px);
+            padding: 16px 16px 14px;
+            border-radius: 20px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+                color-mix(in srgb, var(--signal-active) 10%, rgba(255, 255, 255, 0.04));
+            border: 1px solid color-mix(in srgb, var(--signal-active) 18%, rgba(255, 255, 255, 0.08));
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.07),
+                0 18px 40px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.24s ease, visibility 0.24s ease, transform 0.24s ease, border-color 0.28s ease, background 0.28s ease;
+        }
+
+        .op-signal-pyramid.has-detail .op-signal-pyramid__detail {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .op-signal-pyramid__detail::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 16px;
+            right: 16px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--signal-active), transparent);
+            opacity: 0.9;
+        }
+
+        .op-signal-pyramid__detail-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .op-signal-pyramid__detail-kicker {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.42);
+        }
+
+        .op-signal-pyramid__detail-hint {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.34);
+        }
+
+        .op-signal-pyramid__detail-title {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-cream);
+            margin-bottom: 6px;
+        }
+
+        .op-signal-pyramid__detail-copy {
+            font-size: 12px;
+            line-height: 1.45;
+            color: rgba(250, 255, 239, 0.58);
+            min-height: 52px;
+        }
+
+        .op-signal-pyramid__detail-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .op-signal-pyramid__detail-pill,
+        .op-signal-pyramid__detail-signal {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .op-signal-pyramid__detail-pill {
+            padding: 4px 7px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(250, 255, 239, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .op-signal-pyramid__detail-signal {
+            color: var(--signal-active);
+        }
+
+        .op-signal-pyramid__footer {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .op-signal-pyramid__stat {
+            padding: 11px 12px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .op-signal-pyramid__stat-value {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            color: var(--color-cream);
+            margin-bottom: 6px;
+        }
+
+        .op-signal-pyramid__stat-label {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(250, 255, 239, 0.44);
+        }
+
+        @keyframes op-signal-spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes op-signal-spin-reverse {
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes op-core-pulse {
+            0%, 100% { transform: scale(0.96); opacity: 0.5; }
+            50% { transform: scale(1.04); opacity: 0.95; }
+        }
+
+        @keyframes op-signal-float {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            50% { transform: translate3d(0, -8px, 0); }
+        }
+
+        @keyframes op-signal-blip {
+            0%, 100% { opacity: 0.35; transform: scale(0.8); }
+            45% { opacity: 1; transform: scale(1.12); }
         }
 
         /* ── Video column ── */
@@ -1606,6 +2141,16 @@
                 transition-delay: 0s !important;
                 transform: none !important;
                 opacity: 1 !important;
+            }
+
+            .op-signal-pyramid__status-dot,
+            .op-signal-pyramid__beam,
+            .op-signal-pyramid__mesh-ring--outer,
+            .op-signal-pyramid__mesh-ring--mid,
+            .op-signal-pyramid__mesh-blip,
+            .op-signal-pyramid__core::before,
+            .op-signal-pyramid__marker {
+                animation: none !important;
             }
         }
 
@@ -2301,7 +2846,7 @@
         /* Visual area (top mock UI) */
         .op-approach__card-visual {
             position: relative;
-            height: 200px;
+            height: 220px;
             overflow: hidden;
             background: rgba(0, 0, 0, 0.35);
             border-bottom: 1px solid rgba(169, 184, 255, 0.08);
@@ -2322,7 +2867,10 @@
 
         .op-approach__card-visual-inner {
             position: absolute;
-            inset: 0;
+            top: 44px;
+            right: 0;
+            bottom: 0;
+            left: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2332,17 +2880,18 @@
         /* Step number badge */
         .op-approach__card-step {
             position: absolute;
-            top: 16px;
+            top: 14px;
             left: 16px;
             z-index: 3;
             font-family: var(--font-mono);
             font-size: 10px;
+            line-height: 1;
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--color-periwinkle);
             opacity: 0.7;
-            background: rgba(3, 44, 45, 0.8);
-            padding: 4px 8px;
+            background: rgba(3, 44, 45, 0.92);
+            padding: 5px 8px;
             border: 1px solid rgba(169, 184, 255, 0.15);
         }
 
@@ -2406,7 +2955,7 @@
         /* Step 1: Diagnose — bottleneck audit bars */
         .op-approach__mock-audit {
             width: 100%;
-            padding: 20px 24px;
+            padding: 16px 24px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -2481,7 +3030,7 @@
         /* Step 2: Install — live signal feed */
         .op-approach__mock-feed {
             width: 100%;
-            padding: 52px 20px 16px;
+            padding: 12px 20px 16px;
             display: flex;
             flex-direction: column;
             gap: 7px;
@@ -2544,7 +3093,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 44px 16px 16px;
+            padding: 12px 16px 16px;
         }
 
         .op-approach__mock-flow-svg {
@@ -2556,7 +3105,7 @@
         /* Step 4: Compound — chart */
         .op-approach__mock-chart {
             width: 100%;
-            padding: 48px 20px 20px;
+            padding: 12px 20px 20px;
             display: flex;
             flex-direction: column;
             gap: 6px;
@@ -3784,6 +4333,49 @@
             .op-services__item:nth-child(even) { direction: ltr; }
             .op-services__video-frame { max-width: 100%; }
             .op-services__header { padding-top: 56px; }
+            .op-signal-pyramid { padding: 22px 18px; border-radius: 24px; }
+            .op-signal-pyramid__header { flex-direction: column; align-items: flex-start; }
+            .op-signal-pyramid__title { font-size: 21px; }
+            .op-signal-pyramid__scene {
+                height: auto;
+                padding: 18px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .op-signal-pyramid__mesh,
+            .op-signal-pyramid__beam { display: none; }
+            .op-signal-pyramid__core {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                width: 144px;
+                height: 144px;
+                grid-column: 1 / -1;
+                margin: 0 auto 6px;
+            }
+            .op-signal-pyramid__marker {
+                position: relative;
+                inset: auto !important;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .op-signal-pyramid__detail {
+                position: relative;
+                left: auto;
+                bottom: auto;
+                transform: translateY(6px);
+                top: auto;
+                width: 100%;
+                grid-column: 1 / -1;
+                margin-top: 4px;
+            }
+            .op-signal-pyramid.has-detail .op-signal-pyramid__detail {
+                transform: translateY(0);
+            }
+            .op-signal-pyramid__detail-copy { min-height: 0; }
+            .op-signal-pyramid__footer { grid-template-columns: 1fr; }
 
             .op-approach__intro-inner { padding: 0 24px; }
             .op-approach__origin-inner { padding: 0 24px; grid-template-columns: 1fr; gap: 48px; }
@@ -5037,7 +5629,7 @@
                             <div class="op-sov__flip-inner">
                                 <div class="op-sov__flip-front op-sov__feature-media">
                                     <div class="op-sov__visual">
-                                        <img class="op-sov__visual-img" src="Ressources/example_pics/content_engine.png" alt="Content Engine workflow diagram" loading="lazy" decoding="async">
+                                        <img class="op-sov__visual-img" src="Ressources/example_pics/content_engine.webp" alt="Content Engine workflow diagram" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                                 <div class="op-sov__flip-back">
@@ -5070,7 +5662,7 @@
                             <div class="op-sov__flip-inner">
                                 <div class="op-sov__flip-front op-sov__feature-media">
                                     <div class="op-sov__visual">
-                                        <img class="op-sov__visual-img" src="Ressources/example_pics/automated_outbound_new.png" alt="Automated Outbound workflow diagram" loading="lazy" decoding="async">
+                                        <img class="op-sov__visual-img" src="Ressources/example_pics/automated_outbound_new.webp" alt="Automated Outbound workflow diagram" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                                 <div class="op-sov__flip-back">
@@ -5112,7 +5704,7 @@
                                     <div class="op-sov__flip-inner">
                                         <div class="op-sov__flip-front op-sov__subfeature-media">
                                             <div class="op-sov__visual op-sov__visual--sub">
-                                                <img class="op-sov__visual-img op-sov__visual-img--tam" src="Ressources/example_pics/tam_new.png" alt="TAM Sourcing workflow diagram" loading="lazy" decoding="async">
+                                                <img class="op-sov__visual-img op-sov__visual-img--tam" src="Ressources/example_pics/tam_new.webp" alt="TAM Sourcing workflow diagram" loading="lazy" decoding="async">
                                             </div>
                                         </div>
                                         <div class="op-sov__flip-back">
@@ -5137,7 +5729,7 @@
                                     <div class="op-sov__flip-inner">
                                         <div class="op-sov__flip-front op-sov__subfeature-media">
                                             <div class="op-sov__visual op-sov__visual--sub">
-                                                <img class="op-sov__visual-img op-sov__visual-img--crm" src="Ressources/example_pics/crm_new.png" alt="CRM workflow diagram" loading="lazy" decoding="async">
+                                                <img class="op-sov__visual-img op-sov__visual-img--crm" src="Ressources/example_pics/crm_new.webp" alt="CRM workflow diagram" loading="lazy" decoding="async">
                                             </div>
                                         </div>
                                         <div class="op-sov__flip-back">
@@ -5162,7 +5754,7 @@
                                     <div class="op-sov__flip-inner">
                                         <div class="op-sov__flip-front op-sov__subfeature-media">
                                             <div class="op-sov__visual op-sov__visual--sub">
-                                                <img class="op-sov__visual-img op-sov__visual-img--inbound" src="Ressources/example_pics/Inbound_orchestration_new.png" alt="Inbound Orchestration workflow diagram" loading="lazy" decoding="async">
+                                                <img class="op-sov__visual-img op-sov__visual-img--inbound" src="Ressources/example_pics/Inbound_orchestration_new.webp" alt="Inbound Orchestration workflow diagram" loading="lazy" decoding="async">
                                             </div>
                                         </div>
                                         <div class="op-sov__flip-back">
@@ -5216,7 +5808,7 @@
                 <div class="op-services__video-col">
                     <div class="op-services__video-frame">
                         <video class="op-services__video" loop muted playsinline preload="metadata">
-                            <source src="Ressources/videos/Clay - Clay Web - Simple animation 3 - R1.mp4" type="video/mp4">
+                            <source src="Ressources/videos/clay_animation.mp4" type="video/mp4">
                         </video>
                         <div class="op-services__video-glow"></div>
                     </div>
@@ -5258,34 +5850,118 @@
                     </div>
                 </div>
                 <div class="op-services__video-col">
-                    <div class="op-signal-pyramid">
-                        <div class="op-signal-pyramid__title">4 Layers of Intelligence</div>
-                        <div class="op-signal-pyramid__tier">
-                            <div class="op-signal-pyramid__bar"></div>
+                    <div class="op-signal-pyramid" aria-label="Signal Intelligence layered monitoring visualization">
+                        <div class="op-signal-pyramid__header">
                             <div>
-                                <div class="op-signal-pyramid__label">Lead</div>
-                                <div class="op-signal-pyramid__sublabel">Individual triggers</div>
+                                <div class="op-signal-pyramid__eyebrow">Signal Intelligence Stack</div>
+                                <div class="op-signal-pyramid__title">A live market radar for your ICP.</div>
+                            </div>
+                            <div class="op-signal-pyramid__status">
+                                <span class="op-signal-pyramid__status-dot" aria-hidden="true"></span>
+                                Live ICP Monitor
                             </div>
                         </div>
-                        <div class="op-signal-pyramid__tier">
-                            <div class="op-signal-pyramid__bar"></div>
-                            <div>
-                                <div class="op-signal-pyramid__label">Persona</div>
-                                <div class="op-signal-pyramid__sublabel">Buyer movements</div>
+
+                        <div class="op-signal-pyramid__scene">
+                            <svg class="op-signal-pyramid__mesh" viewBox="0 0 520 430" fill="none" aria-hidden="true">
+                                <defs>
+                                    <!-- Per-line gradients: each fades from center-color out to marker accent -->
+                                    <linearGradient id="sigLineIndustry" x1="260" y1="215" x2="50" y2="53" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stop-color="#F37C38" stop-opacity="0.18"/>
+                                        <stop offset="1" stop-color="#F37C38" stop-opacity="0.72"/>
+                                    </linearGradient>
+                                    <linearGradient id="sigLinePersona" x1="260" y1="215" x2="410" y2="83" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stop-color="#4FC7D4" stop-opacity="0.18"/>
+                                        <stop offset="1" stop-color="#4FC7D4" stop-opacity="0.72"/>
+                                    </linearGradient>
+                                    <linearGradient id="sigLineAccount" x1="260" y1="215" x2="58" y2="275" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stop-color="#A9B8FF" stop-opacity="0.18"/>
+                                        <stop offset="1" stop-color="#A9B8FF" stop-opacity="0.72"/>
+                                    </linearGradient>
+                                    <linearGradient id="sigLineLead" x1="260" y1="215" x2="418" y2="285" gradientUnits="userSpaceOnUse">
+                                        <stop offset="0" stop-color="#5B9DEF" stop-opacity="0.18"/>
+                                        <stop offset="1" stop-color="#5B9DEF" stop-opacity="0.72"/>
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Rings -->
+                                <circle class="op-signal-pyramid__mesh-ring op-signal-pyramid__mesh-ring--outer" cx="260" cy="215" r="150"/>
+                                <circle class="op-signal-pyramid__mesh-ring op-signal-pyramid__mesh-ring--mid" cx="260" cy="215" r="108"/>
+                                <circle class="op-signal-pyramid__mesh-ring op-signal-pyramid__mesh-ring--inner" cx="260" cy="215" r="70"/>
+
+                                <!-- Connection lines: center (260,215) → each marker's colored dot center -->
+                                <path class="op-signal-pyramid__mesh-line" stroke="url(#sigLineIndustry)" d="M260 215 L50 53"/>
+                                <path class="op-signal-pyramid__mesh-line" stroke="url(#sigLinePersona)"  d="M260 215 L410 83"/>
+                                <path class="op-signal-pyramid__mesh-line" stroke="url(#sigLineAccount)"  d="M260 215 L58 275"/>
+                                <path class="op-signal-pyramid__mesh-line" stroke="url(#sigLineLead)"     d="M260 215 L418 285"/>
+
+                                <!-- Endpoint dots — sit exactly on top of each marker's accent dot -->
+                                <circle class="op-signal-pyramid__mesh-point op-signal-pyramid__mesh-point--industry" cx="50"  cy="53"  r="4.5"/>
+                                <circle class="op-signal-pyramid__mesh-point op-signal-pyramid__mesh-point--persona"  cx="410" cy="83"  r="4.5"/>
+                                <circle class="op-signal-pyramid__mesh-point op-signal-pyramid__mesh-point--account"  cx="58"  cy="275" r="4.5"/>
+                                <circle class="op-signal-pyramid__mesh-point op-signal-pyramid__mesh-point--lead"     cx="418" cy="285" r="4.5"/>
+
+                                <!-- Signal blips — one per line, color-matched, at each line's midpoint -->
+                                <circle class="op-signal-pyramid__mesh-blip op-signal-pyramid__mesh-blip--1" cx="155" cy="134" r="4.5"/>
+                                <circle class="op-signal-pyramid__mesh-blip op-signal-pyramid__mesh-blip--2" cx="335" cy="149" r="4"/>
+                                <circle class="op-signal-pyramid__mesh-blip op-signal-pyramid__mesh-blip--3" cx="159" cy="245" r="4.5"/>
+                                <circle class="op-signal-pyramid__mesh-blip op-signal-pyramid__mesh-blip--4" cx="339" cy="250" r="4"/>
+                            </svg>
+
+                            <div class="op-signal-pyramid__beam" aria-hidden="true"></div>
+
+                            <div class="op-signal-pyramid__core">
+                                <div class="op-signal-pyramid__core-label">ICP Core</div>
+                                <div class="op-signal-pyramid__core-value">412</div>
+                                <div class="op-signal-pyramid__core-copy">accounts actively monitored</div>
+                            </div>
+
+                            <button type="button" class="op-signal-pyramid__marker op-signal-pyramid__marker--industry" data-signal-layer data-kicker="Layer 01" data-title="Industry" data-copy="Market currents and external pressure building inside your target sectors." data-pill="06 sectors" data-signal="Macro shifts" data-accent="#F37C38" aria-pressed="false">
+                                <span class="op-signal-pyramid__marker-dot" aria-hidden="true"></span>
+                                <span class="op-signal-pyramid__marker-label">Industry</span>
+                            </button>
+
+                            <button type="button" class="op-signal-pyramid__marker op-signal-pyramid__marker--persona" data-signal-layer data-kicker="Layer 03" data-title="Persona" data-copy="Buyer movement mapped across hiring, promotions, and committee changes." data-pill="46 mapped" data-signal="Role motion" data-accent="#4FC7D4" aria-pressed="false">
+                                <span class="op-signal-pyramid__marker-dot" aria-hidden="true"></span>
+                                <span class="op-signal-pyramid__marker-label">Persona</span>
+                            </button>
+
+                            <button type="button" class="op-signal-pyramid__marker op-signal-pyramid__marker--account" data-signal-layer data-kicker="Layer 02" data-title="Account" data-copy="Growth, stack changes, and budget moments scored against ICP fit in real time." data-pill="132 active" data-signal="Fit score" data-accent="#A9B8FF" aria-pressed="false">
+                                <span class="op-signal-pyramid__marker-dot" aria-hidden="true"></span>
+                                <span class="op-signal-pyramid__marker-label">Account</span>
+                            </button>
+
+                            <button type="button" class="op-signal-pyramid__marker op-signal-pyramid__marker--lead" data-signal-layer data-kicker="Layer 04" data-title="Lead" data-copy="Individual intent signals trigger when timing is hottest and outreach should happen now." data-pill="18 live" data-signal="1:1 intent" data-accent="#5B9DEF" aria-pressed="false">
+                                <span class="op-signal-pyramid__marker-dot" aria-hidden="true"></span>
+                                <span class="op-signal-pyramid__marker-label">Lead</span>
+                            </button>
+
+                            <div class="op-signal-pyramid__detail">
+                                <div class="op-signal-pyramid__detail-top">
+                                    <div class="op-signal-pyramid__detail-kicker" data-signal-detail="kicker">Layer 01</div>
+                                    <div class="op-signal-pyramid__detail-hint">Hover or tap nodes</div>
+                                </div>
+                                <div class="op-signal-pyramid__detail-title" data-signal-detail="title">Industry</div>
+                                <div class="op-signal-pyramid__detail-copy" data-signal-detail="copy">Market currents and external pressure building inside your target sectors.</div>
+                                <div class="op-signal-pyramid__detail-meta">
+                                    <span class="op-signal-pyramid__detail-pill" data-signal-detail="pill">06 sectors</span>
+                                    <span class="op-signal-pyramid__detail-signal" data-signal-detail="signal">Macro shifts</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="op-signal-pyramid__tier">
-                            <div class="op-signal-pyramid__bar"></div>
-                            <div>
-                                <div class="op-signal-pyramid__label">Account</div>
-                                <div class="op-signal-pyramid__sublabel">Growth signals</div>
+
+                        <div class="op-signal-pyramid__footer" aria-hidden="true">
+                            <div class="op-signal-pyramid__stat">
+                                <div class="op-signal-pyramid__stat-value">24/7</div>
+                                <div class="op-signal-pyramid__stat-label">signal scan</div>
                             </div>
-                        </div>
-                        <div class="op-signal-pyramid__tier">
-                            <div class="op-signal-pyramid__bar"></div>
-                            <div>
-                                <div class="op-signal-pyramid__label">Industry</div>
-                                <div class="op-signal-pyramid__sublabel">Market trends</div>
+                            <div class="op-signal-pyramid__stat">
+                                <div class="op-signal-pyramid__stat-value">132</div>
+                                <div class="op-signal-pyramid__stat-label">active account triggers</div>
+                            </div>
+                            <div class="op-signal-pyramid__stat">
+                                <div class="op-signal-pyramid__stat-value">18</div>
+                                <div class="op-signal-pyramid__stat-label">hot leads right now</div>
                             </div>
                         </div>
                     </div>
@@ -5873,7 +6549,8 @@
                     <h3 class="op-footer__newsletter-title">Join Our Newsletter</h3>
                     <form class="op-footer__newsletter-form" id="newsletterForm">
                         <div class="op-footer__newsletter-input-wrap">
-                            <input type="email" id="newsletterEmail" placeholder="Email" required class="op-footer__newsletter-input">
+                            <label for="newsletterEmail" class="visually-hidden">Email address</label>
+                            <input type="email" id="newsletterEmail" name="email" placeholder="Email" required autocomplete="email" class="op-footer__newsletter-input">
                             <div class="op-footer__newsletter-icons">
                                 <svg class="op-footer__newsletter-clay" viewBox="0 0 24 24" fill="none">
                                     <rect width="24" height="24" rx="4" fill="#E24A4A"/>
@@ -6913,6 +7590,69 @@
         })();
 
 
+        // Signal Intelligence interactive radar — click to open, click again to close
+        (function() {
+            var widgets = document.querySelectorAll('.op-signal-pyramid');
+            if (!widgets.length) return;
+
+            widgets.forEach(function(widget) {
+                var markers = Array.prototype.slice.call(widget.querySelectorAll('[data-signal-layer]'));
+                var kicker = widget.querySelector('[data-signal-detail="kicker"]');
+                var title  = widget.querySelector('[data-signal-detail="title"]');
+                var copy   = widget.querySelector('[data-signal-detail="copy"]');
+                var pill   = widget.querySelector('[data-signal-detail="pill"]');
+                var signal = widget.querySelector('[data-signal-detail="signal"]');
+                var activeMarker = null;
+
+                function activate(marker) {
+                    activeMarker = marker;
+                    markers.forEach(function(item) {
+                        var on = item === marker;
+                        item.classList.toggle('is-active', on);
+                        item.setAttribute('aria-pressed', on ? 'true' : 'false');
+                    });
+                    if (kicker) kicker.textContent = marker.getAttribute('data-kicker') || '';
+                    if (title)  title.textContent  = marker.getAttribute('data-title')  || '';
+                    if (copy)   copy.textContent   = marker.getAttribute('data-copy')   || '';
+                    if (pill)   pill.textContent   = marker.getAttribute('data-pill')   || '';
+                    if (signal) signal.textContent = marker.getAttribute('data-signal') || '';
+                    widget.style.setProperty('--signal-active', marker.getAttribute('data-accent') || '#F37C38');
+                    widget.classList.add('has-detail');
+                }
+
+                function deactivate() {
+                    activeMarker = null;
+                    markers.forEach(function(item) {
+                        item.classList.remove('is-active');
+                        item.setAttribute('aria-pressed', 'false');
+                    });
+                    widget.classList.remove('has-detail');
+                }
+
+                markers.forEach(function(marker) {
+                    marker.addEventListener('click', function() {
+                        if (activeMarker === marker) {
+                            deactivate();
+                        } else {
+                            activate(marker);
+                        }
+                    });
+                    marker.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            marker.click();
+                        }
+                    });
+                });
+
+                // Close on Escape key
+                widget.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && activeMarker) deactivate();
+                });
+            });
+        })();
+
+
         // Newsletter form submission handler
         (function() {
             var form = document.getElementById('newsletterForm');
@@ -6931,8 +7671,8 @@
 
     </script>
 
-    <!-- EmailJS SDK - Replace YOUR_PUBLIC_KEY with your actual key from emailjs.com -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- EmailJS SDK (pinned + SRI) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous"></script>
     <script>
         emailjs.init('F9i7fSIFN92ZRBX-p');
     </script>

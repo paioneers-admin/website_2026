@@ -1,0 +1,36 @@
+.DS_Store
+**/.DS_Store
+.agents
+.claude
+.env
+.env.*
+.git
+.gitignore
+.next
+.vercel
+node_modules
+supabase
+scripts
+WEBSITE_CONTENT_PLAN.md
+skills-lock.json
+viz_help.md
+next-env.d.ts
+README.md
+
+# Source documents and internal planning — not for public deploy
+Ressources/brand-guidelines
+Ressources/content
+Ressources/fonts
+Ressources/icons
+Ressources/logos
+Ressources/example_itwebsite.html
+Ressources/example_pics/*.png
+Ressources/4_layers_of_signal_significance.png
+Ressources/Layers_power_infrastructure.png
+Ressources/documents/*.md
+Ressources/documents/*.html
+Ressources/documents/* copy*
+
+# Backup originals of re-encoded videos (optimized versions take their slots)
+Ressources/videos/*.bak
+Ressources/videos/Clay_original.mp4.bak

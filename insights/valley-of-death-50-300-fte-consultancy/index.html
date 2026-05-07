@@ -52,6 +52,49 @@
 
         <div class="tldr"><div class="tldr__box"><div class="tldr__label">The short version</div><p class="tldr__text">The 50-300 FTE band is where Dutch consultancies often lose structural clarity. Revenue per FTE below <strong>EUR 130,000</strong> is the danger line. Top quartile firms reach <strong>EUR 205,000</strong>. The middle market gets squeezed because it lacks both boutique pricing power and large-player co-sell gravity. That is why so many firms in this band end up as PE targets, distressed assets, or tired consolidators.</p></div></div>
 
+        <figure class="viz viz--anchor" aria-label="Revenue per FTE distribution showing danger, average, and top quartile bands">
+            <div class="viz-distribution viz-card">
+                <div class="viz-card__glow viz-distribution__glow" aria-hidden="true"></div>
+                <div class="viz-card__bar">
+                    <div class="viz-card__dots"><span></span><span></span><span></span></div>
+                    <div class="viz-card__title">Valley of Death &mdash; Revenue per FTE Range</div>
+                    <div class="viz-card__live" aria-hidden="true"></div>
+                </div>
+                <div class="viz-card__body">
+                    <div class="viz-plot" role="img" aria-label="Density curve from below EUR 100 thousand to above EUR 250 thousand revenue per FTE">
+                        <svg viewBox="0 0 720 270" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                            <line class="viz-plot__axis" x1="70" y1="220" x2="670" y2="220"></line>
+                            <line class="viz-plot__grid" x1="190" y1="52" x2="190" y2="220"></line>
+                            <line class="viz-plot__grid" x1="330" y1="52" x2="330" y2="220"></line>
+                            <line class="viz-plot__grid" x1="520" y1="52" x2="520" y2="220"></line>
+                            <path d="M70 210 C116 205 145 180 178 146 C218 105 270 96 316 122 C356 144 382 162 420 151 C476 134 494 82 548 69 C602 56 642 82 670 98" fill="none" stroke="rgba(250,255,239,.14)" stroke-width="28" stroke-linecap="round"></path>
+                            <path id="viz-fte-curve" d="M70 210 C116 205 145 180 178 146 C218 105 270 96 316 122 C356 144 382 162 420 151 C476 134 494 82 548 69 C602 56 642 82 670 98" class="viz-plot__line viz-plot__line--teal"></path>
+                            <circle r="8" fill="#0F7A99" stroke="rgba(15,122,153,.35)" stroke-width="6">
+                                <animateMotion dur="5s" repeatCount="indefinite" rotate="0" keyPoints="0;1;1" keyTimes="0;0.7;1" calcMode="spline" keySplines="0.4 0 0.2 1;0 0 1 1">
+                                    <mpath href="#viz-fte-curve"/>
+                                </animateMotion>
+                            </circle>
+                        </svg>
+                        <div class="viz-plot__label viz-tip" tabindex="0" data-pos="start" data-detail="Below EUR 130,000 revenue per FTE, the firm usually lacks enough gross margin to absorb bench cycles and fixed-cost drift." style="left: 8%; top: 66%;"><strong>&lt;EUR 130k</strong>Danger line</div>
+                        <div class="viz-plot__label viz-tip" tabindex="0" data-detail="Average firms sit around EUR 140-147k, which is precisely where mid-market scale can feel bigger without becoming stronger." style="left: 38%; top: 49%;"><strong>EUR 140-147k</strong>Average band</div>
+                        <div class="viz-plot__label viz-plot__label--out viz-tip" tabindex="0" data-pos="end" data-detail="Top-quartile firms reach EUR 205,000+ because specialization, pricing power, and partner gravity pull in the same direction." style="right: 4%; top: -6px;"><strong>&gt;EUR 205k</strong>Top quartile</div>
+                    </div>
+                    <div class="viz-distribution__bands" aria-hidden="true">
+                        <div class="viz-distribution__band viz-distribution__band--danger">&lt;EUR 130k danger</div>
+                        <div class="viz-distribution__band viz-distribution__band--average">EUR 140-147k average</div>
+                        <div class="viz-distribution__band viz-distribution__band--top">&gt;EUR 205k top quartile</div>
+                    </div>
+                </div>
+                <div class="viz-card__legend" aria-hidden="true">
+                    <div class="viz-card__legend-label">Read</div>
+                    <div class="viz-card__legend-item"><span class="viz-card__legend-swatch" style="background:rgba(192,57,43,.34)"></span>Danger</div>
+                    <div class="viz-card__legend-item"><span class="viz-card__legend-swatch" style="background:rgba(143,160,151,.25)"></span>Average</div>
+                    <div class="viz-card__legend-item"><span class="viz-card__legend-swatch" style="background:rgba(15,122,153,.45)"></span>Top quartile</div>
+                </div>
+            </div>
+            <figcaption class="viz-distribution__caption">Hover any marker for the economic meaning &middot; Source: Paioneers middle-market consultancy model</figcaption>
+        </figure>
+
         <nav class="toc" aria-label="Table of contents"><div class="toc__box"><div class="toc__title">In this article</div><ol class="toc__list"><li><a href="#why-middle-breaks">Why the middle breaks</a></li><li><a href="#economics">The economics underneath it</a></li><li><a href="#pe-layer">What PE adds to the pressure</a></li><li><a href="#commercial">Commercial implications</a></li></ol></div></nav>
 
         <div class="article-body">
