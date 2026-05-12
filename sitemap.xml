@@ -45,6 +45,20 @@
         <priority>0.7</priority>
     </url>
 
+    <!-- Company Pages -->
+    <url>
+        <loc>https://paioneers.nl/about/</loc>
+        <lastmod>2026-05-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://paioneers.nl/contact/</loc>
+        <lastmod>2026-05-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
     <!-- Author -->
     <url>
         <loc>https://paioneers.nl/authors/niek-van-leeuwen/</loc>
